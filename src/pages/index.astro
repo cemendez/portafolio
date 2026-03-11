@@ -1,17 +1,35 @@
 ---
+import MainLayout from "@layouts/MainLayout.astro";
+import Hero from "@components/sections/Hero.astro";
+import ExperienceCard from "@components/ui/ExperienceCard.astro";
+import Skills from "@components/sections/Skills.astro";
 
+const experiencias = [
+    {
+        company: "Secretaría de Planeación y Finanzas",
+        role: "Senior Full Stack Developer",
+        date: "2023 - Presente",
+        description:
+            "Liderazgo técnico en el desarrollo de Geoportales y sistemas de monitoreo estatal. Implementación de flujos CI/CD y optimización de servidores Linux.",
+        tags: ["Astro", "Docker", "GIS", "PostgreSQL"],
+    },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout
+    title="Carlos E. Méndez | Senior Software Engineer"
+    description="Portafolio profesional de Carlos E. Méndez, Ingeniero de Software Senior con especialización en plataformas modernas basadas en la nube, arquitecturas escalables y aplicaciones web integrales. Enfocado en el desarrollo de productos digitales confiables desde su concepción hasta su producción."
+>
+    <Hero />
+
+    <section id="experiencia" class="max-w-4xl mx-auto px-4 py-24">
+        <h2 class="text-3xl font-bold mb-12 flex items-center gap-3">
+            <span class="text-blue-600">01.</span> Experiencia Profesional
+        </h2>
+        <div class="space-y-4">
+            {experiencias.map((exp) => <ExperienceCard {...exp} />)}
+        </div>
+    </section>
+
+    <Skills />
+</MainLayout>

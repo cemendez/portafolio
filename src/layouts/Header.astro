@@ -1,0 +1,34 @@
+---
+import logo from "@assets/images/icon-sf.svg";
+import Image from "astro/components/Image.astro";
+---
+
+<header class="header" id="header">
+    <a href="#" class="header__logo">
+        <Image
+            src={logo}
+            class="header__logo-img"
+            alt="Mi Logo"
+            width={80}
+            height={80}
+            role="img"
+            aria-label="Logo de mi portafolio Web (Carlos Méndez)"
+        />
+        <!-- <span class="animate" style="--i:1;"></span> -->
+    </a>
+
+    <div class="bx bx-menu header__menu-icon" id="menu-icon">
+        <!-- <span class="animate" style="--i:2;"></span> -->
+    </div>
+
+    <nav class="header__navbar" id="header-navbar">
+        <a class="navbar__link navbar__link--active" href="#home"> Inicio </a>
+        <a class="navbar__link" href="#about">Acerca</a>
+        <a class="navbar__link" href="#experience">Experiencia</a>
+        <a class="navbar__link" href="#skills">Habilidades</a>
+        <a class="navbar__link" href="#portfolio">Portafolio</a>
+
+        <span class="navbar__active"></span>
+        <!-- <span class="animate" style="--i:2;"></span> -->
+    </nav>
+</header>

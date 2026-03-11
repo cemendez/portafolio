@@ -1,0 +1,24 @@
+---
+import BaseHead from "@components/BaseHead.astro";
+import StructuredData from "@components/StructuredData.astro";
+import Header from "@layouts/Header.astro";
+import Footer from "@layouts/Footer.astro";
+
+const { title, description, image, type } = Astro.props;
+
+import "@assets/css/styles.css";
+---
+
+<html lang="es">
+    <head>
+        <BaseHead {title} {description} {image} {type} />
+        <StructuredData />
+    </head>
+    <body class="bg-bg-primary transition-colors">
+        <Header />
+        <main>
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>

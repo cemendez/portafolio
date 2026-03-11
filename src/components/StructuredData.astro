@@ -1,0 +1,16 @@
+---
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Carlos Emmanuel Méndez Calderón",
+    url: "https://carlosemendez.com",
+    jobTitle: "Senior Software Engineer",
+    sameAs: [
+        "https://github.com/cemendez",
+        "https://www.linkedin.com/in/carlose-mendez",
+    ],
+    knowsAbout: ["Docker", "Astro", "WordPress Headless", "CI/CD", "Laravel", "Sistemas de Información Geográfica"],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
