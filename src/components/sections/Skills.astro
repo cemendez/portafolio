@@ -1,0 +1,90 @@
+---
+// src/components/sections/Skills.astro
+
+const skillGroups = [
+    {
+        title: "Arquitectura & Backend",
+        description: "Diseño de sistemas robustos y escalables.",
+        skills: [
+            "PHP (Laravel)",
+            "Node.js",
+            "WordPress Headless",
+            "MySQL / PostgreSQL",
+            "REST APIs",
+            "WP-GraphQL",
+        ],
+    },
+    {
+        title: "Frontend & Performance",
+        description:
+            "Interfaces rápidas orientadas a la experiencia de usuario.",
+        skills: [
+            "Astro",
+            "React",
+            "TypeScript",
+            "Tailwind CSS",
+            "SEO Técnico",
+            "Web Vitals Optimization",
+        ],
+    },
+    {
+        title: "DevOps & Automatización",
+        description: "Garantizando la continuidad y calidad del software.",
+        skills: [
+            "Docker",
+            "GitHub Actions",
+            "CI/CD Pipelines",
+            "Linux Admin",
+            "SSH & Rsync",
+            "Git Workflow",
+        ],
+    },
+    {
+        title: "Sistemas Geográficos (SIG)",
+        description: "Visualización y análisis de datos territoriales.",
+        skills: [
+            "GeoServer",
+            "Leaflet",
+            "PostGIS",
+            "Manejo de datos espaciales",
+        ],
+    },
+];
+---
+
+<section id="habilidades" class="py-24 bg-gray-50 dark:bg-gray-800/50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="mb-16">
+            <h2 class="text-3xl font-bold mb-4 flex items-center gap-3">
+                <span class="text-blue-600">02.</span> Stack Tecnológico
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
+                Mi enfoque se centra en utilizar la herramienta adecuada para
+                cada problema, priorizando siempre el rendimiento, la seguridad
+                y la mantenibilidad del código.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {
+                skillGroups.map((group) => (
+                    <div class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:border-blue-500/50 transition-colors group">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">
+                            {group.title}
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                            {group.description}
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            {group.skills.map((skill) => (
+                                <span class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-bold rounded-md uppercase tracking-wider">
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
