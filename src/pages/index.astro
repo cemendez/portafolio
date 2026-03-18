@@ -18,15 +18,15 @@ const experiencias = [
 
 <MainLayout
     title="Carlos E. Méndez | Senior Software Engineer"
-    description="Portafolio profesional de Carlos E. Méndez, Ingeniero de Software Senior con especialización en plataformas modernas basadas en la nube, arquitecturas escalables y aplicaciones web integrales. Enfocado en el desarrollo de productos digitales confiables desde su concepción hasta su producción."
+    description="Portafolio profesional de Carlos E. Méndez, Desarrollador de Software Senior con especialización en plataformas modernas basadas en la nube, arquitecturas escalables y aplicaciones web integrales."
 >
     <Hero />
 
-    <section id="experiencia" class="max-w-4xl mx-auto px-4 py-24">
-        <h2 class="text-3xl font-bold mb-12 flex items-center gap-3">
-            <span class="text-blue-600">01.</span> Experiencia Profesional
+    <section id="experiencia" class="experience">
+        <h2 class="experience__title">
+            <span class="experience__number">01.</span> Experiencia Profesional
         </h2>
-        <div class="space-y-4">
+        <div class="experience__list">
             {experiencias.map((exp) => <ExperienceCard {...exp} />)}
         </div>
     </section>

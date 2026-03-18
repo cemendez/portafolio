@@ -6,6 +6,14 @@ import Footer from "@layouts/Footer.astro";
 
 const { title, description, image, type } = Astro.props;
 
+import "@fontsource/poppins/300.css";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/poppins/800.css";
+import "@fontsource/poppins/900.css";
+
 import "@assets/css/styles.css";
 ---
 
@@ -14,11 +22,13 @@ import "@assets/css/styles.css";
         <BaseHead {title} {description} {image} {type} />
         <StructuredData />
     </head>
-    <body class="bg-bg-primary transition-colors">
+    <body>
         <Header />
         <main>
             <slot />
         </main>
         <Footer />
+
+        <script src="@assets/js/script.js"></script>
     </body>
 </html>
