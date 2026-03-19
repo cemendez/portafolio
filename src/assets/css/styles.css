@@ -1,13 +1,10 @@
-
-/* @import "./libs/boxicons.min.css"; */
-
 :root {
     --color-bg-primary: #081b29;
     --color-bg-secondary: #112e42;
     --color-color-text: #f9f4f2;
     --color-color-main: #00abf0;
     --padding-side: 8%;
-    --font-family: 'Poppins', sans-serif;
+    --font-family: "Poppins", sans-serif;
 }
 
 /***
@@ -107,7 +104,7 @@ section {
 }
 
 .btns__btn:hover {
-    color: var(--color-color-main);
+    color: var(--color-color-text);
 }
 
 .btns__btn:nth-child(2) {
@@ -116,7 +113,7 @@ section {
 }
 
 .btns__btn:nth-child(2):hover {
-    color: var(--color-bg-primary);
+    color: var(--color-color-text);
 }
 
 .btns__btn:nth-child(2)::before {
@@ -439,5 +436,316 @@ section {
     .footer__text {
         margin-top: 0;
         order: -1;
+    }
+}
+
+/***
+====================================================================
+  HOME / HERO
+====================================================================
+***/
+
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--background-image) no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+.home__content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    min-width: 96%;
+    z-index: 99;
+}
+
+.content__title {
+    position: relative;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 2.4rem;
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.home__title-span {
+    display: block;
+    font-weight: 900;
+}
+
+.content__animate {
+    position: relative;
+}
+
+.content__animate-title {
+    font-weight: 600;
+    font-size: 1.8em;
+    color: transparent;
+    -webkit-text-stroke: 0.7px var(--color-color-main);
+    background-image: linear-gradient(
+        var(--color-color-main),
+        var(--color-color-main)
+    );
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-position: -286px 0;
+    animation: homeBgText 3s linear infinite;
+    margin: auto;
+    text-align: center;
+}
+
+.content__animate-title:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-right: 2px solid var(--color-color-main);
+    z-index: -1;
+    animation: homeCursorText 3s linear infinite;
+}
+
+.content__text {
+    position: relative;
+    margin: 2rem 0 4rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.home__social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 99;
+    font-size: 0.8rem;
+}
+
+.social__buttons {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.social__link {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: var(--color-color-main);
+    border: 1px solid var(--color-color-main);
+    border-radius: 50%;
+    color: var(--color-bg-primary);
+    z-index: 1;
+    overflow: hidden;
+}
+
+.social__link:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: var(--color-bg-primary);
+    z-index: -1;
+}
+
+.social__mail {
+    display: flex;
+    column-gap: 0.25rem;
+}
+
+.social__mail-text,
+.social__mail-send,
+.social__mail-copy {
+    position: relative;
+    z-index: 1;
+    border-radius: 6px;
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-color-main);
+    color: var(--color-color-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social__mail-text {
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.social__mail-send,
+.social__mail-copy {
+    width: 38px;
+    height: 38px;
+    cursor: pointer;
+}
+
+.social__mail-text:before,
+.social__mail-send:before,
+.social__mail-copy:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: var(--color-color-main);
+    z-index: -1;
+}
+
+.home__img-hover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-bg-primary);
+    opacity: 0.9;
+}
+
+/* ── Home Desktop (≥992px) ── */
+@media (min-width: 992px) {
+    .home {
+        flex-direction: initial;
+        justify-content: initial;
+        text-align: initial;
+        align-items: initial;
+    }
+    .home__content {
+        min-width: auto;
+        max-width: 55%;
+        align-items: initial;
+        flex: none;
+        justify-content: initial;
+    }
+    .content__title {
+        text-align: left;
+        font-size: 3.5rem;
+    }
+    .content__animate {
+        width: fit-content;
+    }
+    .content__animate-title {
+        font-size: 2rem;
+        background-position: -410px 0;
+        animation-delay: 2s;
+    }
+    .content__animate-title:before {
+        animation-delay: 2s;
+    }
+    .content__text {
+        text-align: left;
+        font-size: 1rem;
+    }
+    .content__btns {
+        justify-content: initial;
+        gap: 2rem;
+    }
+    .home__social {
+        position: absolute;
+        bottom: 4rem;
+        flex-direction: row;
+    }
+    .social__buttons {
+        margin-bottom: 0;
+        gap: 0.5rem;
+        margin-right: 2rem;
+    }
+    .social__link {
+        transition: color 0.3s;
+    }
+    .social__link:hover {
+        color: var(--main-color);
+    }
+    .social__link:before {
+        transition: width 0.3s;
+    }
+    .social__link:hover:before {
+        width: 100%;
+    }
+    .social__mail-text,
+    .social__mail-send,
+    .social__mail-copy {
+        transition: 0.3s;
+    }
+    .social__mail-text:hover,
+    .social__mail-send:hover,
+    .social__mail-copy:hover {
+        color: var(--color-color-text);
+    }
+    .social__mail {
+        gap: 0.5rem;
+    }
+    .social__mail-text:before,
+    .social__mail-send:before,
+    .social__mail-copy:before {
+        transition: 0.3s;
+    }
+    .social__mail-text:hover:before,
+    .social__mail-send:hover:before,
+    .social__mail-copy:hover:before {
+        width: 100%;
+    }
+    .home__img-hover {
+        opacity: 0.6;
+    }
+}
+
+@keyframes homeBgText {
+    0%,
+    10%,
+    to {
+        background-position: -335px 0;
+    }
+    65%,
+    85% {
+        background-position: 0 0;
+    }
+}
+
+@keyframes homeCursorText {
+    0%,
+    10%,
+    to {
+        width: 0;
+    }
+    65%,
+    78%,
+    85% {
+        width: 100%;
+        opacity: 1;
+    }
+    75%,
+    81% {
+        opacity: 0;
+    }
+}
+
+@media (min-width: 992px) {
+    @keyframes homeBgText {
+        0%,
+        10%,
+        to {
+            background-position: -410px 0;
+        }
+        65%,
+        85% {
+            background-position: 0 0;
+        }
     }
 }
