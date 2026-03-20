@@ -1,0 +1,68 @@
+---
+import { Image } from "astro:assets";
+
+import imageAbout from "@assets/images/about.jpg";
+---
+
+<section class="about" id="about">
+    <h2 class="heading">
+        Acerca <span class="heading__span">de mí</span>
+        <!-- <span class="animate scroll" style="--i:1;"></span> -->
+    </h2>
+    <div class="about__container-img">
+        <Image
+            src={imageAbout}
+            class="about__img"
+            alt="Acerca de mi (Carlos Méndez)"
+            width={250}
+            height={250}
+            role="img"
+            aria-label="Acerca de mi (Carlos Méndez)"
+        />
+        <span class="circle-spin"></span>
+        <!-- <span class="animate scroll" style="--i:2;"></span> -->
+    </div>
+    <div class="about__container">
+        <h3 class="about__subtitle">
+            Ingeniero en <span class="heading__span"
+                >Sistemas Computacionales</span
+            >
+            <!-- <span class="animate scroll" style="--i:3;"></span> -->
+        </h3>
+        <p class="about__paragraph">
+            Soy Desarrollador Full Stack con más de <strong
+                class="experience__years"></strong> años de experiencia creando soluciones
+            web robustas, seguras y orientadas al usuario. He trabajado tanto en gobierno
+            como en el sector privado, especializándome en Laravel, WordPress y Sistemas
+            de Información Geográfica (SIG).
+        </p>
+        <p class="about__paragraph">
+            He liderado el desarrollo de plataformas de seguimiento de obras
+            públicas, geoportales interactivos, sistemas de pago en línea,
+            plataformas E-Learning y portales informativos. Domino tanto el
+            backend como el frontend, así como la configuración de servidores
+            Linux y administración de bases de datos. Me apasiona seguir
+            aprendiendo, mejorar procesos y entregar soluciones que resuelvan
+            necesidades reales de forma eficiente y sostenible, estoy abierto a
+            colaborar en proyectos desafiantes y seguir creciendo
+            profesionalmente.
+        </p>
+        <ul class="about__list">
+            <li class="about__item"><strong>Tecnologías clave:</strong></li>
+            <ul class="about__list-int">
+                <li class="about__item">
+                    Laravel, PHP, React, JavaScript, MySQL, PostgreSQL, Git,
+                    APIs REST, GeoServer, OpenLayers, Leaflet, WordPress, Docker, CI/CD.
+                </li>
+            </ul>
+            <li class="about__item"><strong>Habilidades:</strong></li>
+            <ul class="about__list-int">
+                <li class="about__item">
+                    Pensamiento crítico, resolución de problemas, comunicación
+                    efectiva, trabajo en equipo, liderazgo técnico.
+                </li>
+            </ul>
+        </ul>
+        <!-- <span class="animate scroll" style="--i:4;"></span> -->
+    </div>
+</section>

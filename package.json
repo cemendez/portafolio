@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@fontsource/poppins": "^5.2.7",
-        "astro": "^5.17.1",
+        "astro": "^6.0.7",
         "sweetalert2": "^11.26.22"
     }
 }

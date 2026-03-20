@@ -3,24 +3,24 @@ let sections = document.querySelectorAll("section");
 let navLinks = document.querySelectorAll(".navbar__link");
 
 window.onscroll = () => {
-    // sections.forEach((sec) => {
-    //     let top = window.scrollY;
-    //     let offset = sec.offsetTop - 400;
-    //     let height = sec.offsetHeight;
-    //     let id = sec.getAttribute("id");
+    sections.forEach((sec) => {
+        let top = window.scrollY;
+        let offset = sec.offsetTop - 400;
+        let height = sec.offsetHeight;
+        let id = sec.getAttribute("id");
 
-    //     if (top >= offset && top < offset + height) {
-    //         navLinks.forEach((links) => {
-    //             links.classList.remove("navbar__link--active");
-    //             document
-    //                 .querySelector(".navbar__link[href*=" + id + "]")
-    //                 .classList.add("navbar__link--active");
-    //         });
-    //         sec.classList.add("show-animate");
-    //     } else {
-    //         sec.classList.remove("show-animate");
-    //     }
-    // });
+        if (top >= offset && top < offset + height) {
+            navLinks.forEach((links) => {
+                links.classList.remove("navbar__link--active");
+                document
+                    .querySelector(".navbar__link[href*=" + id + "]")
+                    .classList.add("navbar__link--active");
+            });
+            sec.classList.add("show-animate");
+        } else {
+            sec.classList.remove("show-animate");
+        }
+    });
 
     let header = document.querySelector("header");
     if (header) {
