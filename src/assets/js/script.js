@@ -17,9 +17,10 @@ window.onscroll = () => {
                     .classList.add("navbar__link--active");
             });
             sec.classList.add("show-animate");
-        } else {
-            sec.classList.remove("show-animate");
         }
+        // else {
+        //     sec.classList.remove("show-animate");
+        // }
     });
 
     let header = document.querySelector("header");
