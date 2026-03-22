@@ -1,0 +1,73 @@
+---
+import ExperienceCard from "@components/ui/ExperienceCard.astro";
+
+const experiencias = [
+    {
+        company: "Secretaría de Planeación y Finanzas",
+        role: "Desarrollador Full Stack Senior",
+        date: "2023 - Presente",
+        description:
+            "En mi rol actual, he sido responsable del análisis, desarrollo y pruebas de aplicaciones web institucionales. He liderado el desarrollo de la página del Comité Estatal de Estadística, optimizando la navegación y accesibilidad de datos estratégicos. Diseñé y desarrollé un Geoportal con herramientas de análisis geográfico, el cual facilita la consulta interactiva de información territorial. También desarrollé una plataforma para el seguimiento de Proyectos del Plan Estatal de Desarrollo, mejorando la trazabilidad de obras y la generación de reportes. Adicionalmente, administro servidores Linux que alojan servicios SIG y brindo soporte técnico especializado en tecnologías de la información y comunicación.",
+        // description:
+        //     "Liderazgo técnico en el desarrollo de Geoportales y sistemas de monitoreo estatal. Implementación de flujos CI/CD y optimización de servidores Linux.",
+        tags: [
+            "PHP (MVC)",
+            "Laravel",
+            "Astro",
+            "React",
+            "JavaScript",
+            "MySQL",
+            "PostgreSQL",
+            "Docker",
+            "CI/CD (GitHub Actions)",
+            "GeoServer",
+            "OpenLayers",
+            "Servidores Linux",
+        ],
+    },
+    {
+        company: "Agencia de Publicidad Unkonditional",
+        role: "Desarrollador Full Stack Senior",
+        date: "Marzo 2020 - Febrero 2023",
+        description:
+            "Durante este periodo, realicé análisis, desarrollo y pruebas de aplicaciones web enfocadas en soluciones de negocio. Diseñé e implementé un sistema de pagos en línea para Agua Potable y Predial del Municipio de San Andrés Cholula, integrando la pasarela Bancomer. También desarrollé una plataforma de cursos en línea con integración de pagos mediante Stripe y herramientas interactivas como Zoom, envío de tareas, generación de certificados y reportes. Creé una página de noticias conectada mediante API a WordPress, optimizando su rendimiento y diseño responsivo. A lo largo del proyecto, administré bases de datos, realicé tareas de soporte técnico y participé en estrategias de marketing digital.",
+        tags: [
+            "PHP (MVC)",
+            "Laravel",
+            "MySQL",
+            "SQL Server",
+            "Stripe",
+            "Zoom",
+            "WordPress",
+        ],
+    },
+    {
+        company: "Secretaría de Planeación y Finanzas",
+        role: "Desarrollador Full Stack",
+        date: "Agosto 2017 - Marzo 2020",
+        description:
+            "Fui responsable del análisis, desarrollo y despliegue de aplicaciones web de carácter institucional. Implementé un portal de Georeferenciación de Obras Públicas que permitió una visualización geográfica clara y funcional de los proyectos del estado. Además, desarrollé plataformas de seguimiento para el Plan Estatal de Desarrollo e Informes de Gobierno, contribuyendo a una mejor organización y sistematización de la información pública. También configuré servidores Linux y MacOS para alojar servicios internos, optimizando el desempeño y la seguridad de los sistemas implementados.",
+        tags: ["PHP", "MySQL", "GeoServer", "Leaflet", "Servidores Linux"],
+    },
+    {
+        company: "Desarrollador Web y Soporte TIC",
+        role: "Freelance",
+        date: "2014 - 2017",
+        description:
+            "En esta etapa como profesional independiente, brindé servicios de análisis, desarrollo y mantenimiento de aplicaciones web para clientes del sector privado. Desarrollé sitios informativos, tiendas en línea y sistemas administrativos personalizados, adaptados a las necesidades de cada cliente. Asimismo, ofrecí soporte técnico, administración de bases de datos y mantenimiento de infraestructura TIC, permitiendo a pequeños negocios optimizar sus procesos tecnológicos sin necesidad de grandes inversiones.",
+        tags: ["PHP", "MySQL", "WordPress", "Soporte Técnico"],
+    },
+];
+---
+
+<section class="experience" id="experience">
+    <h2 class="heading">
+        <span class="heading__span">Experiencia </span>laboral
+        <!-- <span class="animate scroll" style="--i:1;"></span> -->
+    </h2>
+
+    <div class="experience__list">
+        {experiencias.map((exp) => <ExperienceCard {...exp} />)}
+    </div>
+    <!-- <span class="animate scroll" style="--i:3;"></span> -->
+</section>

@@ -2,8 +2,8 @@
 import MainLayout from "@layouts/MainLayout.astro";
 import Hero from "@components/sections/Hero.astro";
 import About from "@components/sections/About.astro";
-import ExperienceCard from "@components/ExperienceCard.astro";
 import Skills from "@components/sections/Skills.astro";
+import Experience from "@components/sections/Experience.astro";
 
 const experiencias = [
     {
@@ -25,14 +25,7 @@ const experiencias = [
 
     <About />
 
-    <section id="experiencia" class="experience">
-        <h2 class="experience__title">
-            <span class="experience__number">01.</span> Experiencia Profesional
-        </h2>
-        <div class="experience__list">
-            {experiencias.map((exp) => <ExperienceCard {...exp} />)}
-        </div>
-    </section>
+    <Experience />
 
     <Skills />
 </MainLayout>
