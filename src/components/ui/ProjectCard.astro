@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+const { project } = Astro.props;
+const { data, id } = project;
+---
+
+<a
+    href={`/projects/${id}`}
+    class={`portfolio-card ${data.featured ? "portfolio-card--featured" : ""}`}
+>
+    <div class="portfolio-card__header">
+        <Image
+            src={data.image}
+            alt={data.title}
+            class="portfolio-card__image"
+            transition:name={`img-${project.id}`}
+        />
+    </div>
+
+    <div class="portfolio-card__content">
+        <span class="portfolio-card__category">{data.category}</span>
+        <h3 class="portfolio-card__title">{data.title}</h3>
+        <p class="portfolio-card__description">{data.description}</p>
+
+        <div class="portfolio-card__tags">
+            {data.tags.map((tag: unknown) => <span class="tag">#{tag}</span>)}
+        </div>
+    </div>
+</a>

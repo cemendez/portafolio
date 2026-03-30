@@ -4,6 +4,8 @@ import StructuredData from "@components/base/StructuredData.astro";
 import Header from "@layouts/Header.astro";
 import Footer from "@layouts/Footer.astro";
 
+import { ClientRouter } from "astro:transitions";
+
 const { title, description, image, type } = Astro.props;
 
 import "@fontsource/poppins/300.css";
@@ -21,6 +23,7 @@ import "@assets/css/styles.css";
     <head>
         <BaseHead {title} {description} {image} {type} />
         <StructuredData />
+        <ClientRouter />
     </head>
     <body>
         <Header />

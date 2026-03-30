@@ -1,0 +1,62 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import MainLayout from "@layouts/MainLayout.astro";
+
+export async function getStaticPaths() {
+    const projects = await getCollection("projects");
+    return projects.map((project) => ({
+        params: { id: project.id },
+        props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+const { data, id } = project;
+const { Content } = await render(project);
+---
+
+<MainLayout title={`${data.title} | Portafolio`}>
+    <article class="project-details">
+        <div class="project-details__container">
+            <a href="/#portfolio" class="project-details__back"
+                >← Volver al inicio</a
+            >
+
+            <header class="project-details__header">
+                <h1 class="project-details__title">{data.title}</h1>
+                <div class="project-details__meta">
+                    <span class="project-details__badge"
+                        ><strong>Rol:</strong> {data.role}</span
+                    >
+                    <span class="project-details__badge"
+                        ><strong>Categoría:</strong>
+                        {data.category}</span
+                    >
+                    {
+                        data.demoUrl && (
+                            <a
+                                href={data.demoUrl}
+                                target="_blank"
+                                class="project-details__link"
+                            >
+                                Ver Demo Viva
+                            </a>
+                        )
+                    }
+                </div>
+            </header>
+
+            <Image
+                src={data.image}
+                transition:name={`img-${id}`}
+                class="project-details__image"
+                alt={data.title}
+            />
+
+            <div class="project-details__content">
+                <Content />
+            </div>
+        </div>
+    </article>
+</MainLayout>
