@@ -18,6 +18,7 @@ const projects = defineCollection({
                 "E-commerce",
                 "FullStack",
                 "Web App",
+                "Freelance",
             ]),
             tags: z.array(z.string()),
             status: z.enum(["Online", "Offline", "Privado"]),
