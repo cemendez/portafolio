@@ -4,9 +4,9 @@ description: "Plataforma centralizada para la digitalización, validación y aud
 publishDate: 2025-10-23
 image: "./assets/images/informe-gobierno-2025.png"
 category: "Gobierno"
+role: "Arquitecto de software y desarrollador principal"
 tags: ["PHP (MVC)", "MySQL", "Docker", "Tailwind"]
 status: "Privado"
-role: "Software Architect & Lead Developer"
 featured: true
 ---
 
