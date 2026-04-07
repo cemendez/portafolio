@@ -21,7 +21,12 @@ const projects = defineCollection({
                 "Freelance",
             ]),
             tags: z.array(z.string()),
-            status: z.enum(["Online", "Offline", "Privado"]),
+            status: z.enum([
+                "Online",
+                "Offline",
+                "Privado",
+                "Fase de Lanzamiento",
+            ]),
             role: z.string(),
             featured: z.boolean().default(false),
             demoUrl: z.string().url().optional(),
