@@ -718,7 +718,7 @@ strong {
     0%,
     10%,
     to {
-        background-position: -400px 0;
+        background-position: -300px 0;
     }
     65%,
     85% {
@@ -749,7 +749,7 @@ strong {
         0%,
         10%,
         to {
-            background-position: -500px 0;
+            background-position: -375px 0;
         }
         65%,
         85% {
