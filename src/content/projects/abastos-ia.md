@@ -3,7 +3,7 @@ title: "Abastos IA: Plataforma de Voz a Datos para Gestión Comercial y Control 
 description: "Plataforma de procesamiento de lenguaje natural que automatiza el registro de transacciones comerciales y balances de inventario mediante notas de voz en tiempo real con Inteligencia Artificial."
 publishDate: "2026-06-12"
 image: "./assets/images/abastos-ia.png"
-category: "FullStack"
+category: "Freelance"
 role: "Arquitecto de software y desarrollador principal"
 tags: ["Laravel", "PHP 8.3", "OpenAI API (Whisper/GPT)", "JavaScript (MediaRecorder)", "Node.js (Proxy)", "SQL (Conditional Aggregation)", "Vite"]
 status: "Privado"
