@@ -69,8 +69,7 @@ img {
 section {
     min-height: 100vh;
     padding: 6rem var(--padding-side);
-    /* max-width: 1440px;
-    margin: 0 auto; */
+
 }
 
 strong {
@@ -1027,13 +1026,7 @@ strong {
     background: var(--color-bg-secondary);
 }
 
-/* .skills__container {
-    max-width: 72rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-} */
+
 
 .skills__header {
     margin-bottom: 4rem;
@@ -1122,6 +1115,33 @@ strong {
   PORTFOLIO SECTION
 ====================================================================
 ***/
+
+.portfolio__filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+}
+
+.portfolio__filter {
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    border: 1px solid var(--color-color-main);
+    color: var(--color-color-main);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: var(--font-family);
+}
+
+.portfolio__filter:hover,
+.portfolio__filter--active {
+    background: var(--color-color-main);
+    color: var(--color-bg-primary);
+}
 
 .portfolio__title {
     font-size: 2.5rem;

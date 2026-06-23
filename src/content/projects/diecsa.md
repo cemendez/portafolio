@@ -7,7 +7,6 @@ category: "Freelance"
 role: "Desarrollador principal"
 tags: ["WordPress", "PHP", "Migration", "MySQL", "Apache"]
 status: "Online"
-featured: true
 demoUrl: "https://diec-sa.com.mx/"
 ---
 

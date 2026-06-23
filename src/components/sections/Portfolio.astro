@@ -6,15 +6,57 @@ const allProjects = await getCollection("projects");
 const sortedProjects = allProjects.sort(
     (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
+
+const categories = [
+    "Todos",
+    ...new Set(sortedProjects.map((p) => p.data.category)),
+];
 ---
 
 <section id="portfolio" class="portfolio">
     <h2 class="heading">
         <span class="heading__span">Proyectos </span>Destacados
-        <!-- <span class="animate scroll" style="--i:1;"></span> -->
     </h2>
 
-    <div class="portfolio__grid">
-        {sortedProjects.map((project) => <ProjectCard project={project} />)}
+    <div class="portfolio__filters">
+        {categories.map((cat) => (
+            <button
+                class={`portfolio__filter ${cat === "Todos" ? "portfolio__filter--active" : ""}`}
+                data-filter={cat}
+            >
+                {cat}
+            </button>
+        ))}
+    </div>
+
+    <div class="portfolio__grid" id="portfolio-grid">
+        {sortedProjects.map((project) => (
+            <div class="portfolio__item" data-category={project.data.category}>
+                <ProjectCard project={project} />
+            </div>
+        ))}
     </div>
 </section>
+
+<script>
+    const filterButtons = document.querySelectorAll(".portfolio__filter");
+    const portfolioItems = document.querySelectorAll(".portfolio__item");
+
+    filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            filterButtons.forEach((b) =>
+                b.classList.remove("portfolio__filter--active"),
+            );
+            btn.classList.add("portfolio__filter--active");
+
+            const filter = btn.dataset.filter;
+            portfolioItems.forEach((item) => {
+                if (filter === "Todos" || item.dataset.category === filter) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
