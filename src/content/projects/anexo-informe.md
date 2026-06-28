@@ -1,5 +1,5 @@
 ---
-title: "Sistema de Consulta: Anexo Estadístico de Gobierno"
+title: "Sistema de Consulta: Anexo Geográfico de Gobierno"
 description: "Plataforma digital para presentar la distribución geográfica de las acciones llevadas a cabo por el Gobierno del Estado, a nivel municipal y regional."
 publishDate: 2026-03-30
 image: "./assets/images/anexo-informe.png"
@@ -12,7 +12,7 @@ status: "Online"
 ---
 
 ## El Desafío
-Centralizar miles de indicadores estadísticos generados por diversas dependencias gubernamentales en una plataforma única, accesible y fácil de navegar para el ciudadano, garantizando la disponibilidad de la información conforme a las leyes de transparencia.
+Centralizar miles de indicadores generados por diversas dependencias gubernamentales en una plataforma única, accesible y fácil de navegar para el ciudadano, garantizando la disponibilidad de la información conforme a las leyes de transparencia.
 
 ## Solución Técnica
 
