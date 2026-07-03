@@ -91,38 +91,35 @@ strong {
 ====================================================================
 ***/
 
+.content__btns {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 100;
+}
+
 .btns__btn {
     position: relative;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    padding: 0.5rem 1rem;
+    padding: 0.7rem 1.8rem;
     background: var(--color-color-main);
-    border: 1px solid var(--color-color-main);
+    border: 2px solid var(--color-color-main);
     border-radius: 8px;
     letter-spacing: 2px;
+    font-weight: 600;
     color: var(--color-bg-primary);
     z-index: 1;
     overflow: hidden;
     transition: 0.3s;
+    text-decoration: none;
 }
 
 .btns__btn:hover {
-    color: var(--color-color-text);
-}
-
-.btns__btn:nth-child(2) {
-    background: transparent;
     color: var(--color-color-main);
-}
-
-.btns__btn:nth-child(2):hover {
-    color: var(--color-color-text);
-}
-
-.btns__btn:nth-child(2)::before {
-    background: var(--color-color-main);
 }
 
 .btns__btn::before {
@@ -141,11 +138,17 @@ strong {
     width: 100%;
 }
 
-.content__btns {
-    position: relative;
-    display: flex;
-    margin-bottom: 3rem;
-    gap: 2rem;
+.btns__btn:nth-child(1) {
+    background: transparent;
+    color: var(--color-color-main);
+}
+
+.btns__btn:nth-child(1)::before {
+    background: var(--color-color-main);
+}
+
+.btns__btn:nth-child(1):hover {
+    color: var(--color-bg-primary);
 }
 
 .heading {
@@ -526,9 +529,11 @@ strong {
 
 .content__text {
     position: relative;
-    margin: 2rem 0 4rem;
-    font-size: 0.9rem;
+    margin: 2rem 0 3rem;
+    font-size: 0.95rem;
     text-align: center;
+    line-height: 1.6;
+    max-width: 100%;
 }
 
 .home__social {
@@ -639,6 +644,7 @@ strong {
         align-items: initial;
         flex: none;
         justify-content: initial;
+        padding-top: 4rem; /* Le da aire arriba en pantallas grandes */
     }
     .content__title {
         text-align: left;
@@ -655,13 +661,18 @@ strong {
     .content__animate-title:before {
         animation-delay: 2s;
     }
+
+    /* Limitamos el ancho aquí para que el texto rompa de forma elegante */
     .content__text {
         text-align: left;
         font-size: 1rem;
+        max-width: 620px;
     }
+
     .content__btns {
         justify-content: initial;
         gap: 2rem;
+        margin-bottom: 0;
     }
     .home__social {
         position: absolute;
@@ -676,8 +687,10 @@ strong {
     .social__link {
         transition: color 0.3s;
     }
+
+    /* Corregido el bug de la variable de color (--main-color -> --color-color-main) */
     .social__link:hover {
-        color: var(--main-color);
+        color: var(--color-color-main);
     }
     .social__link:before {
         transition: width 0.3s;
@@ -811,15 +824,25 @@ strong {
     aspect-ratio: 3 / 4;
     border-radius: 16px;
     padding: 3px;
-    background: linear-gradient(180deg, var(--color-color-main) 0%, rgba(255,255,255,0.05) 100%);
+    background: linear-gradient(
+        180deg,
+        var(--color-color-main) 0%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    transition: transform 0.4s ease, background 0.4s ease;
+    transition:
+        transform 0.4s ease,
+        background 0.4s ease;
     overflow: hidden;
 }
 
 .about__img-wrapper:hover {
     transform: translateY(-5px);
-    background: linear-gradient(135deg, var(--color-color-main) 0%, #0284c7 100%);
+    background: linear-gradient(
+        135deg,
+        var(--color-color-main) 0%,
+        #0284c7 100%
+    );
 }
 
 .about__img {
