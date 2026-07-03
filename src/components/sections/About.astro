@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-
 import imageAbout from "@assets/images/about.jpg";
 ---
 
@@ -8,73 +7,99 @@ import imageAbout from "@assets/images/about.jpg";
     <h2 class="heading">
         <span class="heading__span">Acerca </span>de mí
     </h2>
-    <div class="about__container-img">
-        <Image
-            src={imageAbout}
-            class="about__img"
-            alt="Acerca de mi (Carlos Méndez)"
-            width={250}
-            height={250}
-            role="img"
-            aria-label="Acerca de mi (Carlos Méndez)"
-        />
-        <span class="circle-spin"></span>
-    </div>
-    <div class="about__container">
-        <h3 class="about__subtitle">
-            <span class="heading__span">Arquitecto </span> de Software
-        </h3>
-        <p class="about__paragraph">
-            Arquitecto de Software con más de <strong
-                class="experience__years"></strong> años de experiencia diseñando
-            plataformas web escalables, seguras y de alto impacto. He trabajado
-            tanto en el sector gubernamental como en la iniciativa privada,
-            especializándome en Laravel, sistemas distribuidos y Sistemas de
-            Información Geográfica (SIG).
-        </p>
-        <p class="about__paragraph">
-            Mi enfoque consiste en traducir necesidades de negocio complejas en
-            decisiones arquitectónicas sólidas: desde la elección del modelo de
-            datos y el patrón de comunicación entre servicios, hasta la
-            estrategia de despliegue y la seguridad perimetral. He liderado
-            plataformas de rendición de cuentas, geoportales interactivos,
-            sistemas de pago en línea, y soluciones con inteligencia artificial.
-            Cada proyecto representa un desafío único donde priorizo la
-            mantenibilidad, el rendimiento y la escalabilidad a futuro.
-        </p>
 
-        <ul class="about__list">
-            <li class="about__item"><strong>Tecnologías clave:</strong></li>
-            <ul class="about__list-int">
-                <li class="about__item">
-                    Laravel, PHP, React, TypeScript, MySQL, PostgreSQL, Docker,
-                    CI/CD, GeoServer, OpenLayers, Leaflet, REST APIs,
-                    WordPress Headless.
-                </li>
-            </ul>
-            <li class="about__item"><strong>Habilidades:</strong></li>
-            <ul class="about__list-int">
-                <li class="about__item">
-                    Diseño de arquitecturas escalables, liderazgo técnico,
-                    mentoría de equipos, code review, análisis de impacto,
-                    comunicación con stakeholders.
-                </li>
-            </ul>
-        </ul>
+    <div class="about__layout">
+        <div class="about__container-img">
+            <div class="about__img-wrapper">
+                <Image
+                    src={imageAbout}
+                    class="about__img"
+                    alt="Carlos Méndez - Software Architect"
+                    width={360}
+                    height={480}
+                    role="img"
+                />
+                <div class="about__badge">
+                    <span class="about__badge-text">
+                        <strong class="experience__years"></strong> AÑOS EXP
+                    </span>
+                </div>
+            </div>
+        </div>
 
-        <h3 class="about__subtitle" style="margin-top: 2.5rem;">
-            <span class="heading__span">Liderazgo </span> y Mentoría
-        </h3>
-        <p class="about__paragraph">
-            A lo largo de mi carrera he mentoreado a desarrolladores junior y
-            semi-senior, guiándolos en buenas prácticas, patrones de diseño y
-            arquitectura de software. Creo firmemente que el crecimiento de un
-            equipo se logra compartiendo conocimiento de forma activa: realizo
-            code review constructivo, documentación de decisiones técnicas
-            (ADR), y establezco estándares de calidad que el equipo pueda
-            adoptar sin fricción. He liderado sesiones técnicas internas y
-            promovido una cultura de mejora continua que ha resultado en
-            equipos más autónomos y entregas más predecibles.
-        </p>
+        <div class="about__container">
+            <div class="about__section-block">
+                <h3 class="about__subtitle">
+                    <span class="heading__span">Arquitecto </span> de Software
+                </h3>
+                <p class="about__paragraph">
+                    Arquitecto de Software con más de <strong
+                        class="experience__years"></strong
+                    > años de experiencia diseñando plataformas web escalables, seguras
+                    y de alto impacto. He trabajado tanto en el sector gubernamental
+                    como en la iniciativa privada, especializándome en Laravel, sistemas
+                    distribuidos y Sistemas de Información Geográfica (SIG).
+                </p>
+                <p class="about__paragraph">
+                    Mi enfoque consiste en traducir necesidades de negocio
+                    complejas en decisiones arquitectónicas sólidas: desde la
+                    elección del modelo de datos y el patrón de comunicación
+                    entre servicios, hasta la estrategia de despliegue y la
+                    seguridad perimetral. He liderado plataformas de rendición
+                    de cuentas, geoportales interactivos, sistemas de pago en
+                    línea, y soluciones con inteligencia artificial. Cada
+                    proyecto representa un desafío único donde priorizo la
+                    mantenibilidad, el rendimiento y la escalabilidad a futuro.
+                </p>
+            </div>
+
+            <div class="about__skills-box">
+                <ul class="about__list">
+                    <li class="about__item">
+                        <strong class="about__item-title"
+                            >Tecnologías clave:</strong
+                        >
+                        <ul class="about__list-int">
+                            <li class="about__item-text">
+                                Laravel, PHP, React, TypeScript, MySQL,
+                                PostgreSQL, Docker, CI/CD, GeoServer,
+                                OpenLayers, Leaflet, REST APIs, WordPress
+                                Headless.
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="about__item">
+                        <strong class="about__item-title">Habilidades:</strong>
+                        <ul class="about__list-int">
+                            <li class="about__item-text">
+                                Diseño de arquitecturas escalables, liderazgo
+                                técnico, mentoría de equipos, code review,
+                                análisis de impacto, comunicación con
+                                stakeholders.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="about__section-block">
+                <h3 class="about__subtitle">
+                    <span class="heading__span">Liderazgo </span> y Mentoría
+                </h3>
+                <p class="about__paragraph">
+                    A lo largo de mi carrera he mentoreado a desarrolladores
+                    junior y semi-senior, guiándolos en buenas prácticas,
+                    patrones de diseño y arquitectura de software. Creo
+                    firmemente que el crecimiento de un equipo se logra
+                    compartiendo conocimiento de forma activa: realizo code
+                    review constructivo, documentación de decisiones técnicas
+                    (ADR), y establezco estándares de calidad que el equipo
+                    pueda adoptar sin fricción. He liderado sesiones técnicas
+                    internas y promovido una cultura de mejora continua que ha
+                    resultado en equipos más autónomos y entregas más
+                    predecibles.
+                </p>
+            </div>
+        </div>
     </div>
 </section>
