@@ -8,12 +8,17 @@ interface Props {
 const { title, description, skills } = Astro.props;
 ---
 
-<div class="skills__card">
-    <h3 class="skills__card-title">{title}</h3>
-    <p class="skills__card-description">
-        {description}
-    </p>
-    <div class="skills__tags">
-        {skills.map((skill) => <span class="skills__tag">{skill}</span>)}
+<div class="skills__card js-skill-card">
+    <div class="skills__card-spotlight"></div>
+    <div class="skills__card-code-bg"></div>
+
+    <div class="skills__card-inner">
+        <h3 class="skills__card-title">{title}</h3>
+        <p class="skills__card-description">
+            {description}
+        </p>
+        <div class="skills__tags">
+            {skills.map((skill) => <span class="skills__tag">{skill}</span>)}
+        </div>
     </div>
 </div>
