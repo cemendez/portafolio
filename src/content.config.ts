@@ -16,6 +16,7 @@ const projects = defineCollection({
                 "GIS",
                 "Gobierno",
                 "E-commerce",
+                "E-learning",
                 "FullStack",
                 "Web App",
                 "Freelance",
