@@ -19,7 +19,7 @@ import Image from "astro/components/Image.astro";
 
     <div class="header__menu-icon" id="menu-icon">
         <svg
-            class="menu-icon"
+            class="header__menu-hamburger"
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
             height="1em"
@@ -33,7 +33,7 @@ import Image from "astro/components/Image.astro";
                 d="m2.75 12.25h10.5m-10.5-4h10.5m-10.5-4h10.5"></path></svg
         >
         <svg
-            class="menu-icon-close"
+            class="header__menu-close"
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
             height="1em"
@@ -74,5 +74,12 @@ import Image from "astro/components/Image.astro";
     menuIcon?.addEventListener("click", () => {
         menuIcon.classList.toggle("close");
         navbar?.classList.toggle("active");
+    });
+
+    navbar?.querySelectorAll(".navbar__link").forEach((link) => {
+        link.addEventListener("click", () => {
+            menuIcon.classList.remove("close");
+            navbar.classList.remove("active");
+        });
     });
 </script>

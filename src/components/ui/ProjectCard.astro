@@ -8,22 +8,38 @@ const { data, id } = project;
     href={`/projects/${id}`}
     class={`portfolio-card ${data.featured ? "portfolio-card--featured" : ""}`}
 >
-    <div class="portfolio-card__header">
-        <Image
-            src={data.image}
-            alt={data.title}
-            class="portfolio-card__image"
-            transition:name={`img-${project.id}`}
-        />
+    <div class="portfolio-card__window">
+        <div class="portfolio-card__titlebar">
+            <div class="portfolio-card__dots">
+                <span class="portfolio-card__dot portfolio-card__dot--close"></span>
+                <span class="portfolio-card__dot portfolio-card__dot--minimize"></span>
+                <span class="portfolio-card__dot portfolio-card__dot--maximize"></span>
+            </div>
+            <span class="portfolio-card__window-title">
+                {data.category}
+            </span>
+        </div>
+        <div class="portfolio-card__screen">
+            <Image
+                src={data.image}
+                alt={data.title}
+                class="portfolio-card__image"
+                transition:name={`img-${project.id}`}
+            />
+        </div>
     </div>
 
     <div class="portfolio-card__content">
-        <span class="portfolio-card__category">{data.category}</span>
+        <div class="portfolio-card__meta">
+            <span class="portfolio-card__status" data-status={data.status}>
+                {data.status}
+            </span>
+            <span class="portfolio-card__date">{data.publishDate.toLocaleDateString("es-MX", { year: "numeric", month: "short" })}</span>
+        </div>
         <h3 class="portfolio-card__title">{data.title}</h3>
         <p class="portfolio-card__description">{data.description}</p>
-
         <div class="portfolio-card__tags">
-            {data.tags.map((tag: unknown) => <span class="tag">#{tag}</span>)}
+            {data.tags.slice(0, 3).map((tag: unknown) => <span class="tag">#{tag}</span>)}
         </div>
     </div>
 </a>
