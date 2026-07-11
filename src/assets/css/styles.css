@@ -275,9 +275,12 @@ strong {
     .header__navbar .navbar__link {
         color: var(--bg-alt);
     }
+    .header__navbar.active .navbar__link {
+        color: var(--text);
+    }
     .header__navbar .navbar__link:hover,
     .header__navbar .navbar__link--active {
-        color: var(--text);
+        color: var(--accent);
     }
 }
 
