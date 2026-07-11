@@ -1,6 +1,6 @@
 ---
 title: "Ecosistema de Rendición de Cuentas: Informe de Gobierno 2025"
-description: "Plataforma centralizada para la digitalización, validación y auditoría de medios de verificación del informe estatal."
+description: "Digitalicé un proceso que antes requería entregar miles de documentos en papel, reduciendo tiempos de validación en un 40%."
 publishDate: 2025-10-23
 image: "./assets/images/informe-gobierno-2025.png"
 category: "Gobierno"
@@ -11,18 +11,26 @@ featured: true
 ---
 
 ## El Reto
-El proceso de rendición de cuentas dependía de flujos analógicos y entregas presenciales de miles de documentos. Esto generaba cuellos de botella críticos, falta de integridad en los datos y un alto costo operativo en recursos humanos y papel.
 
-## Mi Solución Técnica
-Diseñé e implementé una arquitectura **MVC** escalable para gestionar la carga masiva de archivos. 
-- **Módulo de Validación:** Sistema de reglas de negocio para asegurar que cada medio de verificación cumpla con los estándares legales antes de su recepción.
-- **Reporting Engine:** Motor de generación de reportes bajo demanda (PDF) para la coordinación de Órganos Internos de Control, optimizando la toma de decisiones.
-- **Infraestructura:** Despliegue mediante **Docker** para garantizar la paridad entre entornos de desarrollo y producción.
+El proceso de rendición de cuentas del gobierno funcionaba como en el siglo pasado: las dependencias entregaban pilas de documentos en papel, los revisores tenían que validarlos uno por uno, y cualquier error significaba empezar de nuevo. Era lento, caro y propenso a pérdidas.
 
-## Logros Clave
-- **Eficiencia Operativa:** Reducción del **40%** en el tiempo de validación y recepción documental.
-- **Impacto Ambiental:** Transformación "Paperless", eliminando el 100% del uso de papel en este proceso.
-- **Seguridad y Auditoría:** Implementación de logs exhaustivos, garantizando la trazabilidad total de cada modificación por usuario.
-- **Rendimiento:** Optimización de queries SQL para manejar el procesamiento de reportes diarios de alta complejidad sin degradación del servicio.
+Necesitaban un sistema digital donde las dependencias subieran sus medios de verificación, el sistema los validara contra reglas de negocio, y los órganos de control pudieran revisarlos y dictaminarlos sin tener que imprimir ni una hoja.
 
-> **Nota:** Debido a la naturaleza sensible de la información gubernamental, el acceso es restringido. Sin embargo, puedo realizar una demostración detallada de la lógica de negocio y la arquitectura del sistema.
+## Mi solución
+
+Diseñé una arquitectura MVC con Laravel que resolvía tres problemas clave:
+
+**Validación automatizada:** Cada documento que subía una dependencia pasaba por un motor de reglas de negocio que verificaba si cumplía los requisitos legales antes de ser aceptado. Nada de revisar a mano.
+
+**Reportes bajo demanda:** Los órganos de control necesitaban generar reportes en PDF para tomar decisiones. Construí un motor de reporting que los generaba al instante, sin cuellos de botella.
+
+**Infraestructura Docker:** Desde el inicio monté todo en Docker para garantizar que desarrollo, pruebas y producción fueran exactamente el mismo entorno. Cero sorpresas al desplegar.
+
+## Impacto medible
+
+- **40% menos tiempo** de validación y recepción documental.
+- **Cero papel** en un proceso que antes consumía resmas enteras.
+- **Trazabilidad total:** cada modificación queda registrada con usuario y timestamp.
+- Reportes complejos procesándose a diario sin degradar el servicio.
+
+> El sistema está restringido por la naturaleza de la información, pero puedo mostrar una demo de la lógica de negocio y la arquitectura si es necesario.

@@ -1,6 +1,6 @@
 ---
 title: "DIECSA: Desarrollo de Infraestructura Eléctrica y Civil"
-description: "Modernización y migración estratégica de la presencia digital para una firma líder en ingeniería eléctrica e industrial."
+description: "Migré a producción el sitio de una firma de ingeniería eléctrica sin perder un solo dato ni un minuto de actividad."
 publishDate: 2026-02-10
 image: "./assets/images/diecsa.png"
 category: "Freelance"
@@ -11,15 +11,15 @@ demoUrl: "https://diec-sa.com.mx/"
 ---
 
 ## El Desafío
-DIECSA, una empresa especializada en diseño de ingeniería eléctrica y construcción de alta complejidad, requería una transición tecnológica sin pérdida de datos ni tiempo de inactividad (Zero-Downtime). El proyecto consistió en la reestructuración del ecosistema web y la optimización de sus recursos en servidor.
 
-## Solución Técnica
-Como arquitecto del proyecto, lideré la migración integral desde un entorno de desarrollo (subdominio) hacia la infraestructura de producción final. 
+DIECSA ya tenía un sitio web funcionando, pero estaba atorado en un subdominio de desarrollo. Necesitaban migrarlo a producción sin perder datos, sin tiempo caído y sin que los clientes notaran el cambio. Una empresa de ingeniería eléctrica e industrial no puede darse el lujo de tener su sitio caído.
 
-### Puntos clave de la intervención:
-* **Migración Estratégica:** Implementación de protocolos de transferencia segura de bases de datos y assets, asegurando la integridad de los registros de proyectos de ingeniería.
-* **Optimización de Desempeño:** Configuración de servicios en servidor para mejorar los tiempos de respuesta y la indexación en motores de búsqueda (SEO).
-* **Gestión de Formularios Críticos:** Configuración avanzada de sistemas de contacto dinámicos (Contact Form 7) para la captación de leads en el sector industrial.
+Además, el sitio cargaba lento y no estaba optimizado para buscadores. Los formularios de contacto —la principal fuente de leads— fallaban más de lo que funcionaban.
+
+## Lo que hice
+
+Migré la base de datos y todos los assets del entorno de desarrollo a producción con cero pérdida de información. Configuré el servidor Apache para mejorar los tiempos de respuesta y ajusté el SEO on-page para que el sitio apareciera mejor en Google. Los formularios Contact Form 7 los reconfiguré desde cero para que los leads llegaran sin fallar.
 
 ## Resultados
-Se logró un despliegue exitoso con una mejora del **30% en la velocidad de carga** inicial, proporcionando a la empresa una plataforma robusta y escalable que refleja la precisión y profesionalismo de sus servicios de ingeniería.
+
+El sitio se desplegó sin incidentes. La velocidad de carga mejoró un 30% y los formularios empezaron a funcionar correctamente. La empresa tiene hoy una plataforma que refleja la calidad de su ingeniería: robusta, profesional y en línea cuando se necesita.

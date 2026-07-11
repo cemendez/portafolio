@@ -1,6 +1,6 @@
 ---
 title: "Abastos IA: Plataforma de Voz a Datos para Gestión Comercial y Control de Taras"
-description: "Plataforma de procesamiento de lenguaje natural que automatiza el registro de transacciones comerciales y balances de inventario mediante notas de voz en tiempo real con Inteligencia Artificial."
+description: "Un comerciante en la Central de Abastos no puede parar para capturar datos. Le diseñé un sistema que entiende su voz y lo registra todo."
 publishDate: "2026-06-12"
 image: "./assets/images/abastos-ia.png"
 category: "Freelance"
@@ -11,35 +11,28 @@ status: "Privado"
 
 ## El Desafío
 
-En los entornos caóticos y de alta velocidad de los mercados mayoristas (como la Central de Abastos de la Ciudad de Puebla), los comerciantes y transportistas no disponen de tiempo ni de la ergonomía necesaria para interactuar con pantallas táctiles, formularios complejos o bases de datos manuales. La captura tradicional de transacciones (ventas, compras, cobros) se omite o se posterga, lo que genera una brecha crítica en el control financiero.
+En la Central de Abastos de Puebla, los comerciantes y transportistas no tienen tiempo para estar picándole a una pantalla. Están descargando mercancía, cobrando, moviendo taras (cajas, huacales, envases) valuadas en miles de dólares. Capturar una venta o un préstamo de taras implica abrir un sistema, llenar formularios, seleccionar opciones. Cosas que simplemente no pasan en el ajetreo del día.
 
-El problema se agrava con el control de las **taras** (cajas, huacales o envases de madera y plástico). Al ser activos circulantes con valor comercial, su préstamo, renta o devolución constante a clientes y proveedores representa miles de dólares en pérdidas si no se registran con exactitud matemática.
+El resultado: transacciones sin registrar, taras que se pierden, dinero que no se cobra.
 
-Técnicamente, el proyecto presentaba tres grandes retos:
-1. **Fricción de Captura:** Diseñar una interfaz nativa que permita procesar expresiones coloquiales y estructurarlas con precisión contable.
-2. **Restricción de Seguridad del Navegador:** La API de `MediaRecorder` de HTML5 exige contextos seguros (HTTPS) para habilitar el uso del micrófono. Durante el desarrollo y pruebas locales con dispositivos móviles reales en el piso de venta, las conexiones tradicionales HTTP bloquean esta funcionalidad.
-3. **Resiliencia ante APIs Externas:** Las llamadas concurrentes a modelos fundacionales (como Whisper y GPT-4o-mini) están propensas a latencias, fallos de red y límites de cuota (*Rate Limits*), los cuales no deben impactar negativamente la experiencia del usuario ni causar pérdida de datos.
+El reto técnico tenía tres filos:
+1. Cero fricción — el comerciante no va a escribir nada, mucho menos navegar menús.
+2. El navegador no deja usar el micrófono sin HTTPS, pero durante el desarrollo estábamos en redes locales.
+3. OpenAI tiene rate limits, latencia, y de repente se cae — el sistema no puede fallar por eso.
 
----
+## La solución
 
-## La Solución Técnica
+Construí **Abastos IA**, una plataforma Laravel que convierte voz en registros de base de datos. El flujo es simple: el comerciante graba un audio diciendo algo como "préstamo de 5 cajas rojas a don Toño", y el sistema lo transcribe, lo estructura y lo guarda.
 
-Se diseñó e implementó **Abastos IA**, una plataforma web basada en **Laravel 13** y **PHP 8.3** que implementa un pipeline robusto de procesamiento de voz a base de datos relacional. 
+**Captura de audio que funciona donde sea:** El frontend usa `MediaRecorder` de JavaScript, con un algoritmo que detecta el formato que soporta cada navegador (webm, mp4, ogg, wav). Funciona en iPhone, Android y computadora. Cuando termina la grabación, el audio se empaqueta y se envía al servidor sin recargar la página.
 
-### 1. Pipeline de Captura de Audio Multidispositivo (Frontend)
-El cliente web utiliza la API nativa de JavaScript `MediaRecorder` con un algoritmo de detección adaptativo (`mejorMimeType`). Este algoritmo consulta al navegador los códecs soportados en tiempo real (`audio/webm`, `audio/mp4`, `audio/ogg` o `audio/wav`), lo que garantiza la compatibilidad cruzada entre dispositivos iOS, Android y de escritorio. Al finalizar la grabación, los fragmentos binarios (*chunks*) se empaquetan en memoria mediante un `Blob`, se inyectan dinámicamente como un objeto `File` en un formulario estándar usando la API de `DataTransfer` y se transmiten de forma asíncrona al backend.
+**Validación del lado del servidor:** Como Whisper de OpenAI es exigente con los formatos, el backend no confía en lo que el navegador dice que es el archivo. Inspecciona los bytes reales del binario (magic numbers) para saber si es realmente m4a, webm, etc. Si alguien sube un audio de iPhone en formato AAC, el sistema lo detecta y pide grabarlo de nuevo.
 
-### 2. Normalización de Archivos de Audio y Seguridad (Backend)
-Debido a las estrictas restricciones de la API de Whisper (OpenAI) respecto a las extensiones y tipos MIME de los archivos, el controlador `AudioController` implementa un filtro de seguridad basado en la extensión de PHP `fileinfo`. En lugar de confiar en la cabecera provista por el cliente, el backend inspecciona los *magic numbers* del binario para determinar el tipo real del archivo, mapeándolo a un formato válido (como `.m4a` o `.webm`) y renombrándolo antes del envío. Formatos incompatibles de Apple (como AAC nativo de notas de voz de iPhone) son interceptados, notificando al usuario con alternativas claras de grabación.
+**Pipeline de IA con Whisper + GPT-4o-mini:** Primero Whisper transcribe el audio a texto. Luego GPT-4o-mini toma ese texto y lo convierte en un JSON estructurado: tipo de movimiento, persona, cantidad, precio. Todo esto con un system prompt que lo obliga a comportarse como un contador, no como un chatbot.
 
-### 3. Pipeline de Inteligencia Artificial (Whisper + GPT-4o-mini)
-Una vez validado el audio, se orquesta un proceso secuencial:
-- **Transcripción:** Consumo del modelo `whisper-1` con idioma predefinido en español para mitigar alucinaciones de traducción.
-- **Estructuración Estricta (JSON Schema):** Se consume el modelo `gpt-4o-mini` configurado con `response_format => ['type' => 'json_object']`. A través de un system prompt optimizado, se obliga al LLM a comportarse como un serializador contable que mapea la entrada conversacional a un esquema JSON estricto (`tipo_movimiento`, `tipo_persona`, `contacto`, `tara_color`, `tara_cantidad`, `precio_unitario`, etc.).
-- **Motor de Reintento con Decaimiento de Tasa (Backoff):** Para evitar fallos por *Rate Limits* de OpenAI, se programó un gestor de excepciones personalizado `esperarSegunRateLimit`. Este extrae las cabeceras HTTP de respuesta (`Retry-After` y `x-ratelimit-reset-*`), calcula el tiempo exacto de espera, detiene la ejecución de manera controlada (`sleep`) y reintenta la petición. Esto asegura una tasa de éxito cercana al 100% incluso bajo cuotas bajas.
+**Reintentos inteligentes:** Cada llamada a OpenAI puede fallar por rate limit. Programé un gestor de excepciones que lee las cabeceras HTTP de respuesta (Retry-After), calcula cuánto esperar y reintenta automáticamente. Tasa de éxito: prácticamente 100%.
 
-### 4. Arquitectura y Optimización SQL a Nivel de Base de Datos
-Para soportar miles de registros diarios sin degradar el rendimiento, el cálculo de los saldos de taras y finanzas pendientes por cliente/proveedor se delegó por completo al motor de base de datos a través de **agregación condicional en SQL** utilizando el modelo `Transaccion`:
+**SQL que hace el trabajo pesado:** Con miles de transacciones diarias, no podía cargar todo en memoria PHP para calcular saldos. Diseñé una consulta con agregación condicional que calcula en una sola pasada el saldo de taras y dinero pendiente por cliente:
 ```sql
 SELECT 
     contacto,
@@ -53,7 +46,4 @@ GROUP BY contacto
 HAVING saldo_taras != 0 OR saldo_dinero != 0;
 ```
 
-Este diseño evita la carga innecesaria de colecciones masivas en la memoria del servidor de aplicaciones (PHP RAM) y realiza las sumas lógicas en una sola consulta indexada mediante cláusulas selectRaw y havingRaw.
-
-### 5. Infraestructura de Desarrollo: Proxy SSL Inverso Local
-Para solventar el requerimiento de HTTPS de la API MediaRecorder en dispositivos móviles locales, se desarrolló un proxy reverso SSL ligero en Node.js (serve-ssl.mjs). Este script carga certificados auto-firmados, escucha peticiones seguras en el puerto 3443 desde la red LAN y las redirecciona hacia el servidor HTTP local de Laravel en el puerto 8000. Gracias a esto, fue posible depurar la aplicación en tiempo real en teléfonos inteligentes físicos dentro de la red del mercado sin recurrir a servicios costosos o de alta latencia como ngrok.
+**Proxy SSL casero para desarrollo:** Como MediaRecorder exige HTTPS y estábamos en redes locales, armé un proxy reverso con Node.js que sirve certificados auto-firmados desde la LAN. Así pudimos probar en teléfonos reales dentro del mercado sin pagar servicios como ngrok.

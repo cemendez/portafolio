@@ -1,6 +1,6 @@
 ---
 title: "Evolución Arquitectónica: Sistema de Captura para el Informe de Gobierno 2026"
-description: "Refactorización y desarrollo de una plataforma gubernamental para la transición de reportes estáticos a un sistema dinámico de cortes temporales y flujos asíncronos."
+description: "Los bloqueos globales paralizaban a todas las dependencias. Rediseñé la plataforma para que cada una avance a su ritmo, sin pisarse entre sí."
 publishDate: 2026-05-15
 image: "./assets/images/informe-gobierno-2026.png"
 category: "Gobierno"
@@ -12,30 +12,28 @@ status: "Privado"
 
 ## El Desafío
 
-Las dependencias gubernamentales requerían una solución centralizada para unificar el reporte del avance físico-financiero de cientos de obras y proyectos sociales con la fiscalización estricta del Órgano Interno de Control (OIC). El reto arquitectónico no era solo de captura de datos, sino de **orquestación de estados concurrentes y seguridad perimetral**.
+La versión anterior del sistema tenía un problema grave: cuando una dependencia enviaba su información, se bloqueaba todo. Nadie más podía avanzar hasta que el Órgano Interno de Control terminara de revisar. Y cuando alguien corregía algo, se sobrescribían los datos históricos. En un proceso donde decenas de dependencias reportan cientos de obras y proyectos cada mes, esto era un caos.
 
-La plataforma base debía evolucionar para mitigar un problema crítico de negocio: los bloqueos globales de formularios paralizaban a todas las dependencias al mismo tiempo y los datos históricos se sobrescribían. Se necesitaba gestionar la concurrencia de múltiples actores (enlaces, titulares y coordinadores del OIC) operando en flujos lógicos diametralmente opuestos, garantizando la inmutabilidad total de los registros una vez dictaminados y permitiendo que cada entidad avanzara a su propio ritmo mensual de forma asíncrona.
+Necesitaban una plataforma donde cada dependencia avanzara a su propio ritmo, los datos históricos nunca se perdieran, y el OIC pudiera revisar y dictaminar sin bloquear a los demás.
 
 ## Arquitectura y Solución
 
-Para este desafío, descarté una arquitectura SPA tradicional y opté por el ecosistema **(Laravel, Livewire, Alpine.js, Tailwind)**. Esta decisión estratégica permitió delegar la máxima autoridad lógica y de seguridad al servidor (Laravel), reduciendo la superficie de ataque, mientras que Alpine.js proporcionó reactividad en el cliente para mantener una UX fluida sin el costo de serializar grandes estados en el frontend.
+Descarté una SPA tradicional desde el principio. Opté por **Laravel + Livewire + Alpine.js + Tailwind**. ¿Por qué? Porque toda la lógica crítica y la seguridad se quedan en el servidor (Laravel), donde deben estar. Alpine.js aporta reactividad en el cliente para una experiencia fluida, sin tener que serializar estados enormes en el frontend.
 
-### Componentes Clave de la Arquitectura:
+**Historial temporal, no sobrescritura:** Diseñé un administrador de periodos y un motor de estados en Eloquent que gobierna el ciclo de vida de cada registro: Borrador → Enviado → Observado → Validado. Las acciones ya no se sobrescriben; generan un histórico mes a mes, indexado y disponible para auditorías retroactivas.
 
-* **Evolución a Historial Temporal:** Diseñé un administrador de periodos y un motor de estados a nivel de Eloquent para gobernar el ciclo de vida (Borrador -> Enviado -> Observado -> Validado). Las acciones ya no se sobrescriben; generan un histórico indexado mes a mes para permitir auditorías retroactivas.
-* **Flujos Asíncronos Desacoplados:** Reestructuré el sistema de cortes temporales para que cada dependencia avance bajo su propio mes activo individual, eliminando los cuellos de botella en el servidor durante los cierres institucionales.
-* **Patrón de Bloqueo Centralizado:** Diseñé una estrategia donde la inactividad de una cuenta o la formalización de un periodo por parte del OIC propaga un estado *Read-Only* desde el componente padre. Esto deshidrata automáticamente cualquier capacidad de mutación en la interfaz y bloquea los endpoints a nivel de *Middleware* y políticas (*Policies* via Spatie RBAC).
+**Flujos asíncronos:** Cada dependencia tiene su propio mes activo. Ya no hay un "corte global" que paralice a todos. Cada entidad avanza a su ritmo, y el sistema lo maneja sin conflictos.
 
-## Logros Técnicos
+**Patrón de bloqueo centralizado:** Cuando una cuenta está inactiva o el OIC formaliza un periodo, el sistema propaga un estado de solo lectura desde el componente padre. La interfaz se deshidrata automáticamente —no puedes editar aunque quieras— y los endpoints se bloquean a nivel de Middleware y Policies (Spatie RBAC).
 
-* **Optimización Extrema de Consultas:** Refactoricé el árbol jerárquico del Plan Estatal de Desarrollo (PED) y la generación de matrices en Excel. Mediante *Eager Loading* anidado (`with(['accion.dimensionEstrategica.eje', 'municipios.municipio'])`), reduje cientos de consultas redundantes a solo dos iteraciones eficientes, disminuyendo el consumo de memoria en el servidor en un 40%.
-* **Automatización y Preparación Espacial:** Desarrollé un módulo de inyección masiva de cobertura municipal vía parsing de archivos Excel y estructuré reportes estandarizados con claves INEGI y formato **GeoJSON** para su inmediata interoperabilidad con sistemas de inteligencia territorial (GIS).
-* **Seguridad de Archivos y *Cache Busting* Dinámico:** Implementación de almacenamiento protegido para expedientes de evidencia. Para evitar colisiones de caché en los navegadores de los auditores, integré técnicas de *Cache Busting* inyectando *timestamps* de mutación en la capa de presentación a través de URLs firmadas temporalmente.
-* **Validación Mutante en Backend:** Desarrollo de reglas de validación contextuales. El sistema evalúa en tiempo real el origen de los fondos (gasto corriente vs. inversión) para exigir u omitir dinámicamente la alineación a programas presupuestarios (PP), garantizando la limpieza de la base de datos sin fricción.
-* **Componentes UI Híbridos:** Creación de componentes reactivos combinando Directivas de Blade, sincronización stateful de Livewire (`@entangle`) y Alpine.js para procesar catálogos extensos directamente en la memoria del cliente, reduciendo la carga del servidor.
+## Logros técnicos
+
+- **Optimización de consultas:** Refactorice el árbol jerárquico del PED y la generación de matrices en Excel. Con Eager Loading anidado (`with(['accion.dimensionEstrategica.eje', 'municipios.municipio'])`) reduje cientos de consultas redundantes a solo dos iteraciones, bajando el consumo de memoria del servidor en un 40%.
+- **Preparación GIS:** Desarrollé un módulo de inyección masiva de cobertura municipal desde archivos Excel y generé reportes con claves INEGI y formato GeoJSON listos para sistemas de inteligencia territorial.
+- **Cache Busting seguro:** Para evitar que los auditores vieran archivos cacheados, implementé URLs firmadas con timestamps de mutación en la capa de presentación.
+- **Validación contextual:** El sistema evalúa en tiempo real el origen de los fondos (gasto corriente vs. inversión) para exigir dinámicamente la alineación a programas presupuestarios, manteniendo la BD limpia sin fricción para el usuario.
+- **Componentes UI híbridos:** Combiné directivas de Blade, sincronización stateful de Livewire (`@entangle`) y Alpine.js para procesar catálogos grandes directamente en memoria del cliente.
 
 ## Impacto
 
-El desarrollo de la plataforma transformó un proceso burocrático y altamente propenso a errores humanos en un ecosistema auditable y predecible, consolidando la información en una **única fuente de verdad**. 
-
-El Órgano Interno de Control ahora cuenta con trazabilidad atómica sobre cada peso invertido, reduciendo los tiempos de revisión y dictamen en más de un 60%. La arquitectura implementada asegura que cualquier intento de manipulación post-validación sea rechazado de raíz, garantizando la integridad legal, operativa y fiscal del ejercicio público.
+La plataforma transformó un proceso burocrático y propenso a errores en un ecosistema auditable y predecible. El OIC ahora tiene trazabilidad atómica sobre cada peso invertido reduciendo los tiempos de revisión y dictamen en más del 60%. Cualquier intento de manipulación post-validación es rechazado de raíz.
