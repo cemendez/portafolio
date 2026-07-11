@@ -1,43 +1,43 @@
-// scroll section
-let sections = document.querySelectorAll("section");
-let navLinks = document.querySelectorAll(".navbar__link");
-
+// scroll section — active nav link + show-animate
 window.onscroll = () => {
-    sections.forEach((sec) => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 400;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute("id");
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll(".navbar__link");
+    const scrollY = window.scrollY;
 
-        if (top >= offset && top < offset + height) {
-            navLinks.forEach((links) => {
-                links.classList.remove("navbar__link--active");
-                document
-                    .querySelector(".navbar__link[href*=" + id + "]")
-                    .classList.add("navbar__link--active");
-            });
+    sections.forEach((sec) => {
+        const offset = sec.offsetTop - 400;
+        const height = sec.offsetHeight;
+        const id = sec.getAttribute("id");
+
+        if (scrollY >= offset && scrollY < offset + height) {
+            navLinks.forEach((link) =>
+                link.classList.remove("navbar__link--active")
+            );
+            const active = document.querySelector(
+                `.navbar__link[href*="${id}"]`
+            );
+            if (active) active.classList.add("navbar__link--active");
             sec.classList.add("show-animate");
         }
-        // else {
-        //     sec.classList.remove("show-animate");
-        // }
     });
 
-    let header = document.querySelector("header");
+    const header = document.querySelector("header");
     if (header) {
-        header.classList.toggle("header--sticky", window.scrollY > 100);
+        header.classList.toggle("header--sticky", scrollY > 100);
     }
 };
 
-// Ejecutar la comprobación del header sticky al cargar la página
-window.addEventListener('DOMContentLoaded', () => {
-    let header = document.querySelector("header");
+// header state on page load
+window.addEventListener("DOMContentLoaded", () => {
+    const header = document.querySelector("header");
     if (header) {
         header.classList.toggle("header--sticky", window.scrollY > 100);
     }
+    // force initial active nav + show-animate
+    window.onscroll();
 });
 
-// agregar años de experiencia
+// years of experience
 const labelYears = document.querySelectorAll(".experience__years");
 const yearInit = 2014;
 const yearNow = new Date().getFullYear();
