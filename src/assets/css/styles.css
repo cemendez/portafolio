@@ -180,7 +180,7 @@ strong {
 
 .content__btn:nth-child(1) {
     background: transparent;
-    color: var(--accent);
+    color: var(--bg-alt);
 }
 
 .content__btn:nth-child(1)::before {
@@ -215,32 +215,6 @@ strong {
 
 .animate {
     display: none;
-}
-
-/* ── Animaciones (solo desktop) ── */
-@media (min-width: 992px) {
-    .animate {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--bg);
-        z-index: 98;
-    }
-    .header__logo .animate,
-    .header__navbar .animate,
-    .header__menu-icon .animate,
-    .home.show-animate .animate {
-        animation: showRight 0.6s ease forwards;
-        animation-delay: calc(0.3s * var(--i));
-    }
-    @keyframes showRight {
-        to {
-            width: 0;
-        }
-    }
 }
 
 /***
@@ -462,6 +436,11 @@ strong {
     margin-top: 2rem;
 }
 
+.footer__text a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 .footer__icon-top {
     position: relative;
 }
@@ -635,7 +614,7 @@ strong {
     border-radius: 6px;
     background-color: var(--bg);
     border: 1px solid var(--accent);
-    color: var(--accent);
+    color: #0369a1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1505,8 +1484,8 @@ strong {
 }
 
 .portfolio-card__status[data-status="Privado"] {
-    background: rgba(251, 191, 36, 0.1);
-    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.15);
+    color: #a16207;
 }
 
 .portfolio-card__date {
@@ -1553,7 +1532,7 @@ strong {
 .tag {
     padding: 0.2rem 0.6rem;
     background: rgba(var(--accent-rgb), 0.08);
-    color: rgba(var(--accent-rgb), 0.7);
+    color: rgba(var(--accent-rgb), 0.85);
     font-size: 0.65rem;
     font-weight: 600;
     border-radius: 4px;
