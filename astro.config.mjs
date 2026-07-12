@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
@@ -6,4 +7,5 @@ export default defineConfig({
         enabled: false,
     },
     site: "https://carlosemendez.com",
+    integrations: [sitemap()],
 });

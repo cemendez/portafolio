@@ -16,7 +16,12 @@ const { data, id } = project;
 const { Content } = await render(project);
 ---
 
-<MainLayout title={`${data.title} | Portafolio`}>
+<MainLayout
+    title={`${data.title} | Portafolio`}
+    description={data.description}
+    image={data.image.src}
+    type="article"
+>
     <article class="project-details">
         <div class="project-details__container">
             <a href="/#portfolio" class="project-details__back"

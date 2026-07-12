@@ -10,10 +10,14 @@ interface Props {
 const {
     title,
     description,
-    image = "/portada.png",
+    image = "/portada.jpg",
     canonicalURL = new URL(Astro.url.pathname, Astro.site),
     type = "website",
 } = Astro.props;
+
+const ogImage = image.startsWith("http")
+    ? image
+    : new URL(image, Astro.site).href;
 ---
 
 <meta charset="utf-8" />
@@ -21,22 +25,28 @@ const {
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="canonical" href={canonicalURL} />
 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="author" content="Carlos Emmanuel Méndez Calderón" />
-<meta name="keywords" content="arquitecto de software, software architect, laravel, php, desarrollo web, sistemas de información geográfica, GIS, puebla, méxico" />
+<meta
+    name="keywords"
+    content="arquitecto de software, software architect, laravel, php, desarrollo web, sistemas de información geográfica, GIS, puebla, méxico"
+/>
 
 <meta property="og:type" content={type} />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={image} />
+<meta property="og:image" content={ogImage} />
 
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={image} />
+<meta property="twitter:image" content={ogImage} />
 
 <link rel="sitemap" href="/sitemap-index.xml" />
