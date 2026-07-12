@@ -151,7 +151,7 @@ strong {
     border-radius: 8px;
     letter-spacing: 2px;
     font-weight: 600;
-    color: var(--bg);
+    color: var(--bg-alt);
     z-index: 1;
     overflow: hidden;
     transition: 0.3s;
@@ -169,7 +169,7 @@ strong {
     left: 0;
     width: 0;
     height: 100%;
-    background: var(--bg);
+    background: var(--bg-alt);
     z-index: -1;
     transition: 0.3s;
 }
@@ -188,7 +188,7 @@ strong {
 }
 
 .content__btn:nth-child(1):hover {
-    color: var(--bg);
+    color: var(--bg-alt);
 }
 
 .heading {
@@ -1475,17 +1475,27 @@ strong {
     padding: 0.15rem 0.5rem;
     border-radius: 4px;
     background: rgba(var(--accent-rgb), 0.1);
-    color: var(--accent);
+    color: #0369a1;
 }
 
 .portfolio-card__status[data-status="Online"] {
-    background: rgba(40, 200, 64, 0.1);
-    color: #4ade80;
+    background: rgba(40, 200, 64, 0.12);
+    color: #15803d;
 }
 
 .portfolio-card__status[data-status="Privado"] {
     background: rgba(251, 191, 36, 0.15);
     color: #a16207;
+}
+
+.portfolio-card__status[data-status="Offline"] {
+    background: rgba(100, 116, 139, 0.12);
+    color: #475569;
+}
+
+.portfolio-card__status[data-status="Fase de Lanzamiento"] {
+    background: rgba(6, 182, 212, 0.12);
+    color: #0891b2;
 }
 
 .portfolio-card__date {
@@ -1532,7 +1542,7 @@ strong {
 .tag {
     padding: 0.2rem 0.6rem;
     background: rgba(var(--accent-rgb), 0.08);
-    color: rgba(var(--accent-rgb), 0.85);
+    color: #0369a1;
     font-size: 0.65rem;
     font-weight: 600;
     border-radius: 4px;
