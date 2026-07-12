@@ -529,28 +529,9 @@ strong {
 .content__animate-title {
     font-weight: 600;
     font-size: 1.8rem;
-    color: transparent;
-    -webkit-text-stroke: 0.7px var(--accent);
-    background-image: linear-gradient(var(--accent), var(--accent));
-    background-repeat: no-repeat;
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-position: -286px 0;
-    animation: homeBgText 3s linear infinite;
+    color: var(--accent);
     margin: auto;
     text-align: center;
-}
-
-.content__animate-title:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    border-right: 2px solid var(--accent);
-    z-index: -1;
-    animation: homeCursorText 3s linear infinite;
 }
 
 .content__text {
