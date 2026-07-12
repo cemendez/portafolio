@@ -27,7 +27,7 @@ No test, lint, format, or typecheck scripts are configured.
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, global CSS), `Header.astro`, `Footer.astro` |
 | `src/assets/css/` | `styles.css` — all styles in one file (custom properties, BEM naming) |
 | `src/assets/js/` | `script.js` — scroll-based nav highlighting, sticky header, years calc |
-| `public/` | Static assets: `favicon.svg`, `portada.png` (OG image) |
+| `public/` | Static assets: `favicon.svg`, `portada.jpg` (OG image) |
 
 ## Path aliases (tsconfig)
 
@@ -146,9 +146,9 @@ const { title, description, skills } = Astro.props;
 
 ### Open Graph & SEO
 
-- OG image file: `public/portada.png` (recommended: 1200×630px).
+- OG image file: `public/portada.jpg` (recommended: 1200×630px).
 - Meta tags generated in `src/components/base/BaseHead.astro`.
-- OG/Twitter image uses root-relative path (`/portada.png`) to work on any domain/subdomain.
+- OG/Twitter image uses root-relative path (`/portada.jpg`) to work on any domain/subdomain.
 - Structured data (JSON-LD) in `StructuredData.astro` — currently set to `Software Architect`.
 - Site canonical URL uses `Astro.site` config (`https://carlosemendez.com`).
 
