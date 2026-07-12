@@ -490,9 +490,7 @@ strong {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--background-image) no-repeat;
-    background-size: cover;
-    background-position: center;
+    background: #071A29 var(--background-image) no-repeat right bottom / 80%;
     background-attachment: fixed;
     position: relative;
 }
@@ -711,15 +709,15 @@ strong {
     }
     .home__content {
         min-width: auto;
-        max-width: 55%;
+        max-width: 50%;
         align-items: initial;
         flex: none;
         justify-content: initial;
-        padding-top: 4rem; /* Le da aire arriba en pantallas grandes */
+        padding-top: 4rem;
     }
     .content__title {
         text-align: left;
-        font-size: 3.5rem;
+        font-size: 2.5rem;
     }
     .content__animate {
         width: fit-content;
@@ -870,7 +868,7 @@ strong {
 /* Media query para pantallas grandes (Escritorio) */
 @media (min-width: 1024px) {
     .about__layout {
-        grid-template-columns: 35% 65%;
+        grid-template-columns: 25% 75%;
         gap: 4rem;
     }
 }
