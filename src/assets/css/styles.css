@@ -434,6 +434,7 @@ strong {
     position: relative;
     text-align: center;
     margin-top: 2rem;
+    color: var(--text);
 }
 
 .footer__text a {
@@ -1090,7 +1091,7 @@ strong {
     align-items: center;
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--accent);
+    color: #0369a1;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 0.25rem;
@@ -1165,9 +1166,8 @@ strong {
 }
 
 .skills__description {
-    color: var(--text-muted);
+    color: #475569;
     max-width: 42rem;
-    opacity: 0.8;
 }
 
 .skills__grid {
@@ -1274,9 +1274,8 @@ strong {
 
 .skills__card-description {
     font-size: 0.9rem;
-    color: var(--text-muted);
+    color: #475569;
     margin-bottom: 1.75rem;
-    opacity: 0.8;
     transition: all 0.3s ease;
 }
 
@@ -1304,7 +1303,6 @@ strong {
 }
 
 .skills__card:hover .skills__card-description {
-    opacity: 1;
     color: var(--text);
 }
 /* ── Media Queries ── */
