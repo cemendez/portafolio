@@ -1,34 +1,12 @@
 ---
 import imageHome from "@assets/images/home.jpg";
-import predialSach from "../../content/projects/assets/images/predial-sach.png";
-import gabrielNosso from "../../content/projects/assets/images/gabriel-nosso.png";
-import alpec from "../../content/projects/assets/images/alpec.png";
-import abastosIa from "../../content/projects/assets/images/abastos-ia.png";
-import sismepo from "../../content/projects/assets/images/sismepo.png";
-import informeGobierno2026 from "../../content/projects/assets/images/informe-gobierno-2026.png";
-import anexoInforme from "../../content/projects/assets/images/anexo-informe.png";
-import diecsa from "../../content/projects/assets/images/diecsa.png";
-import informeGobierno2025 from "../../content/projects/assets/images/informe-gobierno-2025.png";
 
 const cv = "/cv-carlos-emmanuel-mendez-calderon.pdf";
-
-const trailImages = [
-    predialSach.src,
-    gabrielNosso.src,
-    alpec.src,
-    abastosIa.src,
-    sismepo.src,
-    informeGobierno2026.src,
-    anexoInforme.src,
-    diecsa.src,
-    informeGobierno2025.src,
-];
 ---
 
 <section
     class="home show-animate"
     id="home"
-    data-trail-images={JSON.stringify(trailImages)}
     style={`--background-image: url(${imageHome.src})`}
 >
     <div class="home__content">
@@ -208,9 +186,9 @@ const trailImages = [
     import Swal from "sweetalert2";
     document
         .querySelector(".social__mail-copy")
-        .addEventListener("click", async () => {
+        ?.addEventListener("click", async () => {
             const texto =
-                document.getElementById("social__mail-text").textContent;
+                document.getElementById("social__mail-text")?.textContent ?? "";
 
             if (navigator.clipboard && window.isSecureContext) {
                 try {
@@ -231,7 +209,7 @@ const trailImages = [
             }
         });
 
-    function useFallback(texto) {
+    function useFallback(texto: string) {
         try {
             const textArea = document.createElement("textarea");
             textArea.value = texto;
@@ -261,40 +239,5 @@ const trailImages = [
                 timer: 3000,
             });
         }
-    }
-
-    const homeSection = document.getElementById("home");
-    const trailSrcs = JSON.parse(homeSection?.dataset.trailImages ?? "[]");
-    let lastSpawn = 0;
-    let thumbId = 0;
-
-    if (homeSection && trailSrcs.length > 0) {
-        homeSection.addEventListener("mousemove", (e) => {
-            const now = Date.now();
-            if (now - lastSpawn < 80) return;
-            lastSpawn = now;
-
-            const rect = homeSection.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const rotation = Math.random() * 20 - 10;
-            const src = trailSrcs[Math.floor(Math.random() * trailSrcs.length)];
-
-            const img = document.createElement("img");
-            img.src = src;
-            img.alt = "";
-            img.className = "trail-thumbnail";
-            img.style.cssText = `left:${x - 64}px;top:${y - 40}px;transform:rotate(${rotation}deg)`;
-
-            homeSection.appendChild(img);
-
-            const id = ++thumbId;
-            img.dataset.thumbId = id;
-
-            setTimeout(() => {
-                const el = homeSection.querySelector(`[data-thumb-id="${id}"]`);
-                if (el) el.remove();
-            }, 1000);
-        });
     }
 </script>

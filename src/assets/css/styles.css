@@ -1,11 +1,11 @@
 :root {
-    --bg: #f8fafc;
-    --bg-alt: #ffffff;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --accent: #0284c7;
-    --accent-rgb: 2, 132, 199;
-    --border: #e2e8f0;
+    --bg: #0F172A; /* Deep Navy */
+    --bg-alt: #1E293B;
+    --text: #F8FAFC;
+    --text-muted: #94A3B8;
+    --accent: #3B82F6;
+    --accent-rgb: 59, 130, 246;
+    --border: #334155; /* Accents/Borders */
     --padding-side: 8%;
     --font-family: "Poppins", sans-serif;
 }
@@ -18,7 +18,7 @@
     z-index: 10000;
     padding: 0.5rem 1rem;
     background: var(--accent);
-    color: var(--bg-alt);
+    color: var(--text);
     font-weight: 600;
     text-decoration: none;
     transition: top 0.2s;
@@ -70,7 +70,7 @@
 }
 
 ::selection {
-    color: var(--bg-alt);
+    color: var(--text);
     background: var(--accent);
 }
 
@@ -151,7 +151,7 @@ strong {
     border-radius: 8px;
     letter-spacing: 2px;
     font-weight: 600;
-    color: var(--bg-alt);
+    color: var(--text);
     z-index: 1;
     overflow: hidden;
     transition: 0.3s;
@@ -169,7 +169,7 @@ strong {
     left: 0;
     width: 0;
     height: 100%;
-    background: var(--bg-alt);
+    background: var(--bg);
     z-index: -1;
     transition: 0.3s;
 }
@@ -180,7 +180,7 @@ strong {
 
 .content__btn:nth-child(1) {
     background: transparent;
-    color: var(--bg-alt);
+    color: var(--text);
 }
 
 .content__btn:nth-child(1)::before {
@@ -188,7 +188,7 @@ strong {
 }
 
 .content__btn:nth-child(1):hover {
-    color: var(--bg-alt);
+    color: var(--text);
 }
 
 .heading {
@@ -261,7 +261,7 @@ strong {
 }
 
 .header__logo-img {
-    --logo-primary: #f1f5f9;
+    --logo-primary: #F8FAFC;
     --logo-accent: #00aaee;
     width: 60px;
     height: 60px;
@@ -285,7 +285,7 @@ strong {
 
 @media (max-width: 768px) {
     .header__navbar .navbar__link {
-        color: var(--bg-alt);
+        color: var(--text);
     }
     .header__navbar.active .navbar__link {
         color: var(--text);
@@ -408,7 +408,7 @@ strong {
         padding: 0.5rem 10%;
     }
     .header:not(.header--sticky) .navbar__link {
-        color: #f1f5f9;
+        color: #F8FAFC;
     }
     .header:not(.header--sticky) .navbar__link:hover {
         color: rgba(255, 255, 255, 0.6);
@@ -508,7 +508,8 @@ strong {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #071A29 var(--background-image) no-repeat right bottom / 80%;
+    background: var(--bg) var(--background-image) no-repeat;
+    background-size: cover;
     background-attachment: fixed;
     position: relative;
 }
@@ -615,7 +616,7 @@ strong {
     border-radius: 6px;
     background-color: var(--bg);
     border: 1px solid var(--accent);
-    color: #0369a1;
+    color: var(--accent);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -679,10 +680,10 @@ strong {
 }
 
 .home .content__title {
-    color: #f1f5f9;
+    color: var(--text);
 }
 .home .content__text {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-muted);
 }
 
 /* ── Home Desktop (≥992px) ── */
@@ -1091,7 +1092,7 @@ strong {
     align-items: center;
     font-size: 0.8rem;
     font-weight: 700;
-    color: #0369a1;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 0.25rem;
@@ -1166,7 +1167,7 @@ strong {
 }
 
 .skills__description {
-    color: #475569;
+    color: var(--text-muted);
     max-width: 42rem;
 }
 
@@ -1274,7 +1275,7 @@ strong {
 
 .skills__card-description {
     font-size: 0.9rem;
-    color: #475569;
+    color: var(--text-muted);
     margin-bottom: 1.75rem;
     transition: all 0.3s ease;
 }
@@ -1299,7 +1300,7 @@ strong {
 
 .skills__card:hover .skills__tag {
     background: var(--accent);
-    color: var(--bg-alt);
+    color: var(--text);
 }
 
 .skills__card:hover .skills__card-description {
@@ -1473,11 +1474,11 @@ strong {
     padding: 0.15rem 0.5rem;
     border-radius: 4px;
     background: rgba(var(--accent-rgb), 0.1);
-    color: #0369a1;
+    color: var(--accent);
 }
 
 .portfolio-card__status[data-status="Online"] {
-    background: rgba(40, 200, 64, 0.12);
+    background: rgba(var(--accent-rgb), 0.12);
     color: #15803d;
 }
 
@@ -1488,7 +1489,7 @@ strong {
 
 .portfolio-card__status[data-status="Offline"] {
     background: rgba(100, 116, 139, 0.12);
-    color: #475569;
+    color: var(--text-muted);
 }
 
 .portfolio-card__status[data-status="Fase de Lanzamiento"] {
@@ -1540,7 +1541,7 @@ strong {
 .tag {
     padding: 0.2rem 0.6rem;
     background: rgba(var(--accent-rgb), 0.08);
-    color: #0369a1;
+    color: var(--accent);
     font-size: 0.65rem;
     font-weight: 600;
     border-radius: 4px;
@@ -1583,6 +1584,8 @@ strong {
     display: flex;
     flex-direction: column;
 }
+
+
 
 .portfolio-sticky-card__titlebar {
     display: flex;
