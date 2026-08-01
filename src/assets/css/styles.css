@@ -508,10 +508,22 @@ strong {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--bg) var(--background-image) no-repeat;
+    background: var(--background-image) no-repeat;
+    background-position-x: 66%;
     background-size: cover;
     background-attachment: fixed;
     position: relative;
+}
+
+.home::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
 }
 
 .home__content {
@@ -587,7 +599,7 @@ strong {
     background: var(--accent);
     border: 1px solid var(--accent);
     border-radius: 50%;
-    color: var(--bg);
+    color: var(--text);
     z-index: 1;
     overflow: hidden;
 }
@@ -616,7 +628,7 @@ strong {
     border-radius: 6px;
     background-color: var(--bg);
     border: 1px solid var(--accent);
-    color: var(--accent);
+    color: var(--text);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -682,8 +694,9 @@ strong {
 .home .content__title {
     color: var(--text);
 }
+
 .home .content__text {
-    color: var(--text-muted);
+    color: var(--text);
 }
 
 /* ── Home Desktop (≥992px) ── */
