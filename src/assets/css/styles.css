@@ -270,12 +270,12 @@ strong {
 
 .header__navbar {
     position: absolute;
-    top: 100%;
+    top: 0;
     left: -100%;
     width: 100%;
     height: 100dvh;
     margin-top: -1px;
-    padding: 1rem 4%;
+    padding: 6rem 1rem 4%;
     background: var(--accent);
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -343,9 +343,10 @@ strong {
 
 .header__menu-icon {
     position: relative;
-    color: var(--text-muted);
+    color: var(--text);
     cursor: pointer;
     display: block;
+    z-index: 2;
 }
 
 .header__menu-icon .header__menu-close {
