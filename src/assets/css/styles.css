@@ -1,9 +1,9 @@
 :root {
-    --bg: #0F172A; /* Deep Navy */
-    --bg-alt: #1E293B;
-    --text: #F8FAFC;
-    --text-muted: #94A3B8;
-    --accent: #3B82F6;
+    --bg: #0f172a; /* Deep Navy */
+    --bg-alt: #1e293b;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #3b82f6;
     --accent-rgb: 59, 130, 246;
     --border: #334155; /* Accents/Borders */
     --padding-side: 8%;
@@ -261,7 +261,7 @@ strong {
 }
 
 .header__logo-img {
-    --logo-primary: #F8FAFC;
+    --logo-primary: #f8fafc;
     --logo-accent: #00aaee;
     width: 60px;
     height: 60px;
@@ -407,9 +407,6 @@ strong {
     }
     .header--sticky {
         padding: 0.5rem 10%;
-    }
-    .header:not(.header--sticky) .navbar__link {
-        color: #F8FAFC;
     }
     .header:not(.header--sticky) .navbar__link:hover {
         color: rgba(255, 255, 255, 0.6);
@@ -703,10 +700,18 @@ strong {
 /* ── Home Desktop (≥992px) ── */
 @media (min-width: 992px) {
     .home {
+        background-position-x: 0;
         flex-direction: initial;
         justify-content: initial;
         text-align: initial;
         align-items: initial;
+    }
+    .home::before {
+        background: linear-gradient(
+            to left,
+            rgba(0, 0, 0, 0.0),
+            rgba(0, 0, 0, 0.6)
+        );
     }
     .home__content {
         min-width: auto;
@@ -1598,8 +1603,6 @@ strong {
     display: flex;
     flex-direction: column;
 }
-
-
 
 .portfolio-sticky-card__titlebar {
     display: flex;
