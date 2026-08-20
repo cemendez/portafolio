@@ -4,6 +4,7 @@
     --text: #f8fafc;
     --text-muted: #94a3b8;
     --accent: #3b82f6;
+    --accent-strong: #2563eb;
     --accent-rgb: 59, 130, 246;
     --border: #334155; /* Accents/Borders */
     --padding-side: 8%;
@@ -146,8 +147,8 @@ strong {
     justify-content: center;
     align-items: center;
     padding: 0.7rem 1.8rem;
-    background: var(--accent);
-    border: 2px solid var(--accent);
+    background: var(--accent-strong);
+    border: 2px solid var(--accent-strong);
     border-radius: 8px;
     letter-spacing: 2px;
     font-weight: 600;
@@ -158,8 +159,14 @@ strong {
     text-decoration: none;
 }
 
-.content__btn:hover {
+.content__btn:hover,
+.content__btn:focus-visible {
     color: var(--accent);
+}
+
+.content__btn:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
 }
 
 .content__btn::before {
@@ -174,20 +181,23 @@ strong {
     transition: 0.3s;
 }
 
-.content__btn:hover::before {
+.content__btn:hover::before,
+.content__btn:focus-visible::before {
     width: 100%;
 }
 
-.content__btn:nth-child(1) {
+.content__btn--outline {
     background: transparent;
+    border-color: var(--accent-strong);
     color: var(--text);
 }
 
-.content__btn:nth-child(1)::before {
-    background: var(--accent);
+.content__btn--outline::before {
+    background: var(--accent-strong);
 }
 
-.content__btn:nth-child(1):hover {
+.content__btn--outline:hover,
+.content__btn--outline:focus-visible {
     color: var(--text);
 }
 
@@ -594,12 +604,17 @@ strong {
     align-items: center;
     width: 40px;
     height: 40px;
-    background: var(--accent);
-    border: 1px solid var(--accent);
+    background: var(--accent-strong);
+    border: 1px solid var(--accent-strong);
     border-radius: 50%;
     color: var(--text);
     z-index: 1;
     overflow: hidden;
+}
+
+.social__link:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
 }
 
 .social__link:before {
@@ -644,7 +659,6 @@ strong {
     cursor: pointer;
 }
 
-.social__mail-text:before,
 .social__mail-send:before,
 .social__mail-copy:before {
     content: "";
@@ -764,36 +778,43 @@ strong {
     }
 
     /* Corregido el bug de la variable de color (--main-color -> --color-color-main) */
-    .social__link:hover {
+    .social__link:hover,
+    .social__link:focus-visible {
         color: var(--accent);
     }
     .social__link:before {
         transition: width 0.3s;
     }
-    .social__link:hover:before {
+    .social__link:hover:before,
+    .social__link:focus-visible:before {
         width: 100%;
     }
-    .social__mail-text,
     .social__mail-send,
     .social__mail-copy {
         transition: 0.3s;
     }
-    .social__mail-text:hover,
     .social__mail-send:hover,
-    .social__mail-copy:hover {
+    .social__mail-copy:hover,
+    .social__mail-send:focus-visible,
+    .social__mail-copy:focus-visible {
         color: var(--text);
+    }
+    .social__mail-send:focus-visible,
+    .social__mail-copy:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
     }
     .social__mail {
         gap: 0.5rem;
     }
-    .social__mail-text:before,
     .social__mail-send:before,
     .social__mail-copy:before {
         transition: 0.3s;
     }
-    .social__mail-text:hover:before,
     .social__mail-send:hover:before,
-    .social__mail-copy:hover:before {
+    .social__mail-copy:hover:before,
+    .social__mail-send:focus-visible:before,
+    .social__mail-copy:focus-visible:before {
         width: 100%;
     }
     .home__img-hover {
