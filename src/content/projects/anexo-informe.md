@@ -5,7 +5,7 @@ publishDate: 2026-03-30
 image: "./assets/images/anexo-informe.png"
 category: "Gobierno"
 role: "Lead Developer / Architect"
-tags: ["PHP", "Laravel", "MySQL", "Leaflet", "GeoServer"]
+tags: ["Laravel", "PHP", "MySQL", "Leaflet", "GeoServer"]
 featured: true
 demoUrl: "https://planeacion.puebla.gob.mx/anexo/"
 status: "Online"

@@ -1,13 +1,13 @@
 ---
 import { Image } from "astro:assets";
+import { getTechIcon } from "./techIcons";
 const { project } = Astro.props;
 const { data, id } = project;
+const techIcon = getTechIcon(data.tags[0]);
+const techList = data.tags.slice(0, 3).join(", ");
 ---
 
-<a
-    href={`/projects/${id}`}
-    class={`portfolio-card ${data.featured ? "portfolio-card--featured" : ""}`}
->
+<a href={`/projects/${id}`} class="portfolio-card">
     <div class="portfolio-card__window">
         <div class="portfolio-card__titlebar">
             <div class="portfolio-card__dots">
@@ -30,16 +30,19 @@ const { data, id } = project;
     </div>
 
     <div class="portfolio-card__content">
-        <div class="portfolio-card__meta">
-            <span class="portfolio-card__status" data-status={data.status}>
-                {data.status}
-            </span>
-            <span class="portfolio-card__date">{data.publishDate.toLocaleDateString("es-MX", { year: "numeric", month: "short" })}</span>
+        <div class="portfolio-card__tech-row">
+            <Fragment set:html={techIcon} />
+            <span class="portfolio-card__tech-list">{techList}</span>
         </div>
         <h3 class="portfolio-card__title">{data.title}</h3>
         <p class="portfolio-card__description">{data.description}</p>
-        <div class="portfolio-card__tags">
-            {data.tags.slice(0, 3).map((tag: unknown) => <span class="tag">#{tag}</span>)}
-        </div>
+        <span class="portfolio-card__cta">
+            Leer más
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                ><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    d="M5 12h14m-6-6l6 6l-6 6"
+                ></path></svg
+            >
+        </span>
     </div>
 </a>

@@ -5,7 +5,7 @@ publishDate: "2026-06-12"
 image: "./assets/images/abastos-ia.png"
 category: "Freelance"
 role: "Arquitecto de software y desarrollador principal"
-tags: ["Laravel", "PHP 8.3", "OpenAI API (Whisper/GPT)", "JavaScript (MediaRecorder)", "Node.js (Proxy)", "SQL (Conditional Aggregation)", "Vite"]
+tags: ["OpenAI API (Whisper/GPT)", "Laravel", "PHP 8.3", "JavaScript (MediaRecorder)", "Node.js (Proxy)", "SQL (Conditional Aggregation)", "Vite"]
 status: "Privado"
 ---
 

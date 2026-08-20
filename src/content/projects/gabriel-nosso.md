@@ -6,9 +6,9 @@ image: "./assets/images/gabriel-nosso.png"
 category: "E-learning"
 role: "Arquitecto de software y desarrollador principal"
 tags:
+    - Stripe API
     - PHP
     - MariaDB
-    - Stripe API
     - Bootstrap 5
     - PDO
     - Apache
