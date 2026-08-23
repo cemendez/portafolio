@@ -3,12 +3,13 @@ import SkillCard from "@components/ui/SkillCard.astro";
 
 const skillGroups = [
     {
-        title: "Arquitectura & Backend",
-        description: "Modelo de datos, lógica de negocio y APIs que no se caen.",
+        title: "Backend & Arquitectura",
         skills: [
-            "PHP (Laravel, MVC)",
+            "PHP",
+            "Laravel",
             "WordPress Headless",
-            "MySQL / PostgreSQL",
+            "MySQL",
+            "PostgreSQL",
             "REST APIs",
             "Stripe",
             "WooCommerce",
@@ -18,8 +19,6 @@ const skillGroups = [
     },
     {
         title: "Frontend & Performance",
-        description:
-            "Que cargue rápido, se vea bien y no torture al usuario.",
         skills: [
             "Astro",
             "React",
@@ -28,12 +27,11 @@ const skillGroups = [
             "Tailwind CSS",
             "WordPress",
             "SEO Técnico",
-            "Web Vitals Optimization",
+            "Web Vitals",
         ],
     },
     {
         title: "DevOps & Automatización",
-        description: "De mi máquina a producción sin sustos.",
         skills: [
             "Docker",
             "GitHub Actions",
@@ -45,10 +43,10 @@ const skillGroups = [
     },
     {
         title: "Sistemas Geográficos (SIG)",
-        description: "Mapas, coordenadas y datos que tienen dueño.",
         skills: [
             "GeoServer",
             "Leaflet",
+            "OpenLayers",
             "PostGIS",
             "Manejo de datos espaciales",
         ],
@@ -68,27 +66,10 @@ const skillGroups = [
             </p>
         </div>
 
-        <div class="skills__grid">
-            {skillGroups.map((group) => <SkillCard {...group} />)}
+        <div class="skills__panel">
+            <div class="skills__grid">
+                {skillGroups.map((group) => <SkillCard {...group} />)}
+            </div>
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const cards = document.querySelectorAll(
-            ".js-skill-card",
-        ) as NodeListOf<HTMLElement>;
-
-        cards.forEach((card) => {
-            card.addEventListener("mousemove", (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                card.style.setProperty("--mouse-x", `${x}px`);
-                card.style.setProperty("--mouse-y", `${y}px`);
-            });
-        });
-    });
-</script>

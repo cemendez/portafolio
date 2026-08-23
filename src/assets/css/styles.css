@@ -1211,145 +1211,62 @@ strong {
     max-width: 42rem;
 }
 
+.skills__panel {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+}
+
 .skills__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
-.skills__card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background: transparent;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    transition: border-color 0.3s ease;
-}
-
-.skills__card-inner {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 2.5rem 2rem;
-    background: var(--bg);
-    border-radius: calc(16px - 1px);
-    margin: 1px;
-    z-index: 3;
-}
-
-.skills__card-spotlight {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 16px;
-    opacity: 0;
-    z-index: 2;
-    transition: opacity 0.5s ease;
-    background: radial-gradient(
-        600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-        rgba(var(--accent-rgb), 0.3),
-        transparent 40%
-    );
-    pointer-events: none;
-}
-
-.skills__card-code-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
-
-.skills__card-code-bg::before {
-    content: "01101010 01110011 const api = laravel() => { return geoServer.postgis_query; } <div class='spatial'> 0x7FFF 0101 $this->auth->check() [type: spatial] function_exists() try { $db->query('SELECT ST_AsGeoJSON(geom) FROM parcels WHERE status = active'); } catch (Exception $e) { Log::error($e); } 10110100 npm run build && docker compose up -d --force 0xCAFE const router = express() app.use('/api/v2', rateLimiter) await fetch('/geoserver/wfs?service=WFS&version=2.0.0') export default defineConfig({ output: 'static' }) 01101010 01110011 const api = laravel() => { return geoServer.postgis_query; } <div class='spatial'> 0x7FFF 0101 $this->auth->check() [type: spatial] function_exists() try { $db->query('SELECT ST_AsGeoJSON(geom) FROM parcels WHERE status = active'); } catch (Exception $e) { Log::error($e); } 10110100 npm run build && docker compose up -d --force 0xCAFE const router = express() app.use('/api/v2', rateLimiter) await fetch('/geoserver/wfs?service=WFS&version=2.0.0') export default defineConfig({ output: 'static' }) 01101010 $user->hasPermission('admin') ? redirect('/dashboard') : abort(403) SELECT COUNT(*) FROM spatial_data WHERE ST_Intersects(geom, ST_Buffer(point, 1000)) GROUP BY zone_id 0xFF00 git push origin main --force-with-lease useEffect(() => { map.flyTo([19.4326, -99.1332], 12) }, []) 01110011 Route::middleware(['auth:sanctum'])->group(function() { return ProjectResource::collection($projects) }) 10101010 CREATE INDEX idx_geom ON parcels USING GIST(geom) docker exec -it postgres psql -U admin -d geoapp";
-    position: absolute;
-    inset: 0;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: rgba(var(--accent-rgb), 0.5);
-    line-height: 1.4;
-    word-break: break-all;
-    overflow: hidden;
-    padding: 1rem;
-
-    -webkit-mask-image: radial-gradient(
-        200px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-        black 10%,
-        transparent 80%
-    );
-    mask-image: radial-gradient(
-        200px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-        black 10%,
-        transparent 80%
-    );
-}
-
-.skills__card:hover {
-    border-color: rgba(var(--accent-rgb), 0.2);
-}
-
-.skills__card:hover .skills__card-spotlight,
-.skills__card:hover .skills__card-code-bg {
-    opacity: 1;
-}
-
-.skills__card-title {
-    font-size: 1.35rem;
+.skills__column-title {
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text);
-    margin-bottom: 0.5rem;
-    transition: color 0.3s;
-}
-
-.skills__card:hover .skills__card-title {
-    color: var(--accent);
-}
-
-.skills__card-description {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 1.75rem;
-    transition: all 0.3s ease;
+    margin-bottom: 1rem;
 }
 
 .skills__tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .skills__tag {
-    padding: 0.35rem 0.75rem;
-    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
+    background: var(--bg-alt);
     border: 1px solid var(--border);
     color: var(--text-muted);
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    border-radius: 6px;
-    letter-spacing: 0.05em;
+    border-radius: 8px;
     transition: all 0.3s ease;
 }
 
-.skills__card:hover .skills__tag {
-    background: var(--accent);
+.skills__tag:hover {
+    border-color: rgba(var(--accent-rgb), 0.4);
     color: var(--text);
 }
 
-.skills__card:hover .skills__card-description {
-    color: var(--text);
-}
 /* ── Media Queries ── */
-@media (min-width: 769px) {
+@media (min-width: 640px) {
     .skills__grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .skills__grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
     }
 }
 
@@ -1527,7 +1444,7 @@ strong {
     margin-bottom: 0.5rem;
 }
 
-.portfolio-card__tech-badge {
+.tech-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1537,7 +1454,6 @@ strong {
     flex-shrink: 0;
     font-size: 0.55rem;
     font-weight: 700;
-    color: #fff;
     letter-spacing: -0.02em;
 }
 
