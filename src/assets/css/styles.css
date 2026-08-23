@@ -1007,8 +1007,7 @@ strong {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    min-height: auto;
-    padding-bottom: 5rem;
+    padding: 6rem var(--padding-side) 5rem;
 }
 
 .experience__list {
@@ -1060,7 +1059,7 @@ strong {
 .experience-card__content {
     position: relative;
     padding: 1.5rem;
-    background: transparent;
+    background: var(--bg-alt);
     border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
@@ -1134,7 +1133,6 @@ strong {
     margin-bottom: 1.5rem;
     line-height: 1.7;
     font-size: 0.95rem;
-    text-align: justify;
 }
 
 .experience-card__tags {
@@ -1144,8 +1142,11 @@ strong {
 }
 
 .experience-card__tag {
-    padding: 0.3rem 0.8rem;
-    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem 0.3rem 0.4rem;
+    background: var(--bg);
     border: 1px solid var(--border);
     font-size: 0.75rem;
     font-weight: 500;

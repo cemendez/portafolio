@@ -1,4 +1,6 @@
 ---
+import { getTechIcon } from "./techIcons";
+
 interface Props {
     company: string;
     role: string;
@@ -42,7 +44,12 @@ const { company, role, date, description, tags } = Astro.props;
             {description}
         </p>
         <div class="experience-card__tags">
-            {tags.map((tag) => <span class="experience-card__tag">{tag}</span>)}
+            {tags.map((tag) => (
+                <span class="experience-card__tag">
+                    <Fragment set:html={getTechIcon(tag)} />
+                    {tag}
+                </span>
+            ))}
         </div>
     </div>
 </div>
