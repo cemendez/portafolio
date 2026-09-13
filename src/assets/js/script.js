@@ -27,21 +27,20 @@ window.onscroll = () => {
     }
 };
 
-// header state on page load
-window.addEventListener("DOMContentLoaded", () => {
+function initPage() {
     const header = document.querySelector("header");
     if (header) {
         header.classList.toggle("header--sticky", window.scrollY > 100);
     }
-    // force initial active nav + show-animate
     window.onscroll();
-});
 
-// years of experience
-const labelYears = document.querySelectorAll(".experience__years");
-const yearInit = 2014;
-const yearNow = new Date().getFullYear();
-const years = yearNow - yearInit;
-labelYears.forEach((label) => {
-    label.innerHTML = years.toString();
-});
+    const labelYears = document.querySelectorAll(".experience__years");
+    const yearInit = 2014;
+    const yearNow = new Date().getFullYear();
+    const years = yearNow - yearInit;
+    labelYears.forEach((label) => {
+        label.innerHTML = years.toString();
+    });
+}
+
+document.addEventListener("astro:page-load", initPage);
