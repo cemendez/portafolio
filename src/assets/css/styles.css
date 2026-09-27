@@ -714,7 +714,7 @@ strong {
 /* ── Home Desktop (≥992px) ── */
 @media (min-width: 992px) {
     .home {
-        background-position-x: 0;
+        background-position-x: 30%;
         flex-direction: initial;
         justify-content: initial;
         text-align: initial;
