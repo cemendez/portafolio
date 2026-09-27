@@ -1,7 +1,9 @@
 ---
 import imageHome from "@assets/images/home.jpg";
+import { getExperienceYears } from "@utils/experience";
 
 const cv = "/cv-carlos-emmanuel-mendez-calderon.pdf";
+const experienceYears = getExperienceYears();
 ---
 
 <section
@@ -22,7 +24,7 @@ const cv = "/cv-carlos-emmanuel-mendez-calderon.pdf";
 
         <p class="content__text">
             Soy Arquitecto de Software con más de <strong
-                class="experience__years"></strong> años de experiencia liderando
+                class="experience__years">{experienceYears}</strong> años de experiencia liderando
             el diseño, desarrollo e implementación de soluciones tecnológicas de alto
             impacto para instituciones gubernamentales y organizaciones del sector
             privado. Me especializo en el diseño de arquitecturas distribuidas, plataformas

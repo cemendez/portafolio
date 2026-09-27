@@ -1,4 +1,6 @@
 ---
+import { getExperienceYears } from "@utils/experience";
+
 const habilidades = [
     "Diseño de arquitecturas",
     "Liderazgo técnico",
@@ -7,6 +9,8 @@ const habilidades = [
     "Análisis de impacto",
     "Comunicación con áreas de negocio",
 ];
+
+const experienceYears = getExperienceYears();
 ---
 
 <section class="about" id="about">
@@ -21,7 +25,9 @@ const habilidades = [
             </h3>
             <div class="about__summary-badge">
                 <span class="about__summary-badge-years"
-                    ><strong class="experience__years"></strong>+</span
+                    ><strong class="experience__years"
+                        >{experienceYears}</strong
+                    >+</span
                 >
                 <span class="about__summary-badge-label">Años Exp.</span>
             </div>

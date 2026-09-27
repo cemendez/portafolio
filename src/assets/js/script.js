@@ -33,14 +33,6 @@ function initPage() {
         header.classList.toggle("header--sticky", window.scrollY > 100);
     }
     window.onscroll();
-
-    const labelYears = document.querySelectorAll(".experience__years");
-    const yearInit = 2014;
-    const yearNow = new Date().getFullYear();
-    const years = yearNow - yearInit;
-    labelYears.forEach((label) => {
-        label.innerHTML = years.toString();
-    });
 }
 
 document.addEventListener("astro:page-load", initPage);
