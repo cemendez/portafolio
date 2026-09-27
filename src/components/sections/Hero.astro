@@ -1,10 +1,8 @@
 ---
 import { getImage } from "astro:assets";
 import imageHome from "@assets/images/home.jpg";
-import { getExperienceYears } from "@utils/experience";
 
 const cv = "/cv-carlos-emmanuel-mendez-calderon.pdf";
-const experienceYears = getExperienceYears();
 
 const optimizedHome = await getImage({
     src: imageHome,
@@ -21,32 +19,31 @@ const optimizedHome = await getImage({
 >
     <div class="home__content">
         <h1 class="content__title">
-            Hola, soy <span class="home__title-span">Carlos Méndez</span>
-            <span class="animate" style="--i:2;"></span>
+            Carlos Méndez
+            <span class="home__title-span">Arquitecto de Software</span>
         </h1>
 
         <div class="content__animate">
-            <h2 class="content__animate-title">Arquitecto de Software</h2>
-            <span class="animate" style="--i:3;"></span>
+            <h2 class="content__animate-title">
+                Laravel/PHP · GIS · GeoServer · Arquitecturas Web
+            </h2>
         </div>
 
         <p class="content__text">
-            Soy Arquitecto de Software con más de <strong
-                class="experience__years">{experienceYears}</strong> años de experiencia liderando
-            el diseño, desarrollo e implementación de soluciones tecnológicas de alto
-            impacto para instituciones gubernamentales y organizaciones del sector
-            privado. Me especializo en el diseño de arquitecturas distribuidas, plataformas
-            transaccionales de alto desempeño e integración de Sistemas de Información
-            Geográfica (SIG), transformando procesos complejos en soluciones escalables,
-            seguras y eficientes.
+            Diseño y desarrollo plataformas web robustas para transformar
+            procesos complejos en sistemas mantenibles, escalables y útiles para
+            las personas que los utilizan.
         </p>
 
         <div class="content__btns">
-            <a href="#skills" class="content__btn content__btn--outline"
-                >Habilidades</a
+            <a href="#portfolio" class="content__btn">Ver proyectos</a>
+            <a
+                href="mailto:mcalderon.carlos@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Enviar correo"
+                class="content__btn content__btn--outline">Contactarme</a
             >
-            <a href="#portfolio" class="content__btn">Portafolio</a>
-            <span class="animate" style="--i:5;"></span>
         </div>
     </div>
 
@@ -195,18 +192,20 @@ const optimizedHome = await getImage({
 </section>
 
 <script>
-    import Swal from "sweetalert2";
+    import type Swal from "sweetalert2";
+
     document
         .querySelector(".social__mail-copy")
         ?.addEventListener("click", async () => {
             const texto =
                 document.getElementById("social__mail-text")?.textContent ?? "";
+            const { default: swal } = await import("sweetalert2");
 
             if (navigator.clipboard && window.isSecureContext) {
                 try {
                     await navigator.clipboard.writeText(texto);
 
-                    Swal.fire({
+                    swal.fire({
                         position: "bottom-end",
                         icon: "success",
                         title: "¡Correo copiado al portapapeles!",
@@ -214,14 +213,14 @@ const optimizedHome = await getImage({
                         timer: 3000,
                     });
                 } catch (err) {
-                    useFallback(texto);
+                    useFallback(texto, swal);
                 }
             } else {
-                useFallback(texto);
+                useFallback(texto, swal);
             }
         });
 
-    function useFallback(texto: string) {
+    function useFallback(texto: string, swal: typeof Swal) {
         try {
             const textArea = document.createElement("textarea");
             textArea.value = texto;
@@ -236,7 +235,7 @@ const optimizedHome = await getImage({
             document.execCommand("copy");
             textArea.remove();
 
-            Swal.fire({
+            swal.fire({
                 position: "bottom-end",
                 icon: "success",
                 title: "¡Correo copiado al portapapeles!",
@@ -244,7 +243,7 @@ const optimizedHome = await getImage({
                 timer: 3000,
             });
         } catch (err) {
-            Swal.fire({
+            swal.fire({
                 icon: "error",
                 title: "¡Hubo un problema al copiar el correo, intentalo manualmente!",
                 showConfirmButton: false,
