@@ -7,6 +7,7 @@ category: "Freelance"
 role: "Arquitecto de software y desarrollador principal"
 tags: ["OpenAI API (Whisper/GPT)", "Laravel", "PHP 8.3", "JavaScript (MediaRecorder)", "Node.js (Proxy)", "SQL (Conditional Aggregation)", "Vite"]
 status: "Privado"
+priority: 1
 ---
 
 ## El Desafío
@@ -30,7 +31,7 @@ Construí **Abastos IA**, una plataforma Laravel que convierte voz en registros 
 
 **Pipeline de IA con Whisper + GPT-4o-mini:** Primero Whisper transcribe el audio a texto. Luego GPT-4o-mini toma ese texto y lo convierte en un JSON estructurado: tipo de movimiento, persona, cantidad, precio. Todo esto con un system prompt que lo obliga a comportarse como un contador, no como un chatbot.
 
-**Reintentos inteligentes:** Cada llamada a OpenAI puede fallar por rate limit. Programé un gestor de excepciones que lee las cabeceras HTTP de respuesta (Retry-After), calcula cuánto esperar y reintenta automáticamente. Tasa de éxito: prácticamente 100%.
+**Reintentos inteligentes:** Cada llamada a OpenAI puede fallar por rate limit. Programé un gestor de excepciones que lee las cabeceras HTTP de respuesta (Retry-After), calcula cuánto esperar y reintenta automáticamente. El sistema implementa reintentos automáticos basados en Retry-After para recuperarse de rate limits y errores temporales de la API.
 
 **SQL que hace el trabajo pesado:** Con miles de transacciones diarias, no podía cargar todo en memoria PHP para calcular saldos. Diseñé una consulta con agregación condicional que calcula en una sola pasada el saldo de taras y dinero pendiente por cliente:
 ```sql

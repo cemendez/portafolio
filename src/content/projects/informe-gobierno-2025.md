@@ -8,6 +8,7 @@ role: "Arquitecto de software y desarrollador principal"
 tags: ["PHP (MVC)", "MySQL", "Docker", "Tailwind"]
 status: "Privado"
 featured: true
+priority: 6
 ---
 
 ## El Reto
@@ -20,7 +21,7 @@ Necesitaban un sistema digital donde las dependencias subieran sus medios de ver
 
 Diseñé una arquitectura MVC con Laravel que resolvía tres problemas clave:
 
-**Validación automatizada:** Cada documento que subía una dependencia pasaba por un motor de reglas de negocio que verificaba si cumplía los requisitos legales antes de ser aceptado. Nada de revisar a mano.
+**Validación automatizada:** Cada documento que subía una dependencia pasaba por un motor de reglas de negocio que verificaba si cumplía los requisitos legales antes de ser aceptado. Las validaciones que antes requerían revisión manual quedaron automatizadas mediante reglas de negocio.
 
 **Reportes bajo demanda:** Los órganos de control necesitaban generar reportes en PDF para tomar decisiones. Construí un motor de reporting que los generaba al instante, sin cuellos de botella.
 

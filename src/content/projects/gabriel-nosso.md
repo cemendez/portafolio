@@ -17,6 +17,7 @@ tags:
     - Zoom API
     - phpdotenv
 status: "Offline"
+priority: 8
 ---
 
 ## El Desafío
@@ -29,7 +30,7 @@ Construí una arquitectura monolítica en PHP puro con Front Controller y URL re
 
 **Control de concurrencia:** Implementé un polling cada 5 segundos que verifica si la sesión activa coincide con la registrada en BD. Si alguien más inicia sesión desde otro dispositivo, la sesión anterior se destruye en máximo 5 segundos. Esto evitaba que compartieran cuentas.
 
-**Seguridad sin concesiones:** Cada formulario sensible tiene su token CSRF generado con SHA-256 más regex whitelist. Todas las queries sin excepción usan prepared statements con PDO. Nada de concatenar strings.
+**Seguridad de aplicación:** Cada formulario sensible tiene su token CSRF generado con SHA-256 más regex whitelist. Todas las consultas utilizan prepared statements mediante PDO.
 
 **Panel administrativo:** Gestiona fechas de cursos, activación de links de Zoom, subida de materiales, notificaciones y tareas por día. Todo desde un solo lugar.
 

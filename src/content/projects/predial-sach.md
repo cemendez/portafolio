@@ -7,6 +7,7 @@ category: "Gobierno"
 role: "Arquitecto de Software / Full-Stack Developer"
 tags: ["PHP", "SQL Server", "jQuery", "Apache", "Bootstrap", "AdquiraCloud"]
 status: "Offline"
+priority: 4
 ---
 
 ## El Desafío
@@ -35,8 +36,7 @@ Construí un sistema web que cubría el ciclo completo: consulta de adeudo, cál
 
 ## Impacto
 
-- **+200,000 cuentas catastrales** digitalizadas.
-- **Cero filas** en ventanilla para consulta y pago.
-- **Cálculo automático** de actualización por INPC, recargos y multas.
-- **Reducción de morosidad** al facilitar el pago de ejercicios anteriores con descuentos.
+- +200,000 cuentas catastrales disponibles para consulta.
+- Consulta y pago en línea sin necesidad de acudir a ventanilla.
+- Cálculo automático de actualización, recargos y multas.
 - Recibos y conciliación contable generados automáticamente.

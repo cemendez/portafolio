@@ -17,6 +17,7 @@ tags:
   - Chart.js
   - RBAC
 status: "Privado"
+priority: 3
 ---
 
 ## El Desafío
@@ -33,9 +34,9 @@ Diseñé una arquitectura monolítica modular sobre Laravel, con 33 modelos Eloq
 
 **Seguimiento dual:** Los programas/proyectos tienen seguimiento diario y mensual; las obras tienen seguimiento semanal de actividades, semanal general y mensual general. Cada uno con su propio subsistema de reportes y validaciones.
 
-**GIS sin dolor:** Implementé una regla de validación personalizada para archivos KML/KMZ que verifica que estén bien formados antes de guardarlos. Los metadatos geoespaciales se almacenan para renderizarse en el mapa estatal.
+**Integración GIS:** Implementé una regla de validación personalizada para archivos KML/KMZ que verifica que estén bien formados antes de guardarlos. Los metadatos geoespaciales se almacenan para renderizarse en el mapa estatal.
 
-**Reportes con estilo:** Usando FastExcel + OpenSpout, genero archivos de Excel con tipografía, colores de encabezado y formato listos para presentación ejecutiva. Nada de datos crudos.
+**Generación de reportes:** Usando FastExcel + OpenSpout, genero archivos de Excel con tipografía, colores de encabezado y formato listos para presentación ejecutiva. Nada de datos crudos.
 
 **Permisos granulares:** 8 permisos CRUD por módulo asignados a plantillas de rol (Administrador, Dependencia, Visualizador, Invitado). Un Gate::before otorga superadmin a un usuario específico.
 

@@ -21,6 +21,7 @@ tags:
   - Splide.js
   - Blade Components
 status: "Offline"
+priority: 9
 ---
 ## El Desafío
 

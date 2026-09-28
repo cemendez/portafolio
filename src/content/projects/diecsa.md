@@ -8,6 +8,7 @@ role: "Desarrollador principal"
 tags: ["WordPress", "PHP", "Migration", "MySQL", "Apache"]
 status: "Online"
 demoUrl: "https://diec-sa.com.mx/"
+priority: 7
 ---
 
 ## El Desafío
@@ -22,4 +23,4 @@ Migré la base de datos y todos los assets del entorno de desarrollo a producci�
 
 ## Resultados
 
-El sitio se desplegó sin incidentes. La velocidad de carga mejoró un 30% y los formularios empezaron a funcionar correctamente. La empresa tiene hoy una plataforma que refleja la calidad de su ingeniería: robusta, profesional y en línea cuando se necesita.
+El sitio se desplegó sin incidentes. La velocidad de carga mejoró un 30% y los formularios empezaron a funcionar correctamente. El sitio quedó operativo en producción, con mejor rendimiento y un flujo de contacto funcional.

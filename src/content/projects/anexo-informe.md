@@ -1,5 +1,5 @@
 ---
-title: "Sistema de Consulta: Anexo Geográfico de Gobierno"
+title: "Anexo Geográfico de Gobierno — Plataforma de consulta territorial"
 description: "Miles de indicadores gubernamentales organizados en un mapa, accesibles para cualquier ciudadano."
 publishDate: 2026-03-30
 image: "./assets/images/anexo-informe.png"
@@ -9,6 +9,7 @@ tags: ["Laravel", "PHP", "MySQL", "Leaflet", "GeoServer"]
 featured: true
 demoUrl: "https://planeacion.puebla.gob.mx/anexo/"
 status: "Online"
+priority: 5
 ---
 
 ## El Desafío

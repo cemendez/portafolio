@@ -8,6 +8,7 @@ role: "Arquitecto de software y desarrollador principal"
 tags: ['Laravel', 'Livewire', 'Alpine.js', 'MySQL', 'Spatie', 'Arquitectura Orientada a Eventos']
 featured: true
 status: "Privado"
+priority: 2
 ---
 
 ## El Desafío
@@ -24,7 +25,7 @@ Descarté una SPA tradicional desde el principio. Opté por **Laravel + Livewire
 
 **Flujos asíncronos:** Cada dependencia tiene su propio mes activo. Ya no hay un "corte global" que paralice a todos. Cada entidad avanza a su ritmo, y el sistema lo maneja sin conflictos.
 
-**Patrón de bloqueo centralizado:** Cuando una cuenta está inactiva o el OIC formaliza un periodo, el sistema propaga un estado de solo lectura desde el componente padre. La interfaz se deshidrata automáticamente —no puedes editar aunque quieras— y los endpoints se bloquean a nivel de Middleware y Policies (Spatie RBAC).
+**Patrón de bloqueo centralizado:** Cuando una cuenta está inactiva o el OIC formaliza un periodo, el sistema propaga un estado de solo lectura desde el componente padre. La interfaz pasa automáticamente a modo de solo lectura y los endpoints quedan protegidos mediante Middleware y Policies.
 
 ## Logros técnicos
 
@@ -36,4 +37,4 @@ Descarté una SPA tradicional desde el principio. Opté por **Laravel + Livewire
 
 ## Impacto
 
-La plataforma transformó un proceso burocrático y propenso a errores en un ecosistema auditable y predecible. El OIC ahora tiene trazabilidad atómica sobre cada peso invertido reduciendo los tiempos de revisión y dictamen en más del 60%. Cualquier intento de manipulación post-validación es rechazado de raíz.
+La plataforma transformó un proceso burocrático y propenso a errores en un ecosistema auditable y predecible. El OIC ahora tiene trazabilidad detallada de cada operación y registro del proceso reduciendo significativamente los tiempos de revisión y dictamen. Cualquier intento de manipulación post-validación es rechazado de raíz.
