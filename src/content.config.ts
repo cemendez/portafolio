@@ -30,6 +30,7 @@ const projects = defineCollection({
             ]),
             role: z.string(),
             featured: z.boolean().default(false),
+            priority: z.number().default(999),
             demoUrl: z.string().url().optional(),
             repoUrl: z.string().url().optional(),
         }),
