@@ -7,10 +7,10 @@ Profile focus: **Software Architect** (Arquitecto de Software).
 ## Commands
 
 ```sh
-npm run dev       # dev server at localhost:4321
-npm run build     # static site to dist/ (~2s)
-npm run preview   # preview build locally
-npm run astro     # astro CLI (e.g. `npm run astro check`)
+pnpm dev       # dev server at localhost:4321
+pnpm build     # static site to dist/ (~2s)
+pnpm preview   # preview build locally
+pnpm astro     # astro CLI (e.g. `pnpm astro check`)
 ```
 
 No test, lint, format, or typecheck scripts are configured.
@@ -37,7 +37,7 @@ Note: `@sections/*` maps to `src/sections/` but section components live in `src/
 ## Content collections
 
 Projects use `astro:content` with `glob()` loader (`src/content/projects/**/*.md`).  
-Images in frontmatter use the `image()` schema type — reference project images via relative path (`./assets/images/<file>.png`).  
+Project images are stored as `.webp` (max 1920px wide). Images in frontmatter use the `image()` schema type — reference project images via relative path (`./assets/images/<file>.webp`).  
 Supported categories: `GIS`, `Gobierno`, `E-commerce`, `FullStack`, `Web App`, `Freelance`.  
 Statuses: `Online`, `Offline`, `Privado`, `Fase de Lanzamiento`.
 
@@ -47,7 +47,7 @@ Statuses: `Online`, `Offline`, `Privado`, `Fase de Lanzamiento`.
 title: string               # Project name
 description: string          # Short summary (shown in cards)
 publishDate: YYYY-MM-DD     # Sort order (descending)
-image: "./assets/images/<file>.png"   # Card image (relative path)
+image: "./assets/images/<file>.webp"   # Card image (relative path)
 category: "Gobierno"         # One of the enum values above
 tags:                        # Array of tech tags
   - Laravel
@@ -155,7 +155,7 @@ const { title, description, skills } = Astro.props;
 ### Creating a new project entry
 
 1. Add a new `.md` file in `src/content/projects/` with the proper frontmatter.
-2. Add a screenshot in `src/content/projects/assets/images/<project-name>.png`.
+2. Add a screenshot in `src/content/projects/assets/images/<project-name>.webp`.
 3. Follow the **Desafío → Solución → Impacto** narrative in the body.
 4. The project will automatically appear in `Portfolio.astro` (sorted by date) and the category filters will pick it up.
 
@@ -167,16 +167,13 @@ No page reload needed. New categories appear automatically when added to project
 
 ## Deployment
 
-- GitHub Actions on push to `main`: `npm install && npm run build`, then rsync `dist/` to remote.
-- Docker dev: `docker compose up` serves `localhost:4321`.
-- Secrets in CI: `SERVER_IP`, `SERVER_USER`, `SSH_PRIVATE_KEY`, `SERVER_PORT`.
+- Hosted on **Cloudflare Pages**: every push to `main` triggers a build there (`pnpm build`, output `dist/`). No GitHub Actions workflow and no Docker.
 
 ## Style quirks
 
 - `.editorconfig`: spaces, 4-wide, CRLF, no trailing whitespace trim, no final newline.
-- VS Code: recommended extension is `astro-build.astro-vscode`.
 - Uses `@fontsource/poppins` (weights 300–900).
 - Astro dev toolbar disabled in config.
-- Both `pnpm-lock.yaml` and `package-lock.json` exist; CI uses `npm`.
+- Package manager is **pnpm** (`packageManager` in package.json); only `pnpm-lock.yaml` is kept.
 - No semicolons in CSS (codebase convention).
 - Astro view transitions enabled via `ClientRouter` in `MainLayout.astro`.
