@@ -1,0 +1,136 @@
+/***
+====================================================================
+  ABOUT
+====================================================================
+***/
+
+.about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 7rem var(--padding-side);
+    background: var(--bg);
+}
+
+.about__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    text-align: left;
+}
+
+@media (min-width: 1024px) {
+    .about__layout {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 3rem;
+    }
+}
+
+.about__column-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.about__summary-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    height: 100%;
+    justify-content: center;
+}
+
+.about__summary-badge {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    background: rgba(var(--accent-rgb), 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.about__summary-badge-years {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.about__summary-badge-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+}
+
+.about__section-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.about__subtitle {
+    position: relative;
+    display: inline-block;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.about__paragraph {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0.5rem 0;
+}
+
+.about__skills-box {
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.about__item-title {
+    font-size: 1.1rem;
+    color: var(--text);
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.about__skills-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.about__skills-list li {
+    padding: 0.4rem 0.85rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.experience__years {
+    font-weight: 900;
+    color: var(--accent);
+    font-size: 1.2rem;
+}

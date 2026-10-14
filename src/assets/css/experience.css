@@ -1,0 +1,163 @@
+/***
+====================================================================
+   EXPERIENCE
+====================================================================
+***/
+.experience {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 6rem var(--padding-side) 5rem;
+    background: var(--bg-alt);
+}
+
+.experience__list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 1rem;
+}
+
+.experience__list::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: linear-gradient(
+        180deg,
+        var(--accent) 0%,
+        rgba(var(--accent-rgb), 0.1) 100%
+    );
+}
+
+.experience-card {
+    position: relative;
+    padding-left: 2rem;
+    width: 100%;
+}
+
+.experience-card__dot {
+    position: absolute;
+    left: -14px;
+    top: 24px;
+    width: 12px;
+    height: 12px;
+    background: var(--bg);
+    border: 3px solid var(--accent);
+    border-radius: 50%;
+    z-index: 2;
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.experience-card__content {
+    position: relative;
+    padding: 1.5rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition:
+        border-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.experience-card:hover .experience-card__content {
+    border-color: rgba(var(--accent-rgb), 0.3);
+    transform: translateX(5px);
+    box-shadow: 0 15px 35px rgba(var(--accent-rgb), 0.05);
+}
+
+.experience-card:hover .experience-card__dot {
+    background: var(--accent);
+    transform: scale(1.2);
+}
+.experience-card__content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(var(--accent-rgb), 0.05) 0%,
+        transparent 100%
+    );
+    z-index: -1;
+    transition: width 0.4s ease;
+}
+
+.experience-card__content:hover::before {
+    width: 100%;
+}
+
+.experience-card__date {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+    gap: 0.3rem;
+}
+
+.experience-card__role {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+.experience-card__company {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.experience-card__description {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+.experience-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.experience-card__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem 0.3rem 0.4rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 6px;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+.experience-card:hover .experience-card__tag {
+    border-color: rgba(var(--accent-rgb), 0.2);
+    color: var(--text);
+    background: rgba(var(--accent-rgb), 0.05);
+}

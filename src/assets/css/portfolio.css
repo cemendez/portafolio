@@ -1,0 +1,192 @@
+/***
+====================================================================
+  PORTFOLIO SECTION
+====================================================================
+***/
+
+.portfolio {
+    background: var(--bg);
+}
+
+.portfolio__filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+}
+
+.portfolio__filter {
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: var(--font-family);
+}
+
+.portfolio__filter:hover,
+.portfolio__filter--active {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.portfolio__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 2rem;
+    align-items: start;
+}
+
+.portfolio-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+    border-color: rgba(var(--accent-rgb), 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Window Chrome ── */
+.portfolio-card__window {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+}
+
+.portfolio-card__titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+}
+
+.portfolio-card__dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.portfolio-card__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: opacity 0.2s;
+}
+
+.portfolio-card__dot--close {
+    background: #ff5f57;
+}
+
+.portfolio-card__dot--minimize {
+    background: #febc2e;
+}
+
+.portfolio-card__dot--maximize {
+    background: #28c840;
+}
+
+.portfolio-card__window-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.portfolio-card__screen {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+}
+
+.portfolio-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.portfolio-card:hover .portfolio-card__image {
+    transform: scale(1.04);
+}
+
+/* ── Card Content ── */
+.portfolio-card__content {
+    padding: 1rem 1.25rem 1.25rem;
+    flex-grow: 1;
+}
+
+.portfolio-card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.portfolio-card__description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* ── Tech row + CTA (Portfolio grid card) ── */
+.portfolio-card__tech-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-card__tech-list {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.portfolio-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: gap 0.3s ease;
+}
+
+.portfolio-card:hover .portfolio-card__cta {
+    gap: 0.55rem;
+}

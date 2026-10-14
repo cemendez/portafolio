@@ -25,7 +25,7 @@ No test, lint, format, or typecheck scripts are configured.
 | `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro` |
 | `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, global CSS), `Header.astro`, `Footer.astro` |
-| `src/assets/css/` | `styles.css` — all styles in one file (custom properties, BEM naming) |
+| `src/assets/css/` | One stylesheet per component/section (`base.css`, `header.css`, `hero.css`, …) — custom properties, BEM naming |
 | `public/` | Static assets: `favicon.svg`, `portada.jpg` (OG image) |
 
 ## Path aliases (tsconfig)
@@ -82,7 +82,7 @@ Siempre cuantificar cuando sea posible.
 
 ### CSS conventions
 
-- **Single file:** all styles in `src/assets/css/styles.css` (1291+ lines).
+- **One file per owner:** `base.css` (tokens, reset, shared utilities like `.heading`, `.animate`, `.tech-badge`) is imported by `MainLayout`; every other stylesheet is imported from the frontmatter of the component that owns it (`import "@assets/css/hero.css"`), so each page only ships the CSS it uses. New sections get their own file (e.g. `lab.css`) and a class prefix.
 - **Custom properties** in `:root` for colors, fonts, spacing:
   ```css
   --color-bg-primary: #081b29;

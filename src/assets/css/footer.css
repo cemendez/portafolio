@@ -1,0 +1,82 @@
+/***
+====================================================================
+  FOOTER
+====================================================================
+***/
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem var(--padding-side);
+    background: var(--bg-alt);
+}
+
+.footer__text {
+    position: relative;
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text);
+}
+
+.footer__text a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.footer__icon-top {
+    position: relative;
+}
+
+.footer__scroll-link {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.footer__scroll-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: var(--bg);
+    z-index: -1;
+    transition: 0.3s;
+}
+
+.footer__scroll-link:hover::before {
+    width: 100%;
+}
+
+.footer__scroll-link svg {
+    height: 20px;
+    color: var(--bg);
+    transition: 0.3s;
+}
+
+.footer__scroll-link:hover svg {
+    color: var(--bg);
+}
+
+@media (min-width: 769px) {
+    .footer {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .footer__text {
+        margin-top: 0;
+        order: -1;
+    }
+}
