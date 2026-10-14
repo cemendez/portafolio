@@ -11,10 +11,14 @@ interface Props {
     title: string;
     description: string;
     image?: string;
+    imageAlt?: string;
+    imageWidth?: number;
+    imageHeight?: number;
     type?: "website" | "article";
+    publishedTime?: Date;
 }
 
-const { title, description, image, type } = Astro.props;
+const { title, description, ...seo } = Astro.props;
 
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins/600.css";
@@ -25,8 +29,9 @@ import "@assets/css/styles.css";
 
 <html lang="es">
     <head>
-        <BaseHead {title} {description} {image} {type} />
+        <BaseHead {title} {description} {...seo} />
         <StructuredData />
+        <slot name="head" />
         <Analytics />
         <ClientRouter />
     </head>

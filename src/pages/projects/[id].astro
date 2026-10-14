@@ -26,14 +26,63 @@ const ogImage = await getImage({
     format: "jpeg",
     quality: 80,
 });
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const publishedLabel = data.publishDate.toLocaleDateString("es-MX", {
+    year: "numeric",
+    month: "long",
+    timeZone: "UTC",
+});
+
+// Datos estructurados propios de cada proyecto (el Person global va en el layout)
+const jsonLd = [
+    {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: data.title,
+        description: data.description,
+        url: pageUrl,
+        image: new URL(ogImage.src, Astro.site).href,
+        datePublished: data.publishDate.toISOString(),
+        keywords: data.tags.join(", "),
+        inLanguage: "es-MX",
+        author: {
+            "@type": "Person",
+            name: "Carlos Emmanuel Méndez Calderón",
+            url: Astro.site?.href,
+        },
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Inicio",
+                item: Astro.site?.href,
+            },
+            { "@type": "ListItem", position: 2, name: data.title, item: pageUrl },
+        ],
+    },
+];
 ---
 
 <MainLayout
     title={`${data.title} | Portafolio`}
     description={data.description}
     image={ogImage.src}
+    imageAlt={`Captura del proyecto ${data.title}`}
+    imageWidth={1200}
+    imageHeight={630}
     type="article"
+    publishedTime={data.publishDate}
 >
+    <script
+        slot="head"
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+    />
     <article class="project-details">
         <div class="project-details__container">
             <a href="/#portfolio" class="project-details__back"
@@ -50,18 +99,48 @@ const ogImage = await getImage({
                         ><strong>Categoría:</strong>
                         {data.category}</span
                     >
-                    {
-                        data.demoUrl && (
-                            <a
-                                href={data.demoUrl}
-                                target="_blank"
-                                class="project-details__link"
-                            >
-                                Ver Demo
-                            </a>
-                        )
-                    }
+                    <span class="project-details__badge"
+                        ><strong>Estado:</strong> {data.status}</span
+                    >
+                    <span class="project-details__badge"
+                        ><strong>Publicado:</strong> {publishedLabel}</span
+                    >
                 </div>
+
+                <ul class="project-details__tags" aria-label="Tecnologías">
+                    {
+                        data.tags.map((tag) => (
+                            <li class="project-details__tag">{tag}</li>
+                        ))
+                    }
+                </ul>
+
+                {
+                    (data.demoUrl || data.repoUrl) && (
+                        <div class="project-details__links">
+                            {data.demoUrl && (
+                                <a
+                                    href={data.demoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="project-details__link"
+                                >
+                                    Ver demo
+                                </a>
+                            )}
+                            {data.repoUrl && (
+                                <a
+                                    href={data.repoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="project-details__link project-details__link--secondary"
+                                >
+                                    Ver repositorio
+                                </a>
+                            )}
+                        </div>
+                    )
+                }
             </header>
 
             <Image
