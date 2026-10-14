@@ -2,7 +2,7 @@
 title: "Anexo Geográfico de Gobierno — Plataforma de consulta territorial"
 description: "Miles de indicadores gubernamentales organizados en un mapa, accesibles para cualquier ciudadano."
 publishDate: 2026-03-30
-image: "./assets/images/anexo-informe.png"
+image: "./assets/images/anexo-informe.webp"
 category: "Gobierno"
 role: "Lead Developer / Architect"
 tags: ["Laravel", "PHP", "MySQL", "Leaflet", "GeoServer"]

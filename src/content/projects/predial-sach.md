@@ -2,7 +2,7 @@
 title: "Sistema de Pago del Impuesto Predial — San Andrés Cholula"
 description: "Digitalicé el pago predial para más de 200,000 cuentas catastrales. La gente dejó de hacer filas y el municipio redujo la morosidad."
 publishDate: "2021-01-01"
-image: "./assets/images/predial-sach.png"
+image: "./assets/images/predial-sach.webp"
 category: "Gobierno"
 role: "Arquitecto de Software / Full-Stack Developer"
 tags: ["PHP", "SQL Server", "jQuery", "Apache", "Bootstrap", "AdquiraCloud"]

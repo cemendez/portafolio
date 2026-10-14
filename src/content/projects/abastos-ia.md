@@ -2,7 +2,7 @@
 title: "Abastos IA: Plataforma de Voz a Datos para Gestión Comercial y Control de Taras"
 description: "Un comerciante en la Central de Abastos no puede parar para capturar datos. Le diseñé un sistema que entiende su voz y lo registra todo."
 publishDate: "2026-06-12"
-image: "./assets/images/abastos-ia.png"
+image: "./assets/images/abastos-ia.webp"
 category: "Freelance"
 role: "Arquitecto de software y desarrollador principal"
 tags: ["OpenAI API (Whisper/GPT)", "Laravel", "PHP 8.3", "JavaScript (MediaRecorder)", "Node.js (Proxy)", "SQL (Conditional Aggregation)", "Vite"]

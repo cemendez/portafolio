@@ -2,7 +2,7 @@
 title: "Plataforma E-Learning TNG Group — LMS Transformacional con Stripe + Zoom"
 description: "Migré un negocio de cursos presenciales a uno digital global. Pagos con Stripe, sesiones Zoom, control concurrente y panel admin, todo desde cero."
 publishDate: 2022-03-30
-image: "./assets/images/gabriel-nosso.png"
+image: "./assets/images/gabriel-nosso.webp"
 category: "E-learning"
 role: "Arquitecto de software y desarrollador principal"
 tags:

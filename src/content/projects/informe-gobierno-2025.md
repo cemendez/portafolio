@@ -2,7 +2,7 @@
 title: "Ecosistema de Rendición de Cuentas: Informe de Gobierno 2025"
 description: "Digitalicé un proceso que antes requería entregar miles de documentos en papel, reduciendo tiempos de validación en un 40%."
 publishDate: 2025-10-23
-image: "./assets/images/informe-gobierno-2025.png"
+image: "./assets/images/informe-gobierno-2025.webp"
 category: "Gobierno"
 role: "Arquitecto de software y desarrollador principal"
 tags: ["PHP (MVC)", "MySQL", "Docker", "Tailwind"]

@@ -4,7 +4,7 @@ description: >
   Tienda en línea para velas artesanales con carrito de compras, panel administrativo y pagos PayPal
   en dos modalidades. Hecha a la medida del negocio, no al revés.
 publishDate: 2022-02-11
-image: "./assets/images/alpec.png"
+image: "./assets/images/alpec.webp"
 category: "E-commerce"
 role: "Arquitecto de software y desarrollador principal"
 tags:

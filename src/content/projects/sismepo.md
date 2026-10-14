@@ -2,7 +2,7 @@
 title: "Sistema de Monitoreo Estatal de Proyectos Estratégicos"
 description: "Reemplacé un sistema de reportes en hojas de cálculo por una plataforma con mapas, dashboards y control de acceso granular para todo el gobierno estatal."
 publishDate: 2024-05-18
-image: "./assets/images/sismepo.png"
+image: "./assets/images/sismepo.webp"
 category: "Gobierno"
 role: "Arquitecto de Software / Full-Stack Developer"
 tags:

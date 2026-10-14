@@ -2,7 +2,7 @@
 title: "Evolución Arquitectónica: Sistema de Captura para el Informe de Gobierno 2026"
 description: "Los bloqueos globales paralizaban a todas las dependencias. Rediseñé la plataforma para que cada una avance a su ritmo, sin pisarse entre sí."
 publishDate: 2026-05-15
-image: "./assets/images/informe-gobierno-2026.png"
+image: "./assets/images/informe-gobierno-2026.webp"
 category: "Gobierno"
 role: "Arquitecto de software y desarrollador principal"
 tags: ['Laravel', 'Livewire', 'Alpine.js', 'MySQL', 'Spatie', 'Arquitectura Orientada a Eventos']

@@ -2,7 +2,7 @@
 title: "DIECSA: Desarrollo de Infraestructura Eléctrica y Civil"
 description: "Migré a producción el sitio de una firma de ingeniería eléctrica sin perder un solo dato ni un minuto de actividad."
 publishDate: 2026-02-10
-image: "./assets/images/diecsa.png"
+image: "./assets/images/diecsa.webp"
 category: "Freelance"
 role: "Desarrollador principal"
 tags: ["WordPress", "PHP", "Migration", "MySQL", "Apache"]
