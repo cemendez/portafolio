@@ -26,13 +26,11 @@ No test, lint, format, or typecheck scripts are configured.
 | `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, global CSS), `Header.astro`, `Footer.astro` |
 | `src/assets/css/` | `styles.css` — all styles in one file (custom properties, BEM naming) |
-| `src/assets/js/` | `script.js` — scroll-based nav highlighting, sticky header, years calc |
 | `public/` | Static assets: `favicon.svg`, `portada.jpg` (OG image) |
 
 ## Path aliases (tsconfig)
 
-`@components/*`, `@layouts/*`, `@pages/*`, `@sections/*`, `@assets/*` — all resolve under `src/`.  
-Note: `@sections/*` maps to `src/sections/` but section components live in `src/components/sections/`.
+`@components/*`, `@layouts/*`, `@sections/*` (→ `src/components/sections/`), `@content/*`, `@assets/*`, `@utils/*` — all resolve under `src/`.
 
 ## Content collections
 
@@ -141,7 +139,7 @@ const { title, description, skills } = Astro.props;
 
 - **Vanilla JS only** in `<script>` tags (no framework).
 - **SweetAlert2** for toast notifications (copy-to-clipboard feedback).
-- **Navigation:** scroll-based active link highlighting via `window.onscroll`.
+- **Navigation:** scroll-spy and mobile menu live in the `<script>` of `Header.astro`, bound on `astro:page-load` (Header is re-created on every ClientRouter navigation). Menu links are `/#section` so they work from any route.
 - **Portfolio filtering:** client-side JS toggling `display: block/none` based on `data-category` attribute.
 
 ### Open Graph & SEO

@@ -1,6 +1,12 @@
 ---
 import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
 import { getTechIcon } from "./techIcons";
+
+interface Props {
+    project: CollectionEntry<"projects">;
+}
+
 const { project } = Astro.props;
 const { data, id } = project;
 const techIcon = getTechIcon(data.tags[0]);

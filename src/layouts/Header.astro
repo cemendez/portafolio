@@ -2,7 +2,7 @@
 ---
 
 <header class="header" id="header">
-    <a href="#home" class="header__logo" aria-label="Ir al inicio">
+    <a href="/#home" class="header__logo" aria-label="Ir al inicio">
         <svg
             class="header__logo-img"
             viewBox="0 0 300 300"
@@ -60,11 +60,11 @@
     </div>
 
     <nav class="header__navbar" id="header-navbar">
-        <a class="navbar__link navbar__link--active" href="#home"> Inicio </a>
-        <a class="navbar__link" href="#portfolio">Portafolio</a>
-        <a class="navbar__link" href="#skills">Habilidades</a>
-        <a class="navbar__link" href="#about">Acerca</a>
-        <a class="navbar__link" href="#experience">Experiencia</a>
+        <a class="navbar__link navbar__link--active" href="/#home"> Inicio </a>
+        <a class="navbar__link" href="/#portfolio">Portafolio</a>
+        <a class="navbar__link" href="/#skills">Habilidades</a>
+        <a class="navbar__link" href="/#about">Acerca</a>
+        <a class="navbar__link" href="/#experience">Experiencia</a>
 
         <span class="navbar__active"></span>
         <span class="animate" style="--i:2;"></span>
@@ -72,18 +72,60 @@
 </header>
 
 <script>
-    const menuIcon = document.getElementById("menu-icon");
-    const navbar = document.getElementById("header-navbar");
+    // Menu movil + scroll-spy. Los elementos del Header se vuelven a crear en
+    // cada navegacion de ClientRouter, asi que se enlazan en astro:page-load.
+    function updateOnScroll() {
+        const scrollY = window.scrollY;
+        const navLinks = document.querySelectorAll(".navbar__link");
+        const header = document.querySelector("header");
+        header?.classList.toggle("header--sticky", scrollY > 100);
 
-    menuIcon?.addEventListener("click", () => {
-        menuIcon.classList.toggle("close");
-        navbar?.classList.toggle("active");
-    });
+        const sections = document.querySelectorAll<HTMLElement>("section[id]");
+        const linked = [...sections].filter((sec) =>
+            document.querySelector(`.navbar__link[href$="#${sec.id}"]`),
+        );
 
-    navbar?.querySelectorAll(".navbar__link").forEach((link) => {
-        link.addEventListener("click", () => {
-            menuIcon.classList.remove("close");
-            navbar.classList.remove("active");
+        // Fuera de la home no hay secciones enlazadas: ninguna opcion activa
+        if (!linked.length) {
+            navLinks.forEach((link) =>
+                link.classList.remove("navbar__link--active"),
+            );
+            return;
+        }
+
+        linked.forEach((sec) => {
+            const offset = sec.offsetTop - 400;
+            if (scrollY >= offset && scrollY < offset + sec.offsetHeight) {
+                navLinks.forEach((link) =>
+                    link.classList.remove("navbar__link--active"),
+                );
+                document
+                    .querySelector(`.navbar__link[href$="#${sec.id}"]`)
+                    ?.classList.add("navbar__link--active");
+                sec.classList.add("show-animate");
+            }
         });
-    });
+    }
+
+    function initHeader() {
+        const menuIcon = document.getElementById("menu-icon");
+        const navbar = document.getElementById("header-navbar");
+
+        menuIcon?.addEventListener("click", () => {
+            menuIcon.classList.toggle("close");
+            navbar?.classList.toggle("active");
+        });
+
+        navbar?.querySelectorAll(".navbar__link").forEach((link) => {
+            link.addEventListener("click", () => {
+                menuIcon?.classList.remove("close");
+                navbar.classList.remove("active");
+            });
+        });
+
+        updateOnScroll();
+    }
+
+    window.addEventListener("scroll", updateOnScroll, { passive: true });
+    document.addEventListener("astro:page-load", initHeader);
 </script>

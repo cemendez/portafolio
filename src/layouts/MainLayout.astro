@@ -7,6 +7,13 @@ import Footer from "@layouts/Footer.astro";
 
 import { ClientRouter } from "astro:transitions";
 
+interface Props {
+    title: string;
+    description: string;
+    image?: string;
+    type?: "website" | "article";
+}
+
 const { title, description, image, type } = Astro.props;
 
 import "@fontsource/poppins/400.css";
@@ -31,6 +38,5 @@ import "@assets/css/styles.css";
         </main>
         <Footer />
 
-        <script src="@assets/js/script.js"></script>
     </body>
 </html>
