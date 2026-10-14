@@ -15,6 +15,8 @@ const sortedProjects = allProjects.sort(
     </h2>
 
     <div class="portfolio__grid">
-        {sortedProjects.map((project) => <ProjectCard project={project} />)}
+        {sortedProjects.map((project) => (
+            <ProjectCard project={project} />
+        ))}
     </div>
 </section>

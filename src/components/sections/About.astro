@@ -25,11 +25,10 @@ const experienceYears = getExperienceYears();
                 <span class="heading__span">Arquitecto </span> de Software
             </h3>
             <div class="about__summary-badge">
-                <span class="about__summary-badge-years"
-                    ><strong class="experience__years"
-                        >{experienceYears}</strong
-                    >+</span
-                >
+                <span class="about__summary-badge-years">
+                    <strong class="experience__years">{experienceYears}</strong>
+                    +
+                </span>
                 <span class="about__summary-badge-label">Años Exp.</span>
             </div>
             <p class="about__paragraph">
@@ -42,9 +41,13 @@ const experienceYears = getExperienceYears();
 
         <div class="about__column-right">
             <div class="about__skills-box">
-                <strong class="about__item-title">Habilidades de liderazgo</strong>
+                <strong class="about__item-title">
+                    Habilidades de liderazgo
+                </strong>
                 <ul class="about__skills-list">
-                    {habilidades.map((skill) => <li>{skill}</li>)}
+                    {habilidades.map((skill) => (
+                        <li>{skill}</li>
+                    ))}
                 </ul>
             </div>
 

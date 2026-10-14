@@ -22,9 +22,7 @@ const techList = data.tags.slice(0, 3).join(", ");
                 <span class="portfolio-card__dot portfolio-card__dot--minimize"></span>
                 <span class="portfolio-card__dot portfolio-card__dot--maximize"></span>
             </div>
-            <span class="portfolio-card__window-title">
-                {data.category}
-            </span>
+            <span class="portfolio-card__window-title">{data.category}</span>
         </div>
         <div class="portfolio-card__screen">
             <Image
@@ -47,11 +45,21 @@ const techList = data.tags.slice(0, 3).join(", ");
         <p class="portfolio-card__description">{data.description}</p>
         <span class="portfolio-card__cta">
             Leer más
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                ><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    d="M5 12h14m-6-6l6 6l-6 6"
-                ></path></svg
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
             >
+                <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 12h14m-6-6l6 6l-6 6"
+                ></path>
+            </svg>
         </span>
     </div>
 </a>

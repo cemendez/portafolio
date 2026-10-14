@@ -13,11 +13,28 @@ import "@assets/css/header.css";
             aria-label="Logo de mi portafolio Web (Carlos Méndez)"
         >
             <style>
-                .logo-hex  { fill: none; stroke: var(--logo-primary, #f1f5f9); stroke-width: 16; stroke-linejoin: round; }
-                .logo-code { fill: none; stroke: var(--logo-accent, #00aaee); stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; }
+                .logo-hex {
+                    fill: none;
+                    stroke: var(--logo-primary, #f1f5f9);
+                    stroke-width: 16;
+                    stroke-linejoin: round;
+                }
+                .logo-code {
+                    fill: none;
+                    stroke: var(--logo-accent, #00aaee);
+                    stroke-width: 16;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                }
             </style>
-            <polygon class="logo-hex" points="270,150 210,253.9 90,253.9 30,150 90,46.1 210,46.1"/>
-            <path class="logo-code" d="M120,120 L95,150 L120,180 M140,185 L160,115 M180,120 L205,150 L180,180"/>
+            <polygon
+                class="logo-hex"
+                points="270,150 210,253.9 90,253.9 30,150 90,46.1 210,46.1"
+            />
+            <path
+                class="logo-code"
+                d="M120,120 L95,150 L120,180 M140,185 L160,115 M180,120 L205,150 L180,180"
+            />
         </svg>
         <span class="animate" style="--i:1;"></span>
     </a>
@@ -29,21 +46,24 @@ import "@assets/css/header.css";
             width="1em"
             height="1em"
             viewBox="0 0 16 16"
-            ><path
+        >
+            <path
                 fill="none"
                 stroke="currentColor"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="1.5"
-                d="m2.75 12.25h10.5m-10.5-4h10.5m-10.5-4h10.5"></path></svg
-        >
+                d="m2.75 12.25h10.5m-10.5-4h10.5m-10.5-4h10.5"
+            ></path>
+        </svg>
         <svg
             class="header__menu-close"
             xmlns="http://www.w3.org/2000/svg"
             width="1em"
             height="1em"
             viewBox="0 0 24 24"
-            ><path
+        >
+            <path
                 fill="none"
                 stroke="currentColor"
                 stroke-dasharray="12"
@@ -51,21 +71,34 @@ import "@assets/css/header.css";
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M12 12l7 7M12 12l-7 -7M12 12l-7 7M12 12l7 -7"
-                ><animate
+            >
+                <animate
                     fill="freeze"
                     attributeName="stroke-dashoffset"
                     dur="0.4s"
-                    values="12;0"></animate></path
-            ></svg
-        >
+                    values="12;0"
+                ></animate>
+            </path>
+        </svg>
     </div>
 
     <nav class="header__navbar" id="header-navbar">
-        <a class="navbar__link navbar__link--active" href="/#home"> Inicio </a>
-        <a class="navbar__link" href="/#portfolio">Portafolio</a>
-        <a class="navbar__link" href="/#skills">Habilidades</a>
-        <a class="navbar__link" href="/#about">Acerca</a>
-        <a class="navbar__link" href="/#experience">Experiencia</a>
+        <a class="navbar__link navbar__link--active" href="/#home">
+            {" "}
+            Inicio{" "}
+        </a>
+        <a class="navbar__link" href="/#portfolio">
+            Portafolio
+        </a>
+        <a class="navbar__link" href="/#skills">
+            Habilidades
+        </a>
+        <a class="navbar__link" href="/#about">
+            Acerca
+        </a>
+        <a class="navbar__link" href="/#experience">
+            Experiencia
+        </a>
 
         <span class="navbar__active"></span>
         <span class="animate" style="--i:2;"></span>

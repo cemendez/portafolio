@@ -62,14 +62,16 @@ const skillGroups = [
                 <span class="heading__span">Stack </span>Tecnológico
             </h2>
             <p class="skills__description">
-                No tengo martillo favorito. Para cada problema uso la herramienta
-                que corresponde, y si no existe, la construyo.
+                No tengo martillo favorito. Para cada problema uso la
+                herramienta que corresponde, y si no existe, la construyo.
             </p>
         </div>
 
         <div class="skills__panel">
             <div class="skills__grid">
-                {skillGroups.map((group) => <SkillCard {...group} />)}
+                {skillGroups.map((group) => (
+                    <SkillCard {...group} />
+                ))}
             </div>
         </div>
     </div>

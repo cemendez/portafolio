@@ -9,9 +9,10 @@ const publishDates = new Map(
     readdirSync(projectsDir)
         .filter((file) => file.endsWith(".md"))
         .map((file) => {
-            const match = readFileSync(new URL(file, projectsDir), "utf8").match(
-                /^publishDate:\s*["']?(\d{4}-\d{2}-\d{2})/m,
-            );
+            const match = readFileSync(
+                new URL(file, projectsDir),
+                "utf8",
+            ).match(/^publishDate:\s*["']?(\d{4}-\d{2}-\d{2})/m);
             return [file.replace(/\.md$/, ""), match && new Date(match[1])];
         })
         .filter(([, date]) => date && !isNaN(date)),
@@ -29,7 +30,11 @@ export default defineConfig({
             serialize(item) {
                 const { pathname } = new URL(item.url);
                 const id = pathname.match(/^\/projects\/([^/]+)\/?$/)?.[1];
-                const date = id ? publishDates.get(id) : pathname === "/" ? latestDate : undefined;
+                const date = id
+                    ? publishDates.get(id)
+                    : pathname === "/"
+                      ? latestDate
+                      : undefined;
                 if (date) item.lastmod = date.toISOString();
                 return item;
             },

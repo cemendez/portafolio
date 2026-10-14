@@ -38,7 +38,12 @@ const TECH_BADGES: TechBadge[] = [
     { match: /ci\s*\/?\s*cd/i, label: "CI", color: "#3b82f6", dark: true },
     { match: /linux/i, label: "Lx", color: "#fcc624", dark: true },
     { match: /ssh|rsync/i, label: "Sh", color: "#3b82f6", dark: true },
-    { match: /^git\b|git workflow/i, label: "Git", color: "#f05032", dark: true },
+    {
+        match: /^git\b|git workflow/i,
+        label: "Git",
+        color: "#f05032",
+        dark: true,
+    },
     { match: /terraform/i, label: "Tf", color: "#7b42bc" },
     { match: /aws/i, label: "Aws", color: "#ff9900", dark: true },
     { match: /azure/i, label: "Az", color: "#0078d4" },

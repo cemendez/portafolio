@@ -4,30 +4,35 @@ interface Props {
 }
 
 const { id = "G-HCZF07VEDC" } = Astro.props;
-const enabled = import.meta.env.PROD && /^G-[A-Z0-9]{6,}$/.test(id) && id !== "G-XXXXXXXXXX";
+const enabled =
+    import.meta.env.PROD &&
+    /^G-[A-Z0-9]{6,}$/.test(id) &&
+    id !== "G-XXXXXXXXXX";
 ---
 
-{
-    enabled && (
-        <>
-            <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${id}`} />
-            <script is:inline define:vars={{ id }}>
-                window.dataLayer = window.dataLayer || [];
-                function gtag() {
-                    dataLayer.push(arguments);
-                }
-                window.gtag = gtag;
-                gtag("js", new Date());
-                // ClientRouter evita recargas completas: el page_view se envia en cada navegacion
-                gtag("config", id, { send_page_view: false });
-                document.addEventListener("astro:page-load", () => {
-                    gtag("event", "page_view", {
-                        page_title: document.title,
-                        page_location: location.href,
-                        page_path: location.pathname,
-                    });
+{enabled && (
+    <>
+        <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
+        />
+        <script is:inline define:vars={{ id }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag("js", new Date());
+            // ClientRouter evita recargas completas: el page_view se envia en cada navegacion
+            gtag("config", id, { send_page_view: false });
+            document.addEventListener("astro:page-load", () => {
+                gtag("event", "page_view", {
+                    page_title: document.title,
+                    page_location: location.href,
+                    page_path: location.pathname,
                 });
-            </script>
-        </>
-    )
-}
+            });
+        </script>
+    </>
+)}
