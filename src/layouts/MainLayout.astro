@@ -1,6 +1,7 @@
 ---
 import BaseHead from "@components/base/BaseHead.astro";
 import StructuredData from "@components/base/StructuredData.astro";
+import Analytics from "@components/base/Analytics.astro";
 import Header from "@layouts/Header.astro";
 import Footer from "@layouts/Footer.astro";
 
@@ -19,6 +20,7 @@ import "@assets/css/styles.css";
     <head>
         <BaseHead {title} {description} {image} {type} />
         <StructuredData />
+        <Analytics />
         <ClientRouter />
     </head>
     <body>
