@@ -28,15 +28,16 @@ Portafolio de **Carlos E. Méndez**, Arquitecto de Software. Sitio estático en 
 src/
 ├─ content.config.ts      colección `projects` (glob de src/content/projects, esquema Zod)
 ├─ content/projects/      proyectos en .md + assets/images/*.webp
-├─ pages/                 index.astro (/) y projects/[id].astro (/projects/<id>)
+├─ content/lab/           fichas del Laboratorio técnico (.md) + plantilla
+├─ pages/                 index.astro (/), projects/[id].astro, lab/ (/lab, /lab/<id>) y radar.astro (/radar)
 ├─ layouts/               MainLayout, Header, Footer
 ├─ components/
 │  ├─ base/               BaseHead (SEO/OG), StructuredData (JSON-LD), Analytics
-│  ├─ sections/           Hero, Portfolio, Skills, About, Experience
-│  └─ ui/                 ProjectCard, ExperienceCard, SkillCard, techIcons.ts
+│  ├─ sections/           Hero, Portfolio, Lab, Skills, About, Experience
+│  └─ ui/                 ProjectCard, LabCard, ExperienceCard, SkillCard, techIcons.ts
 ├─ assets/css/            base.css + una hoja por componente (header, hero, about, …)
 ├─ assets/images/         home.webp, iconos
-└─ utils/                 experience.ts (años de experiencia)
+└─ utils/                 experience.ts (años de experiencia), lab.ts (orden y fechas del laboratorio)
 public/                   CV en PDF, favicon, portada.jpg (OG por defecto), robots.txt
 ```
 
@@ -48,6 +49,10 @@ Alias de TypeScript: `@components`, `@layouts`, `@sections` (→ `src/components
 2. Agrega la captura en `src/content/projects/assets/images/<nombre>.webp` (máx. 1920 px de ancho).
 3. Redacta el cuerpo con la narrativa **Desafío → Solución → Logros**.
 4. El proyecto aparece solo en la home (ordenado por `priority`), en `/projects/<nombre>`, en el sitemap y con su propio Open Graph y JSON-LD.
+
+## Laboratorio técnico
+
+Proyectos de aprendizaje en `src/content/lab/` (copia `_plantilla.md` sin el guion bajo). Se publican en `/lab/<nombre>` y los destacados salen en la home. `/radar` lee en el navegador el archivo diario del repo público `radar-tech`.
 
 Más detalle de convenciones en [`AGENTS.md`](./AGENTS.md); diseño y comportamiento en [`DESIGN.md`](./DESIGN.md).
 

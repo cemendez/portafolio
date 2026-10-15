@@ -22,13 +22,15 @@ No unit tests. CI (`.github/workflows/ci.yml`) runs `check`, `format:check` and 
 
 | Directory | Purpose |
 |---|---|
-| `src/pages/` | Routes: `index.astro`, `projects/[id].astro` |
+| `src/pages/` | Routes: `index.astro`, `projects/[id].astro`, `lab/index.astro`, `lab/[id].astro`, `radar.astro` |
 | `src/content/projects/` | MD project entries with frontmatter (Zod schema in `src/content.config.ts`) |
+| `src/content/lab/` | MD entries of the Laboratorio técnico (learning projects); files starting with `_` are ignored (`_plantilla.md`) |
 | `src/components/base/` | Low-level components: `BaseHead.astro`, `StructuredData.astro`, `Analytics.astro` |
-| `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro` |
-| `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
+| `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro`, `Lab.astro` (home teaser) |
+| `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `LabCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, `base.css`, slot `head`), `Header.astro`, `Footer.astro` |
 | `src/assets/css/` | One stylesheet per component/section (`base.css`, `header.css`, `hero.css`, …) — custom properties, BEM naming |
+| `src/utils/` | `experience.ts` (years), `lab.ts` (sorting/format helpers for the lab collection) |
 | `public/` | Static assets: `favicon.svg`, `portada.jpg` (OG image) |
 
 ## Path aliases (tsconfig)
@@ -36,6 +38,8 @@ No unit tests. CI (`.github/workflows/ci.yml`) runs `check`, `format:check` and 
 `@components/*`, `@layouts/*`, `@sections/*` (→ `src/components/sections/`), `@content/*`, `@assets/*`, `@utils/*` — all resolve under `src/`.
 
 ## Content collections
+
+Two collections: `projects` (client/professional work) and `lab` (Laboratorio técnico, learning projects).
 
 Projects use `astro:content` with `glob()` loader (`src/content/projects/**/*.md`).  
 Project images are stored as `.webp` (max 1920px wide). Images in frontmatter use the `image()` schema type — reference project images via relative path (`./assets/images/<file>.webp`).  
@@ -60,6 +64,13 @@ priority: 1                  # Display order on the home page (ascending, defaul
 demoUrl: "https://..."       # Optional live link
 repoUrl: "https://..."       # Optional repo link
 ```
+
+### Laboratorio técnico (`lab` collection)
+
+Entries live in `src/content/lab/<name>.md` and are published at `/lab/<name>`. Copy `_plantilla.md` (drop the underscore) to add one. Frontmatter: `title`, `description` (≤220 chars, also meta description), `publishDate`, `updatedDate?`, `cover?`/`coverAlt?`, `gallery[]` (`src`, `alt`, `caption?`), `youtubeId?` (11-char ID; loaded on click from youtube-nocookie), `stack[]`, `status` (`En desarrollo` | `Online` | `Offline` | `Archivado`), `version?`, `internalUrl?` (page inside this site, e.g. `/radar`), `demoUrl?`, `demoNote?`, `repoUrl?`, `highlights[]`, `featured`, `priority` (ascending; featured first). Body sections: El problema → La solución → Decisiones técnicas → Lo que salió mal → Qué mejoraría. Screenshots go in `src/content/lab/assets/images/*.webp`.
+Entries without `cover` render a title block on the card. Do not put private URLs (demos with open sign-up, unreviewed repos) in the markdown: the repo is public.
+
+`/radar` is a client-rendered page: it fetches `archive/index.json` and `archive/<YYYY-MM-DD>.json` from `raw.githubusercontent.com/cemendez/radar-tech` in the browser (supports `?fecha=YYYY-MM-DD`). Crawlers only see the loading state; prerendering the latest edition at build time is a possible future step.
 
 ### Content writing style
 
@@ -86,7 +97,7 @@ Siempre cuantificar cuando sea posible.
 
 ### CSS conventions
 
-- **One file per owner:** `base.css` (tokens, reset, shared utilities like `.heading`, `.animate`, `.tech-badge`) is imported by `MainLayout`; every other stylesheet is imported from the frontmatter of the component that owns it (`import "@assets/css/hero.css"`), so each page only ships the CSS it uses. New sections get their own file (e.g. `lab.css`) and a class prefix.
+- **One file per owner:** `base.css` (tokens, reset, shared utilities like `.heading`, `.animate`, `.tech-badge`) is imported by `MainLayout`; every other stylesheet is imported from the frontmatter of the component that owns it (`import "@assets/css/hero.css"`), so each page only ships the CSS it uses. New sections get their own file and a class prefix (`lab.css` uses `lab-`/`radar`).
 - **Custom properties** in `:root` (`base.css`) for colors, fonts, spacing:
   ```css
   --bg: #0f172a;
@@ -104,7 +115,7 @@ Siempre cuantificar cuando sea posible.
   - `.portfolio-card__title`, `.experience-card__date`, `.header--sticky`
   - Section wrapper uses the block name: `.portfolio`, `.experience`, `.skills`
 - **Responsive breakpoints:** 769px (tablet), 992px (desktop).
-- **Animations:** defined with `@keyframes`, triggered by `.show-animate` class on scroll.
+- **Animations:** defined with `@keyframes`. (`.show-animate` is still toggled by the Header script but no CSS uses it.)
 - **Hover effects:** `::before` pseudo-element with `width: 0 → 100%` pattern for fill animations on buttons and cards.
 
 ### Component patterns
@@ -146,7 +157,7 @@ const { title, description, skills } = Astro.props;
 
 - **Vanilla JS only** in `<script>` tags (no framework).
 - **SweetAlert2** for toast notifications (copy-to-clipboard feedback).
-- **Navigation:** scroll-spy and mobile menu live in the `<script>` of `Header.astro`, bound on `astro:page-load` (Header is re-created on every ClientRouter navigation). Menu links are `/#section` so they work from any route.
+- **Navigation:** scroll-spy and mobile menu live in the `<script>` of `Header.astro`, bound on `astro:page-load` (Header is re-created on every ClientRouter navigation). Menu links are `/#section` so they work from any route. Links to separate pages use `data-routes="/lab /radar"` (active on those paths) and, for a home section without an anchor link, `data-section="<section id>"`.
 
 ### Open Graph & SEO
 

@@ -50,6 +50,8 @@ The hero uses a dark overlay over `home.webp` (`--background-image`). Accent blu
 |---|---|
 | `/` | `src/pages/index.astro` (Hero, Portfolio, Skills, About, Experience) |
 | `/projects/[id]` | `src/pages/projects/[id].astro` — `getStaticPaths()` over the `projects` collection |
+| `/lab`, `/lab/[id]` | Laboratorio técnico: listing and detail of the `lab` collection |
+| `/radar` | Radar Tech daily digest, fetched in the browser from the public `radar-tech` repo |
 
 ```
 MainLayout (BaseHead, StructuredData, Analytics, slot "head", ClientRouter)
@@ -57,6 +59,7 @@ MainLayout (BaseHead, StructuredData, Analytics, slot "head", ClientRouter)
 ├── <slot>
 │   ├── Hero         title, CTA buttons, social links, CV download, email copy
 │   ├── Portfolio    grid of ProjectCard (sorted by `priority`)
+│   ├── Lab          teaser: up to 3 LabCard + link to /lab
 │   ├── Skills       grouped columns of skill tags
 │   ├── About        summary card (years of experience), skills box, narrative blocks
 │   └── Experience   timeline of ExperienceCard
@@ -68,7 +71,7 @@ Project detail page: title, role/category/status/date badges, tag list, demo and
 ## Interactive Features
 
 1. **Header:** transparent → sticky background past 100px of scroll; mobile hamburger toggle; nav link highlighting by scroll position (only on pages whose sections match the menu). Bound on `astro:page-load` because the Header is re-created on every navigation.
-2. **Scroll reveal:** sections receive `.show-animate` when scrolled into view.
+2. **Menu by route:** `/lab` and `/radar` activate the "Laboratorio" link (`data-routes`); on the home the `lab-preview` section does (`data-section`).
 3. **View transitions:** card image → detail image via `transition:name="img-<id>"`.
 4. **Email copy:** clipboard API with SweetAlert2 toast; falls back to `document.execCommand("copy")` for non-secure contexts.
 5. **Years of experience:** `utils/experience.ts` computes `currentYear - 2014`.
@@ -96,12 +99,16 @@ Projects in `src/content/projects/*.md`, schema in `src/content.config.ts`:
 
 Body follows the narrative **Desafío → Solución → Logros**.
 
+## Laboratorio técnico
+
+Second content collection (`src/content/lab`) for learning projects (Node.js, React, TypeScript): problem, solution, technical decisions, what went wrong, what to improve, plus screenshots, YouTube video (click-to-load facade), demo and repository links. Each entry gets its own page with `CreativeWork` + `BreadcrumbList` JSON-LD and an OG image from its cover. Styles: `lab.css`. `/radar` renders the Radar Tech archive client-side (CORS `*` on raw.githubusercontent.com, 5-minute cache; no CSP in this repo to block it).
+
 ## SEO and Quality
 
 - `BaseHead.astro`: title, description, canonical (`Astro.site`), Open Graph (site name, locale `es_MX`, image size and alt, `article:published_time`) and Twitter Card (`name=` attributes).
 - Structured data: global `Person` JSON-LD; each project adds `CreativeWork` and `BreadcrumbList` through the layout's `head` slot.
 - Project OG image: JPG 1200×630 generated with `getImage`; default `public/portada.jpg` (1200×737).
-- Sitemap via `@astrojs/sitemap`; `lastmod` comes from each project's `publishDate` (home uses the newest). `robots.txt` allows all.
+- Sitemap via `@astrojs/sitemap`; `lastmod` comes from each project/lab entry's `publishDate`/`updatedDate` (index pages use the newest; `/radar` has none). `robots.txt` allows all.
 - Accessibility: skip link, `:focus-visible` outlines, `prefers-reduced-motion` disables animations.
 - No CSP or custom headers are defined in the repo.
 - CI (`.github/workflows/ci.yml`): `pnpm check`, `pnpm format:check`, `pnpm build`. There are no unit tests.
