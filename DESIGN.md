@@ -2,174 +2,114 @@
 
 ## Overview
 
-Single-page Astro 6 static site for Carlos E. Méndez, Software Architect.  
-Deployed via GitHub Actions → rsync to shared hosting.  
-Spanish-language, focused on government-sector architecture experience.
+Single-page Astro 6 static site for Carlos E. Méndez, Software Architect, plus one detail route per project.  
+Spanish-language, dark theme only, focused on government-sector architecture experience.  
+Hosted on Cloudflare Pages (Git integration: every push to `main` builds and publishes `dist/`).
 
 ## Technical Architecture
 
 | Layer | Technology |
 |---|---|
-| Static site generator | Astro 6 (`astro:transitions` ClientRouter, `astro:content`) |
-| Styling | Single CSS file, custom properties, BEM naming |
-| Client JS | Vanilla JS (no framework) |
-| Notifications | SweetAlert2 for copy-to-clipboard toasts |
-| Fonts | Poppins 300–900 via `@fontsource/poppins` |
-| Images | `astro:assets` `Image` component for automatic optimization |
-| Hosting | Shared hosting, `dist/` rsync'd |
+| Static site generator | Astro 6 (`astro:transitions` ClientRouter, `astro:content`, `astro:assets`) |
+| Styling | Plain CSS, one stylesheet per component, custom properties, BEM naming |
+| Client JS | Vanilla JS in component `<script>` tags (no framework) |
+| Notifications | SweetAlert2 toast for copy-to-clipboard |
+| Fonts | Poppins 400/600/700 via `@fontsource/poppins` |
+| Images | `.webp` sources, optimized with `astro:assets`; project OG image generated at build |
+| Analytics | GA4 (production only, manual `page_view` on `astro:page-load`) + Cloudflare Web Analytics |
+| Tooling | pnpm, `astro check`, Prettier (`prettier-plugin-astro`), GitHub Actions CI (validation only) |
 
 ## Visual Design System
 
-### Color Palette
+Tokens live in `src/assets/css/base.css` (`:root`). There is a single dark theme; there is no `prefers-color-scheme` or theme switch.
 
 ```
---bg:           #f8fafc    (page background, light slate)
---bg-alt:       #ffffff    (card/section background)
---text:         #0f172a    (headings, dark slate)
---text-muted:   #64748b    (body text)
---accent:       #0284c7    (primary blue, #00abf0 in older vars)
---accent-rgb:   2, 132, 199
---border:       #e2e8f0    (subtle borders)
+--bg:           #0f172a   (page background, deep navy)
+--bg-alt:       #1e293b   (cards, badges, tags)
+--text:         #f8fafc   (headings)
+--text-muted:   #94a3b8   (body copy)
+--accent:       #3b82f6   (links, active states, buttons)
+--accent-rgb:   59, 130, 246
+--border:       #334155
+--padding-side: 8%
+--font-family:  "Poppins", sans-serif
 ```
 
-The hero section uses a dark overlay (`#071A29` background with `--background-image`) so text in the hero is white/light. Accent blue is used for interactive elements, links, active states, and decorative borders.
+The hero uses a dark overlay over `home.webp` (`--background-image`). Accent blue marks interactive elements and active states. Accessibility contrast was tuned to WCAG AA (see commit history for accent/badge colors).
 
-### Typography
+### Layout
 
-- **Font:** Poppins (300–900 weights)
-- **Heading sizes:** `heading` class is 2.8rem centered; section title `about__subtitle` 1.8rem
-- **Body:** 0.9rem (scales to 1.05rem on desktop)
-- **Tags/labels:** 0.65rem–0.75rem uppercase or bold
+- Sections: `min-height: 100vh`, 7rem vertical padding (10rem on desktop), horizontal `--padding-side`.
+- Portfolio: CSS grid, `repeat(auto-fill, minmax(310px, 1fr))`.
+- Skills grid: 1 column, 2 from 640px, 4 from 1024px.
+- Breakpoints: 769px (tablet), 992px (desktop); a few components also use 640px and 1024px.
 
-### Spacing & Layout
+## Routes and Components
 
-- Sections: 7rem padding top/bottom (10rem desktop), min-height 100vh
-- Side padding: `--padding-side: 8%`
-- Max content width: 900–1200px depending on section
-- Grids use CSS Grid with `auto-fill, minmax(310px, 1fr)` for portfolio cards
-
-## Component Tree
+| Route | File |
+|---|---|
+| `/` | `src/pages/index.astro` (Hero, Portfolio, Skills, About, Experience) |
+| `/projects/[id]` | `src/pages/projects/[id].astro` — `getStaticPaths()` over the `projects` collection |
 
 ```
-MainLayout
-├── BaseHead (meta/OG tags)
-├── StructuredData (JSON-LD Person schema)
-├── Header (fixed, sticky on scroll, hamburger mobile menu)
+MainLayout (BaseHead, StructuredData, Analytics, slot "head", ClientRouter)
+├── Header   logo SVG, hamburger menu, nav links "/#section", scroll-spy
 ├── <slot>
-│   ├── Hero
-│   │   ├── Animated typing heading (CSS @keyframes)
-│   │   ├── Mouse trail thumbnails (project screenshots follow cursor)
-│   │   ├── Social buttons (LinkedIn, GitHub, WhatsApp, Phone, CV download)
-│   │   └── Email display + copy-to-clipboard (SweetAlert2 toast)
-│   ├── About
-│   │   ├── Image with gradient border, hover lift, sticky on desktop
-│   │   ├── Bio paragraphs
-│   │   └── Skills box (key technologies, soft skills)
-│   ├── Experience
-│   │   └── Timeline list with dot indicators
-│   │       └── ExperienceCard (date, role, company, description, tags)
-│   ├── Skills
-│   │   └── 2×2 grid of SkillCards with mouse spotlight effect
-│   │       └── SkillCard (title, description, tag pills)
-│   └── Portfolio (sticky-card stack with scroll-driven scale animation)
-│       └── N sticky cards (one per project)
-│           ├── Titlebar (window chrome dots)
-│           ├── Image column (60%)
-│           └── Info column (40%): number, category, status, title, description, tags, role
-└── Footer
-    └── Scroll-to-top button, copyright
+│   ├── Hero         title, CTA buttons, social links, CV download, email copy
+│   ├── Portfolio    grid of ProjectCard (sorted by `priority`)
+│   ├── Skills       grouped columns of skill tags
+│   ├── About        summary card (years of experience), skills box, narrative blocks
+│   └── Experience   timeline of ExperienceCard
+└── Footer   scroll-to-top, copyright
 ```
 
-### Route: `/projects/[id]`
-
-Detail page for each project. Uses `getStaticPaths()` from the content collection.  
-Renders the MD content with `astro:content`'s `render()`.
+Project detail page: title, role/category/status/date badges, tag list, demo and repository links, hero image (shared view transition with the card), rendered markdown.
 
 ## Interactive Features
 
-### 1. Hero Mouse Trail
-On `mousemove` over the hero, small project screenshots spawn at cursor position with rotation, fade out after 1s. Creates a playful portfolio preview effect.
+1. **Header:** transparent → sticky background past 100px of scroll; mobile hamburger toggle; nav link highlighting by scroll position (only on pages whose sections match the menu). Bound on `astro:page-load` because the Header is re-created on every navigation.
+2. **Scroll reveal:** sections receive `.show-animate` when scrolled into view.
+3. **View transitions:** card image → detail image via `transition:name="img-<id>"`.
+4. **Email copy:** clipboard API with SweetAlert2 toast; falls back to `document.execCommand("copy")` for non-secure contexts.
+5. **Years of experience:** `utils/experience.ts` computes `currentYear - 2014`.
 
-### 2. Portfolio Sticky Stack
-Projects render as cards stacked vertically with `position: sticky`. On scroll, each card scales down from `startScale` (calculated by index) to 1.0. Uses `requestAnimationFrame` for smooth updates. Shows a window-chrome titlebar on each card.
+## Content Model
 
-### 3. Skills Spotlight
-Two effects on skill cards:
-- Radial gradient spotlight following mouse position (CSS `--mouse-x`/`--mouse-y` custom properties)
-- Code rain background revealed via CSS `mask-image` radial gradient on hover
-
-### 4. Header Behavior
-- Transparent → sticky background on scroll past 100px
-- Mobile hamburger menu (toggle `active` class on navbar)
-- Nav links auto-highlight based on scroll position
-- Desktop: nav links white on hero, dark on scroll
-
-### 5. Email Copy
-Copy email to clipboard with SweetAlert2 success toast; fallback using `document.execCommand('copy')`.
-
-### 6. Years of Experience
-Auto-calculated: `new Date().getFullYear() - 2014`, displayed via `.experience__years` class.
-
-## Responsive Design
-
-| Breakpoint | Behavior |
-|---|---|
-| < 769px (mobile) | Single column grids, full-width cards, hamburger menu visible, sticky cards become normal flow |
-| 769–991px (tablet) | Two-column skills grid, horizontal footer, inline nav |
-| ≥ 992px (desktop) | 25%/75% about layout, two-column skills, hero text left-aligned, inline social bar at bottom |
-
-## Content Model (Astro Content Collections)
-
-Projects in `src/content/projects/*.md` with Zod schema:
+Projects in `src/content/projects/*.md`, schema in `src/content.config.ts`:
 
 ```typescript
 {
   title: string
   description: string
   publishDate: Date
-  image: Image           // relative path e.g. "./assets/images/project.png"
-  category: enum         // GIS | Gobierno | E-commerce | FullStack | Web App | Freelance
+  image: Image            // "./assets/images/<name>.webp"
+  category: enum          // GIS | Gobierno | E-commerce | E-learning | FullStack | Web App | Freelance
   tags: string[]
-  status: enum           // Online | Offline | Privado | Fase de Lanzamiento
+  status: enum            // Online | Offline | Privado | Fase de Lanzamiento
   role: string
-  featured: boolean      // reserved for top projects (spans 2 cols)
+  featured: boolean       // default false; currently not used in the UI
+  priority: number        // default 999; ascending order on the home page
   demoUrl?: URL
   repoUrl?: URL
 }
 ```
 
-Body follows narrative: **Desafío → Solución → Impacto**.
+Body follows the narrative **Desafío → Solución → Logros**.
 
-## Performance & SEO
+## SEO and Quality
 
-- Static site, no server rendering
-- OG tags + JSON-LD structured data (Person schema)
-- Canonical URLs, sitemap linked
-- `astro:assets` Image component for automatic optimization
-- Accessibility: skip link, `focus-visible` outlines, `prefers-reduced-motion` media query disables animations
-- Custom scrollbar styling
-- `::selection` styled with accent color
-
-## Deployment Pipeline
-
-```
-Git push main → GitHub Actions:
-  1. Setup Node 22, npm cache
-  2. npm install
-  3. npm run build  → dist/
-  4. rsync -avzr --delete dist/ → remote server
-```
-
-Docker dev: `docker compose up` runs `npm run dev -- --host` on port 4321.
+- `BaseHead.astro`: title, description, canonical (`Astro.site`), Open Graph (site name, locale `es_MX`, image size and alt, `article:published_time`) and Twitter Card (`name=` attributes).
+- Structured data: global `Person` JSON-LD; each project adds `CreativeWork` and `BreadcrumbList` through the layout's `head` slot.
+- Project OG image: JPG 1200×630 generated with `getImage`; default `public/portada.jpg` (1200×737).
+- Sitemap via `@astrojs/sitemap`; `lastmod` comes from each project's `publishDate` (home uses the newest). `robots.txt` allows all.
+- Accessibility: skip link, `:focus-visible` outlines, `prefers-reduced-motion` disables animations.
+- No CSP or custom headers are defined in the repo.
+- CI (`.github/workflows/ci.yml`): `pnpm check`, `pnpm format:check`, `pnpm build`. There are no unit tests.
 
 ## Notable Implementation Details
 
-- All CSS in a single file (~1830 lines), no CSS modules or preprocessors
-- No typecheck, lint, or test scripts configured
-- Both `package-lock.json` and `pnpm-lock.yaml` tracked; CI uses npm
-- `.editorconfig`: spaces 4-wide, CRLF, no trailing whitespace trim, no final newline
-- Astro dev toolbar disabled in config
-- Section components live in `src/components/sections/` (not `src/sections/` as the tsconfig alias `@sections/*` suggests)
-- Root OG image is `public/portada.jpg` (referenced as `/portada.jpg`)
-- Logo is an inline SVG in `Header.astro` with CSS custom properties for color theming (`--logo-primary`, `--logo-accent`)
-- Scroll-driven animations use `.show-animate` class (from intersection-based scroll logic in script.js)
+- Line endings: repo is LF (`.gitattributes` `text=auto`); `.editorconfig` asks for CRLF in the Windows working copy. Prettier uses `endOfLine: auto`.
+- Astro dev toolbar is disabled in config.
+- Root OG image is referenced as `/portada.jpg`.
+- Logo is an inline SVG in `Header.astro`, colored through `--logo-primary` and `--logo-accent`.
+- `hero.css` still contains `.trail-thumbnail` / `@keyframes trailFade`, leftovers of a removed mouse-trail effect.

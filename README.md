@@ -1,43 +1,56 @@
-# Astro Starter Kit: Minimal
+# carlosemendez.com
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Portafolio de **Carlos E. Méndez**, Arquitecto de Software. Sitio estático en español, tema oscuro, desplegado en Cloudflare Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Stack
 
-## 🚀 Project Structure
+- [Astro 6](https://astro.build) (salida estática, sin adaptador) con `@astrojs/sitemap`.
+- Node >= 22.12 y pnpm 10 (`packageManager` en `package.json`; solo se versiona `pnpm-lock.yaml`).
+- CSS plano con variables y nombres BEM, un archivo por componente. JavaScript vanilla; SweetAlert2 solo para el aviso al copiar el correo.
+- Poppins vía `@fontsource`. Imágenes con `astro:assets` a partir de fuentes `.webp`.
+- Analítica: GA4 (`src/components/base/Analytics.astro`, solo en producción) y Cloudflare Web Analytics.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Comandos
+
+| Comando             | Acción                                         |
+| :------------------ | :--------------------------------------------- |
+| `pnpm install`      | Instala dependencias                           |
+| `pnpm dev`          | Servidor de desarrollo en `localhost:4321`     |
+| `pnpm build`        | Compila el sitio a `dist/`                     |
+| `pnpm preview`      | Sirve `dist/` localmente                       |
+| `pnpm check`        | Verifica tipos con `astro check`               |
+| `pnpm format`       | Formatea con Prettier                          |
+| `pnpm format:check` | Comprueba el formato (lo ejecuta el CI)        |
+
+## Estructura
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├─ content.config.ts      colección `projects` (glob de src/content/projects, esquema Zod)
+├─ content/projects/      proyectos en .md + assets/images/*.webp
+├─ pages/                 index.astro (/) y projects/[id].astro (/projects/<id>)
+├─ layouts/               MainLayout, Header, Footer
+├─ components/
+│  ├─ base/               BaseHead (SEO/OG), StructuredData (JSON-LD), Analytics
+│  ├─ sections/           Hero, Portfolio, Skills, About, Experience
+│  └─ ui/                 ProjectCard, ExperienceCard, SkillCard, techIcons.ts
+├─ assets/css/            base.css + una hoja por componente (header, hero, about, …)
+├─ assets/images/         home.webp, iconos
+└─ utils/                 experience.ts (años de experiencia)
+public/                   CV en PDF, favicon, portada.jpg (OG por defecto), robots.txt
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Alias de TypeScript: `@components`, `@layouts`, `@sections` (→ `src/components/sections`), `@content`, `@assets`, `@utils`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Agregar un proyecto
 
-Any static assets, like images, can be placed in the `public/` directory.
+1. Crea `src/content/projects/<nombre>.md` con el frontmatter definido en `src/content.config.ts`.
+2. Agrega la captura en `src/content/projects/assets/images/<nombre>.webp` (máx. 1920 px de ancho).
+3. Redacta el cuerpo con la narrativa **Desafío → Solución → Logros**.
+4. El proyecto aparece solo en la home (ordenado por `priority`), en `/projects/<nombre>`, en el sitemap y con su propio Open Graph y JSON-LD.
 
-## 🧞 Commands
+Más detalle de convenciones en [`AGENTS.md`](./AGENTS.md); diseño y comportamiento en [`DESIGN.md`](./DESIGN.md).
 
-All commands are run from the root of the project, from a terminal:
+## Despliegue
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Cloudflare Pages con integración Git: cada push a `main` ejecuta `pnpm build` y publica `dist/`. El workflow `.github/workflows/ci.yml` solo valida (`check`, `format:check`, `build`) en PRs y pushes; no despliega.
