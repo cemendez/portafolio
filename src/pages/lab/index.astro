@@ -1,0 +1,40 @@
+---
+import "@assets/css/lab.css";
+import MainLayout from "@layouts/MainLayout.astro";
+import LabCard from "@components/ui/LabCard.astro";
+import { getLabEntries } from "@utils/lab";
+
+const entries = await getLabEntries();
+
+const title = "Laboratorio técnico | Carlos E. Méndez";
+const description =
+    "Proyectos de aprendizaje y experimentos: Node.js, NestJS, React y automatización. Arquitectura, decisiones técnicas, demos y código.";
+---
+
+<MainLayout title={title} description={description}>
+    <section class="lab" id="lab">
+        <div class="lab-container">
+            <header class="lab__header">
+                <p class="lab__eyebrow">Laboratorio técnico</p>
+                <h1 class="lab__title">Lo que construyo para aprender</h1>
+                <p class="lab__intro">
+                    Proyectos propios con los que amplío mi stack hacia Node.js
+                    y React con TypeScript. Cada ficha explica el problema, la
+                    arquitectura y las decisiones que tomé, con demo y código
+                    cuando están disponibles. Los construyo en público: también
+                    cuento lo que salió mal.
+                </p>
+            </header>
+
+            {entries.length > 0 ? (
+                <div class="lab__grid">
+                    {entries.map((entry) => (
+                        <LabCard entry={entry} />
+                    ))}
+                </div>
+            ) : (
+                <p class="lab__empty">Pronto habrá proyectos aquí.</p>
+            )}
+        </div>
+    </section>
+</MainLayout>

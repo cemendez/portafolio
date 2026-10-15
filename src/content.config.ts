@@ -37,4 +37,47 @@ const projects = defineCollection({
         }),
 });
 
-export const collections = { projects };
+// Laboratorio técnico: proyectos de aprendizaje (Node, React, etc.).
+// Los archivos que empiezan con "_" se ignoran (plantillas, borradores).
+const lab = defineCollection({
+    loader: glob({ pattern: "[^_]*.md", base: "./src/content/lab" }),
+    schema: ({ image }) =>
+        z.object({
+            title: z.string(),
+            // Una o dos líneas: se usa en la tarjeta y como meta description
+            description: z.string().max(220),
+            publishDate: z.coerce.date(),
+            updatedDate: z.coerce.date().optional(),
+            // Portada opcional: sin ella la tarjeta muestra un bloque con el título
+            cover: image().optional(),
+            coverAlt: z.string().optional(),
+            gallery: z
+                .array(
+                    z.object({
+                        src: image(),
+                        alt: z.string(),
+                        caption: z.string().optional(),
+                    }),
+                )
+                .default([]),
+            // Solo el ID de YouTube (lo que va después de ?v=)
+            youtubeId: z
+                .string()
+                .regex(/^[\w-]{11}$/)
+                .optional(),
+            stack: z.array(z.string()).min(1),
+            status: z.enum(["En desarrollo", "Online", "Offline", "Archivado"]),
+            version: z.string().optional(),
+            // Página dentro del portafolio (p. ej. /radar), demo externa y repo
+            internalUrl: z.string().startsWith("/").optional(),
+            demoUrl: z.string().url().optional(),
+            demoNote: z.string().optional(),
+            repoUrl: z.string().url().optional(),
+            // Puntos clave que se muestran como lista en la ficha
+            highlights: z.array(z.string()).default([]),
+            featured: z.boolean().default(false),
+            priority: z.number().int().default(100),
+        }),
+});
+
+export const collections = { projects, lab };

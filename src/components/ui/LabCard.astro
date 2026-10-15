@@ -1,0 +1,101 @@
+---
+import "@assets/css/lab.css";
+import { Image } from "astro:assets";
+import { statusModifier, type LabEntry } from "@utils/lab";
+
+interface Props {
+    entry: LabEntry;
+}
+
+const { entry } = Astro.props;
+const {
+    title,
+    description,
+    cover,
+    stack,
+    status,
+    version,
+    internalUrl,
+    demoUrl,
+    repoUrl,
+} = entry.data;
+const href = `/lab/${entry.id}`;
+const visibleStack = stack.slice(0, 5);
+const extraStack = stack.length - visibleStack.length;
+---
+
+<article class="lab-card">
+    <a class="lab-card__media" href={href} tabindex="-1" aria-hidden="true">
+        {cover ? (
+            <Image
+                class="lab-card__image"
+                src={cover}
+                alt=""
+                widths={[400, 640, 800]}
+                sizes="(min-width: 992px) 33vw, (min-width: 769px) 50vw, 100vw"
+                loading="lazy"
+            />
+        ) : (
+            <span class="lab-card__placeholder">{title}</span>
+        )}
+    </a>
+
+    <div class="lab-card__body">
+        <div class="lab-card__meta">
+            <span class={`lab-status lab-status--${statusModifier(status)}`}>
+                {status}
+            </span>
+            {version && <span class="lab-card__version">{version}</span>}
+        </div>
+
+        <h3 class="lab-card__title">
+            <a class="lab-card__link" href={href}>
+                {title}
+            </a>
+        </h3>
+
+        <p class="lab-card__description">{description}</p>
+
+        <ul class="lab-card__stack" aria-label="Tecnologías">
+            {visibleStack.map((tech) => (
+                <li class="lab-card__tech">{tech}</li>
+            ))}
+            {extraStack > 0 && (
+                <li class="lab-card__tech lab-card__tech--more">
+                    +{extraStack}
+                </li>
+            )}
+        </ul>
+
+        <div class="lab-card__actions">
+            <a class="lab-card__action lab-card__action--primary" href={href}>
+                Ver detalles
+            </a>
+            {internalUrl && (
+                <a class="lab-card__action" href={internalUrl}>
+                    Ver en vivo
+                </a>
+            )}
+            {!internalUrl && demoUrl && (
+                <a
+                    class="lab-card__action"
+                    href={demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Demo
+                </a>
+            )}
+            {repoUrl && (
+                <a
+                    class="lab-card__action"
+                    href={repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Código
+                </a>
+            )}
+        </div>
+    </div>
+</article>

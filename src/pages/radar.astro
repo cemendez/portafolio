@@ -1,0 +1,277 @@
+---
+import "@assets/css/lab.css";
+import MainLayout from "@layouts/MainLayout.astro";
+
+const title = "Radar Tech | Digest diario de noticias tech";
+const description =
+    "Digest diario de noticias de IA, programación, arquitectura y herramientas, curado con un LLM. Proyecto del Laboratorio técnico de Carlos E. Méndez.";
+---
+
+<MainLayout title={title} description={description}>
+    <section class="radar" id="radar">
+        <div class="lab-container">
+            <header class="radar__header">
+                <p class="lab__eyebrow">
+                    <a href="/lab/radar-tech">Laboratorio técnico</a> · En vivo
+                </p>
+                <h1 class="radar__title">Radar Tech</h1>
+                <p class="radar__intro">
+                    Cada mañana un workflow lee feeds de tecnología, un LLM
+                    selecciona y resume lo relevante, y el resultado llega por
+                    Telegram y se archiva aquí. Esta página lee ese archivo
+                    directamente del repositorio público.
+                </p>
+            </header>
+
+            <div class="radar__toolbar">
+                <label class="radar__label" for="radar-date">
+                    Edición
+                </label>
+                <select class="radar__select" id="radar-date" disabled>
+                    <option>Cargando…</option>
+                </select>
+                <a
+                    class="radar__repo"
+                    href="https://github.com/cemendez/radar-tech/tree/main/archive"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ver archivo en GitHub
+                </a>
+            </div>
+
+            <p
+                class="radar__status"
+                id="radar-status"
+                role="status"
+                aria-live="polite"
+            >
+                Cargando el digest…
+            </p>
+            <h2 class="radar__day" id="radar-day" hidden></h2>
+            <ol class="radar__list" id="radar-list"></ol>
+
+            <noscript>
+                <p class="radar__status">
+                    Esta página necesita JavaScript. Puedes consultar el archivo
+                    en
+                    <a href="https://github.com/cemendez/radar-tech/tree/main/archive">
+                        GitHub
+                    </a>
+                    .
+                </p>
+            </noscript>
+        </div>
+    </section>
+</MainLayout>
+
+<script>
+    const BASE =
+        "https://raw.githubusercontent.com/cemendez/radar-tech/main/archive";
+    const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+    interface RadarItem {
+        title: string;
+        url: string;
+        summary?: string;
+        source?: string;
+    }
+
+    let controller: AbortController | null = null;
+
+    const longDate = new Intl.DateTimeFormat("es-MX", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+    });
+    const shortDate = new Intl.DateTimeFormat("es-MX", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        timeZone: "UTC",
+    });
+    const toDate = (iso: string) => new Date(`${iso}T12:00:00Z`);
+
+    // index.json puede ser ["2026-10-14", …] o { dates: [...] } o una lista de { date }
+    function normalizeIndex(data: unknown): string[] {
+        const list = Array.isArray(data)
+            ? data
+            : ((data as { dates?: unknown[]; days?: unknown[] })?.dates ??
+              (data as { days?: unknown[] })?.days ??
+              []);
+        return list
+            .map((entry) =>
+                typeof entry === "string"
+                    ? entry
+                    : (entry as { date?: string })?.date,
+            )
+            .filter(
+                (date): date is string =>
+                    typeof date === "string" && DATE_RE.test(date),
+            );
+    }
+
+    // Solo enlaces http(s): el contenido viene de un LLM y no se confía en él
+    function safeUrl(value: string): string | null {
+        try {
+            const url = new URL(value);
+            return url.protocol === "https:" || url.protocol === "http:"
+                ? url.href
+                : null;
+        } catch {
+            return null;
+        }
+    }
+
+    async function getJson(url: string, signal: AbortSignal) {
+        const response = await fetch(url, { signal });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+    }
+
+    function renderItems(list: HTMLOListElement, items: RadarItem[]) {
+        const fragment = document.createDocumentFragment();
+
+        for (const item of items) {
+            const li = document.createElement("li");
+            li.className = "radar-item";
+
+            const heading = document.createElement("h3");
+            heading.className = "radar-item__title";
+            const href = safeUrl(item.url);
+            if (href) {
+                const link = document.createElement("a");
+                link.href = href;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.textContent = item.title;
+                heading.append(link);
+            } else {
+                heading.textContent = item.title;
+            }
+            li.append(heading);
+
+            if (item.summary) {
+                const summary = document.createElement("p");
+                summary.className = "radar-item__summary";
+                summary.textContent = item.summary;
+                li.append(summary);
+            }
+
+            if (item.source) {
+                const source = document.createElement("span");
+                source.className = "radar-item__source";
+                source.textContent = item.source;
+                li.append(source);
+            }
+
+            fragment.append(li);
+        }
+
+        list.replaceChildren(fragment);
+    }
+
+    async function loadDay(date: string) {
+        const status = document.getElementById("radar-status");
+        const day = document.getElementById("radar-day");
+        const list = document.getElementById(
+            "radar-list",
+        ) as HTMLOListElement | null;
+        if (!status || !day || !list || !DATE_RE.test(date)) return;
+
+        controller?.abort();
+        controller = new AbortController();
+
+        status.hidden = false;
+        status.textContent = "Cargando el digest…";
+        list.setAttribute("aria-busy", "true");
+
+        try {
+            const data = await getJson(
+                `${BASE}/${date}.json`,
+                controller.signal,
+            );
+            const items: RadarItem[] = Array.isArray(data?.items)
+                ? data.items.filter(
+                      (item: RadarItem) =>
+                          item && typeof item.title === "string",
+                  )
+                : [];
+
+            day.textContent = longDate.format(toDate(date));
+            day.hidden = false;
+            renderItems(list, items);
+
+            if (items.length === 0) {
+                status.textContent = "Esta edición no tiene noticias.";
+            } else {
+                status.hidden = true;
+                status.textContent = "";
+            }
+
+            const url = new URL(location.href);
+            url.searchParams.set("fecha", date);
+            history.replaceState(history.state, "", url);
+        } catch (error) {
+            if ((error as Error).name === "AbortError") return;
+            list.replaceChildren();
+            day.hidden = true;
+            status.textContent =
+                "No se pudo cargar esta edición. Intenta de nuevo en unos minutos.";
+        } finally {
+            list.removeAttribute("aria-busy");
+        }
+    }
+
+    async function init() {
+        const select = document.getElementById(
+            "radar-date",
+        ) as HTMLSelectElement | null;
+        const status = document.getElementById("radar-status");
+        if (!select || !status || select.dataset.ready) return;
+        select.dataset.ready = "true";
+
+        try {
+            const indexController = new AbortController();
+            const dates = normalizeIndex(
+                await getJson(`${BASE}/index.json`, indexController.signal),
+            );
+
+            if (dates.length === 0) {
+                select.replaceChildren(new Option("Sin ediciones"));
+                status.textContent = "Todavía no hay ediciones archivadas.";
+                return;
+            }
+
+            select.replaceChildren(
+                ...dates.map(
+                    (date, i) =>
+                        new Option(
+                            i === 0
+                                ? `${shortDate.format(toDate(date))} (más reciente)`
+                                : shortDate.format(toDate(date)),
+                            date,
+                        ),
+                ),
+            );
+            select.disabled = false;
+
+            const requested = new URL(location.href).searchParams.get("fecha");
+            const initial =
+                requested && dates.includes(requested) ? requested : dates[0];
+            select.value = initial;
+
+            select.addEventListener("change", () => loadDay(select.value));
+            await loadDay(initial);
+        } catch {
+            select.replaceChildren(new Option("No disponible"));
+            status.textContent =
+                "No se pudo conectar con el archivo de Radar Tech. Intenta de nuevo en unos minutos.";
+        }
+    }
+
+    document.addEventListener("astro:page-load", init);
+    document.addEventListener("astro:before-swap", () => controller?.abort());
+</script>

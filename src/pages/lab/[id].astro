@@ -1,0 +1,306 @@
+---
+import "@assets/css/lab.css";
+import { Image, getImage } from "astro:assets";
+import { render } from "astro:content";
+import MainLayout from "@layouts/MainLayout.astro";
+import { getLabEntries, formatLabDate, statusModifier } from "@utils/lab";
+
+export async function getStaticPaths() {
+    const entries = await getLabEntries();
+    return entries.map((entry) => ({
+        params: { id: entry.id },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const {
+    title,
+    description,
+    publishDate,
+    updatedDate,
+    cover,
+    coverAlt,
+    gallery,
+    youtubeId,
+    stack,
+    status,
+    version,
+    internalUrl,
+    demoUrl,
+    demoNote,
+    repoUrl,
+    highlights,
+} = entry.data;
+
+// og:image: JPG 1200x630 a partir de la portada; sin portada se usa la por defecto
+const ogImage = cover
+    ? await getImage({
+          src: cover,
+          width: 1200,
+          height: 630,
+          fit: "cover",
+          position: "top",
+          format: "jpeg",
+          quality: 80,
+      })
+    : null;
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const labUrl = new URL("/lab", Astro.site).href;
+
+// Datos estructurados propios de la ficha (el Person global va en el layout)
+const jsonLd = [
+    {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: title,
+        description,
+        url: pageUrl,
+        ...(ogImage && { image: new URL(ogImage.src, Astro.site).href }),
+        datePublished: publishDate.toISOString(),
+        ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+        keywords: stack.join(", "),
+        inLanguage: "es-MX",
+        author: {
+            "@type": "Person",
+            name: "Carlos Emmanuel Méndez Calderón",
+            url: Astro.site?.href,
+        },
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Inicio",
+                item: Astro.site?.href,
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Laboratorio técnico",
+                item: labUrl,
+            },
+            { "@type": "ListItem", position: 3, name: title, item: pageUrl },
+        ],
+    },
+];
+---
+
+<MainLayout
+    title={`${title} | Laboratorio técnico`}
+    description={description}
+    type="article"
+    publishedTime={publishDate}
+    {...(ogImage && {
+        image: ogImage.src,
+        imageAlt: coverAlt ?? title,
+        imageWidth: 1200,
+        imageHeight: 630,
+    })}
+>
+    <script
+        slot="head"
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+    />
+    <article class="lab-detail">
+        <div class="lab-container">
+            <nav class="lab-detail__breadcrumb" aria-label="Ruta">
+                <a href="/lab">Laboratorio técnico</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">{title}</span>
+            </nav>
+
+            <header class="lab-detail__header">
+                <div class="lab-detail__meta">
+                    <span
+                        class={`lab-status lab-status--${statusModifier(status)}`}
+                    >
+                        {status}
+                    </span>
+                    {version && (
+                        <span class="lab-detail__version">{version}</span>
+                    )}
+                    <time datetime={publishDate.toISOString()}>
+                        {formatLabDate(publishDate)}
+                    </time>
+                    {updatedDate && (
+                        <span>
+                            · Actualizado{" "}
+                            <time datetime={updatedDate.toISOString()}>
+                                {formatLabDate(updatedDate)}
+                            </time>
+                        </span>
+                    )}
+                </div>
+
+                <h1 class="lab-detail__title">{title}</h1>
+                <p class="lab-detail__lead">{description}</p>
+
+                <div class="lab-detail__actions">
+                    {internalUrl && (
+                        <a
+                            class="lab-detail__button lab-detail__button--primary"
+                            href={internalUrl}
+                        >
+                            Ver en vivo
+                        </a>
+                    )}
+                    {demoUrl && (
+                        <a
+                            class={`lab-detail__button${internalUrl ? "" : " lab-detail__button--primary"}`}
+                            href={demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Abrir demo
+                        </a>
+                    )}
+                    {repoUrl && (
+                        <a
+                            class="lab-detail__button"
+                            href={repoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Ver código
+                        </a>
+                    )}
+                </div>
+                {demoNote && <p class="lab-detail__note">{demoNote}</p>}
+            </header>
+
+            {youtubeId ? (
+                <div class="lab-video" data-youtube-id={youtubeId}>
+                    <button
+                        class="lab-video__play"
+                        type="button"
+                        aria-label={`Reproducir video de ${title}`}
+                    >
+                        <img
+                            class="lab-video__thumb"
+                            src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
+                            alt=""
+                            loading="lazy"
+                            width="480"
+                            height="360"
+                        />
+                        <span class="lab-video__icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+            ) : (
+                cover && (
+                    <Image
+                        class="lab-detail__cover"
+                        src={cover}
+                        alt={coverAlt ?? title}
+                        widths={[640, 960, 1280, 1920]}
+                        sizes="(min-width: 992px) 960px, 100vw"
+                        loading="eager"
+                    />
+                )
+            )}
+
+            <div class="lab-detail__layout">
+                <div class="lab-detail__content">
+                    <Content />
+                </div>
+
+                <aside class="lab-detail__aside">
+                    <section class="lab-detail__panel">
+                        <h2 class="lab-detail__panel-title">Stack</h2>
+                        <ul class="lab-detail__stack">
+                            {stack.map((tech) => (
+                                <li class="lab-card__tech">{tech}</li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    {highlights.length > 0 && (
+                        <section class="lab-detail__panel">
+                            <h2 class="lab-detail__panel-title">
+                                Puntos clave
+                            </h2>
+                            <ul class="lab-detail__highlights">
+                                {highlights.map((item) => (
+                                    <li>{item}</li>
+                                ))}
+                            </ul>
+                        </section>
+                    )}
+                </aside>
+            </div>
+
+            {gallery.length > 0 && (
+                <section
+                    class="lab-gallery"
+                    aria-labelledby="lab-gallery-title"
+                >
+                    <h2 class="lab-gallery__title" id="lab-gallery-title">
+                        Capturas
+                    </h2>
+                    <div class="lab-gallery__grid">
+                        {gallery.map((shot) => (
+                            <figure class="lab-gallery__item">
+                                <a
+                                    href={shot.src.src}
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <Image
+                                        class="lab-gallery__image"
+                                        src={shot.src}
+                                        alt={shot.alt}
+                                        widths={[480, 800, 1200]}
+                                        sizes="(min-width: 769px) 50vw, 100vw"
+                                        loading="lazy"
+                                    />
+                                </a>
+                                {shot.caption && (
+                                    <figcaption class="lab-gallery__caption">
+                                        {shot.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            <a class="lab-detail__back" href="/lab">
+                ← Volver al Laboratorio técnico
+            </a>
+        </div>
+    </article>
+</MainLayout>
+
+<script>
+    // Fachada de YouTube: el iframe solo se carga al hacer clic (sin cookies ni peso inicial)
+    document.addEventListener("astro:page-load", () => {
+        document
+            .querySelectorAll<HTMLElement>(".lab-video[data-youtube-id]")
+            .forEach((wrapper) => {
+                const button = wrapper.querySelector(".lab-video__play");
+                if (!button || wrapper.dataset.ready) return;
+                wrapper.dataset.ready = "true";
+
+                button.addEventListener("click", () => {
+                    const id = wrapper.dataset.youtubeId;
+                    if (!id || !/^[\w-]{11}$/.test(id)) return;
+                    const iframe = document.createElement("iframe");
+                    iframe.className = "lab-video__frame";
+                    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+                    iframe.title = "Video del proyecto";
+                    iframe.allow =
+                        "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+                    iframe.allowFullscreen = true;
+                    wrapper.replaceChildren(iframe);
+                });
+            });
+    });
+</script>
