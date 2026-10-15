@@ -246,6 +246,11 @@
 }
 
 /* ---------- Ficha /lab/[id] ---------- */
+.lab-detail {
+    /* deja libre el header fijo (como .project-details) */
+    padding: 10rem var(--padding-side) 5rem;
+}
+
 .lab-detail__breadcrumb {
     display: flex;
     flex-wrap: wrap;
