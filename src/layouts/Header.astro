@@ -90,6 +90,14 @@ import "@assets/css/header.css";
         <a class="navbar__link" href="/#portfolio">
             Portafolio
         </a>
+        <a
+            class="navbar__link"
+            href="/lab"
+            data-routes="/lab /radar"
+            data-section="lab-preview"
+        >
+            Laboratorio
+        </a>
         <a class="navbar__link" href="/#skills">
             Habilidades
         </a>
@@ -108,6 +116,12 @@ import "@assets/css/header.css";
 <script>
     // Menu movil + scroll-spy. Los elementos del Header se vuelven a crear en
     // cada navegacion de ClientRouter, asi que se enlazan en astro:page-load.
+    // Enlace del menu de una seccion de la home: por ancla (#id) o data-section
+    const linkFor = (id: string) =>
+        document.querySelector(
+            `.navbar__link[href$="#${id}"], .navbar__link[data-section="${id}"]`,
+        );
+
     function updateOnScroll() {
         const scrollY = window.scrollY;
         const navLinks = document.querySelectorAll(".navbar__link");
@@ -115,15 +129,19 @@ import "@assets/css/header.css";
         header?.classList.toggle("header--sticky", scrollY > 100);
 
         const sections = document.querySelectorAll<HTMLElement>("section[id]");
-        const linked = [...sections].filter((sec) =>
-            document.querySelector(`.navbar__link[href$="#${sec.id}"]`),
-        );
+        const linked = [...sections].filter((sec) => linkFor(sec.id));
 
-        // Fuera de la home no hay secciones enlazadas: ninguna opcion activa
+        // Fuera de la home no hay secciones enlazadas: se activa el enlace
+        // cuya ruta (data-routes) coincide con la pagina actual, si lo hay
         if (!linked.length) {
-            navLinks.forEach((link) =>
-                link.classList.remove("navbar__link--active"),
-            );
+            const path = location.pathname.replace(/\/$/, "");
+            navLinks.forEach((link) => {
+                const routes = (link as HTMLElement).dataset.routes?.split(" ");
+                const match = routes?.some(
+                    (route) => path === route || path.startsWith(`${route}/`),
+                );
+                link.classList.toggle("navbar__link--active", !!match);
+            });
             return;
         }
 
@@ -133,9 +151,7 @@ import "@assets/css/header.css";
                 navLinks.forEach((link) =>
                     link.classList.remove("navbar__link--active"),
                 );
-                document
-                    .querySelector(`.navbar__link[href$="#${sec.id}"]`)
-                    ?.classList.add("navbar__link--active");
+                linkFor(sec.id)?.classList.add("navbar__link--active");
                 sec.classList.add("show-animate");
             }
         });

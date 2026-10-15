@@ -1,0 +1,35 @@
+---
+import "@assets/css/lab.css";
+import LabCard from "@components/ui/LabCard.astro";
+import { getLabEntries } from "@utils/lab";
+
+const entries = (await getLabEntries()).slice(0, 3);
+---
+
+{entries.length > 0 && (
+    <section class="lab-preview" id="lab-preview">
+        <h2 class="heading">
+            <span class="heading__span">Laboratorio </span>Técnico
+        </h2>
+        <p class="lab-preview__intro">
+            Proyectos propios con los que amplío mi stack hacia Node.js y React.
+            Cada ficha explica la arquitectura y las decisiones que tomé.
+        </p>
+
+        <div class="lab-container">
+            <div class="lab__grid">
+                {entries.map((entry) => (
+                    <LabCard entry={entry} />
+                ))}
+            </div>
+            <div class="lab-preview__cta">
+                <a
+                    class="lab-card__action lab-card__action--primary"
+                    href="/lab"
+                >
+                    Ver todo el laboratorio
+                </a>
+            </div>
+        </div>
+    </section>
+)}
