@@ -358,13 +358,16 @@
 }
 
 .lab-detail__aside {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: start;
     gap: 1rem;
 }
 
 .lab-detail__panel {
-    padding: 1.25rem;
+    /* base.css da min-height: 100vh a todo <section> */
+    min-height: auto;
+    padding: 1rem 1.15rem;
     border: 1px solid var(--lab-border);
     border-radius: var(--lab-radius);
     background: var(--lab-bg-card);
@@ -389,10 +392,16 @@
     margin-top: 0.4rem;
 }
 
-.lab-detail__back {
-    display: inline-block;
+.lab-detail__footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
     margin-top: 3rem;
+}
+
+.lab-detail__footer-nav a {
     color: var(--lab-accent);
+    font-weight: 500;
     text-decoration: none;
 }
 
@@ -460,7 +469,9 @@
 
 /* ---------- Galería ---------- */
 .lab-gallery {
+    min-height: auto;
     margin-top: 3rem;
+    padding: 0;
 }
 
 .lab-gallery__title {
@@ -606,6 +617,7 @@
     }
 
     .lab-detail__aside {
+        grid-template-columns: 1fr;
         position: sticky;
         top: 6rem;
     }

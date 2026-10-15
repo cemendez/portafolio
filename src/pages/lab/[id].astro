@@ -111,6 +111,8 @@ const jsonLd = [
     <article class="lab-detail">
         <div class="lab-container">
             <nav class="lab-detail__breadcrumb" aria-label="Ruta">
+                <a href="/#lab-preview">Inicio</a>
+                <span aria-hidden="true">/</span>
                 <a href="/lab">Laboratorio técnico</a>
                 <span aria-hidden="true">/</span>
                 <span aria-current="page">{title}</span>
@@ -272,9 +274,10 @@ const jsonLd = [
                 </section>
             )}
 
-            <a class="lab-detail__back" href="/lab">
-                ← Volver al Laboratorio técnico
-            </a>
+            <div class="lab-detail__footer-nav">
+                <a href="/#lab-preview">← Volver al inicio</a>
+                <a href="/lab">Ver todos los proyectos del laboratorio</a>
+            </div>
         </div>
     </article>
 </MainLayout>
