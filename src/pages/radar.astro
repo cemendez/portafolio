@@ -1,13 +1,33 @@
 ---
 import "@assets/css/lab.css";
+import { getImage } from "astro:assets";
 import MainLayout from "@layouts/MainLayout.astro";
+import cover from "@content/lab/assets/images/radar-tech-portada.webp";
 
 const title = "Radar Tech | Digest diario de noticias tech";
 const description =
     "Digest diario de noticias de IA, programación, arquitectura y herramientas, curado con un LLM. Proyecto del Laboratorio técnico de Carlos E. Méndez.";
+
+// og:image: la misma portada de la ficha, en JPG 1200x630
+const ogImage = await getImage({
+    src: cover,
+    width: 1200,
+    height: 630,
+    fit: "cover",
+    position: "top",
+    format: "jpeg",
+    quality: 80,
+});
 ---
 
-<MainLayout title={title} description={description}>
+<MainLayout
+    title={title}
+    description={description}
+    image={ogImage.src}
+    imageAlt="Página /radar con la edición diaria del digest y el selector de fechas"
+    imageWidth={1200}
+    imageHeight={630}
+>
     <section class="radar" id="radar">
         <div class="lab-container">
             <header class="radar__header">
