@@ -63,11 +63,13 @@ featured: false              # Reserved for strongest architect-level projects (
 priority: 1                  # Display order on the home page (ascending, default 999)
 demoUrl: "https://..."       # Optional live link
 repoUrl: "https://..."       # Optional repo link
+youtubeId: "XXXXXXXXXXX"     # Optional demo video (11-char YouTube ID); shown on the detail page
+videoDate: YYYY-MM-DD        # Optional upload date for the VideoObject JSON-LD (defaults to publishDate)
 ```
 
 ### Laboratorio técnico (`lab` collection)
 
-Entries live in `src/content/lab/<name>.md` and are published at `/lab/<name>`. Copy `_plantilla.md` (drop the underscore) to add one. Frontmatter: `title`, `description` (≤220 chars, also meta description), `publishDate`, `updatedDate?`, `cover?`/`coverAlt?`, `gallery[]` (`src`, `alt`, `caption?`), `youtubeId?` (11-char ID; loaded on click from youtube-nocookie), `stack[]`, `status` (`En desarrollo` | `Online` | `Offline` | `Archivado`), `version?`, `internalUrl?` (page inside this site, e.g. `/radar`), `demoUrl?`, `demoNote?`, `repoUrl?`, `highlights[]`, `featured`, `priority` (ascending; featured first). Body sections: El problema → La solución → Decisiones técnicas → Lo que salió mal → Qué mejoraría. Screenshots go in `src/content/lab/assets/images/*.webp`.
+Entries live in `src/content/lab/<name>.md` and are published at `/lab/<name>`. Copy `_plantilla.md` (drop the underscore) to add one. Frontmatter: `title`, `description` (≤220 chars, also meta description), `publishDate`, `updatedDate?`, `cover?`/`coverAlt?`, `gallery[]` (`src`, `alt`, `caption?`), `youtubeId?` (11-char ID; loaded on click from youtube-nocookie), `videoDate?`, `seoTitle?` (≤60) / `seoDescription?` (≤160) for search engines (fall back to the title/description), `stack[]`, `status` (`En desarrollo` | `Online` | `Offline` | `Archivado`), `version?`, `internalUrl?` (page inside this site, e.g. `/radar`), `demoUrl?`, `demoNote?`, `repoUrl?`, `highlights[]`, `featured`, `priority` (ascending; featured first). Body sections: El problema → La solución → Decisiones técnicas → Lo que salió mal → Qué mejoraría. Screenshots go in `src/content/lab/assets/images/*.webp`.
 Entries without `cover` render a title block on the card. Do not put private URLs (demos with open sign-up, unreviewed repos) in the markdown: the repo is public.
 
 `/radar` is a client-rendered page: it fetches `archive/index.json` and `archive/<YYYY-MM-DD>.json` from `raw.githubusercontent.com/cemendez/radar-tech` in the browser (supports `?fecha=YYYY-MM-DD`). Crawlers only see the loading state; prerendering the latest edition at build time is a possible future step.
@@ -166,6 +168,10 @@ const { title, description, skills } = Astro.props;
 - Structured data (JSON-LD): global `Person` in `StructuredData.astro` with `jobTitle: "Software Architect"` (deliberately matches the social profiles; do not translate). Project pages add `CreativeWork` + `BreadcrumbList` via the layout `head` slot.
 - Sitemap `lastmod` comes from each project's `publishDate` (see `astro.config.mjs`).
 - Site canonical URL uses `Astro.site` config (`https://carlosemendez.com`).
+
+### Demo videos
+
+Videos live on YouTube (unlisted is fine), never in the repo (Cloudflare Pages caps files at 25 MiB). `components/ui/VideoEmbed.astro` is a click-to-load facade (iframe from `youtube-nocookie.com` only after the click) used by `/lab/[id]` and `/projects/[id]`; `utils/video.ts` builds the `VideoObject` JSON-LD.
 
 ### Creating a new project entry
 
