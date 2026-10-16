@@ -3,6 +3,8 @@ import "@assets/css/project-details.css";
 import { getCollection, render } from "astro:content";
 import { Image, getImage } from "astro:assets";
 import MainLayout from "@layouts/MainLayout.astro";
+import VideoEmbed from "@components/ui/VideoEmbed.astro";
+import { videoObject } from "@utils/video";
 
 export async function getStaticPaths() {
     const projects = await getCollection("projects");
@@ -53,6 +55,16 @@ const jsonLd = [
             url: Astro.site?.href,
         },
     },
+    ...(data.youtubeId
+        ? [
+              videoObject({
+                  id: data.youtubeId,
+                  name: `Recorrido de ${data.title}`,
+                  description: data.description,
+                  uploadDate: data.videoDate ?? data.publishDate,
+              }),
+          ]
+        : []),
     {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -152,6 +164,13 @@ const jsonLd = [
                 class="project-details__image"
                 alt={data.title}
             />
+
+            {data.youtubeId && (
+                <VideoEmbed
+                    id={data.youtubeId}
+                    title={`Recorrido de ${data.title}`}
+                />
+            )}
 
             <div class="project-details__content">
                 <Content />

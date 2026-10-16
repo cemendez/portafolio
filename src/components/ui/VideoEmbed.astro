@@ -1,0 +1,58 @@
+---
+import "@assets/css/video-embed.css";
+import { youtubeThumbnail } from "@utils/video";
+
+interface Props {
+    id: string;
+    title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<div class="video-embed" data-youtube-id={id} data-title={title}>
+    <button
+        class="video-embed__play"
+        type="button"
+        aria-label={`Reproducir video: ${title}`}
+    >
+        <img
+            class="video-embed__thumb"
+            src={youtubeThumbnail(id)}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width="480"
+            height="360"
+        />
+        <span class="video-embed__icon" aria-hidden="true"></span>
+    </button>
+</div>
+
+<script>
+    // Fachada de YouTube: el iframe (y sus cookies) solo se carga al hacer clic
+    document.addEventListener("astro:page-load", () => {
+        document
+            .querySelectorAll<HTMLElement>(".video-embed[data-youtube-id]")
+            .forEach((wrapper) => {
+                const button = wrapper.querySelector(".video-embed__play");
+                if (!button || wrapper.dataset.ready) return;
+                wrapper.dataset.ready = "true";
+
+                button.addEventListener("click", () => {
+                    const id = wrapper.dataset.youtubeId;
+                    if (!id || !/^[\w-]{11}$/.test(id)) return;
+                    const iframe = document.createElement("iframe");
+                    iframe.className = "video-embed__frame";
+                    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+                    iframe.title =
+                        wrapper.dataset.title ?? "Video del proyecto";
+                    iframe.allow =
+                        "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+                    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+                    iframe.allowFullscreen = true;
+                    wrapper.replaceChildren(iframe);
+                });
+            });
+    });
+</script>
