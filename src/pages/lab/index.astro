@@ -6,16 +6,66 @@ import { getLabEntries } from "@utils/lab";
 
 const entries = await getLabEntries();
 
-const title = "Laboratorio técnico | Carlos E. Méndez";
+const title = "Laboratorio técnico: proyectos con Node.js, NestJS y React";
 const description =
-    "Proyectos de aprendizaje y experimentos: Node.js, NestJS, React y automatización. Arquitectura, decisiones técnicas, demos y código.";
+    "Proyectos de aprendizaje con arquitectura, decisiones técnicas, demo y código. Node.js, NestJS, React y automatización.";
+
+const pageUrl = new URL("/lab", Astro.site).href;
+
+// Datos estructurados: listado de fichas + migas de pan (el Person va en el layout)
+const jsonLd = [
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: title,
+        description,
+        url: pageUrl,
+        inLanguage: "es-MX",
+        mainEntity: {
+            "@type": "ItemList",
+            itemListElement: entries.map((entry, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: entry.data.title,
+                url: new URL(`/lab/${entry.id}`, Astro.site).href,
+            })),
+        },
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Inicio",
+                item: Astro.site?.href,
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Laboratorio técnico",
+                item: pageUrl,
+            },
+        ],
+    },
+];
 ---
 
 <MainLayout title={title} description={description}>
+    <script
+        slot="head"
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+    />
     <section class="lab" id="lab">
         <div class="lab-container">
             <header class="lab__header">
-                <p class="lab__eyebrow">Laboratorio técnico</p>
+                <nav class="lab-breadcrumb" aria-label="Ruta">
+                    <a href="/#lab-preview">Inicio</a>
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page">Laboratorio técnico</span>
+                </nav>
                 <h1 class="lab__title">Lo que construyo para aprender</h1>
                 <p class="lab__intro">
                     Proyectos propios con los que amplío mi stack hacia Node.js
@@ -29,7 +79,7 @@ const description =
             {entries.length > 0 ? (
                 <div class="lab__grid">
                     {entries.map((entry) => (
-                        <LabCard entry={entry} />
+                        <LabCard entry={entry} headingLevel="h2" />
                     ))}
                 </div>
             ) : (

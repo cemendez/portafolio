@@ -19,7 +19,7 @@ const entries = (await getLabEntries()).slice(0, 3);
         <div class="lab-container">
             <div class="lab__grid">
                 {entries.map((entry) => (
-                    <LabCard entry={entry} />
+                    <LabCard entry={entry} headingLevel="h3" />
                 ))}
             </div>
             <div class="lab-preview__cta">

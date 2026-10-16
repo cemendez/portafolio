@@ -2,6 +2,8 @@
 # Copia este archivo sin el guion bajo (p. ej. calculadora-roi.md) para publicarlo.
 title: Nombre del proyecto
 description: Una o dos líneas sobre qué hace y para quién.
+# seoTitle: Título para buscadores (máx. 60 caracteres)
+# seoDescription: Descripción para buscadores (máx. 160 caracteres)
 publishDate: 2026-10-14
 # cover: ./assets/images/proyecto-portada.webp
 # coverAlt: Pantalla principal del proyecto
@@ -10,6 +12,7 @@ publishDate: 2026-10-14
 #       alt: Descripción de la captura
 #       caption: Texto opcional bajo la imagen
 # youtubeId: dQw4w9WgXcQ
+# videoDate: 2026-10-20   (fecha de subida del video; por defecto, publishDate)
 stack: [Node.js, React, TypeScript]
 status: En desarrollo
 # version: v0.1

@@ -5,9 +5,11 @@ import { statusModifier, type LabEntry } from "@utils/lab";
 
 interface Props {
     entry: LabEntry;
+    // Nivel del encabezado: h2 bajo el h1 de /lab, h3 bajo el h2 de la home
+    headingLevel?: "h2" | "h3";
 }
 
-const { entry } = Astro.props;
+const { entry, headingLevel: Heading = "h3" } = Astro.props;
 const {
     title,
     description,
@@ -48,11 +50,11 @@ const extraStack = stack.length - visibleStack.length;
             {version && <span class="lab-card__version">{version}</span>}
         </div>
 
-        <h3 class="lab-card__title">
+        <Heading class="lab-card__title">
             <a class="lab-card__link" href={href}>
                 {title}
             </a>
-        </h3>
+        </Heading>
 
         <p class="lab-card__description">{description}</p>
 

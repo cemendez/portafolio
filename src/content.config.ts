@@ -34,6 +34,13 @@ const projects = defineCollection({
             priority: z.number().default(999),
             demoUrl: z.string().url().optional(),
             repoUrl: z.string().url().optional(),
+            // Video de demostracion: solo el ID de YouTube (lo que va despues
+            // de ?v=); se carga al hacer clic. videoDate = fecha de subida.
+            youtubeId: z
+                .string()
+                .regex(/^[\w-]{11}$/)
+                .optional(),
+            videoDate: z.coerce.date().optional(),
         }),
 });
 
@@ -46,6 +53,10 @@ const lab = defineCollection({
             title: z.string(),
             // Una o dos líneas: se usa en la tarjeta y como meta description
             description: z.string().max(220),
+            // Opcionales: titulo (<= 60) y descripcion (<= 160) pensados para
+            // buscadores; si faltan se usan title y description
+            seoTitle: z.string().max(60).optional(),
+            seoDescription: z.string().max(160).optional(),
             publishDate: z.coerce.date(),
             updatedDate: z.coerce.date().optional(),
             // Portada opcional: sin ella la tarjeta muestra un bloque con el título
@@ -65,6 +76,8 @@ const lab = defineCollection({
                 .string()
                 .regex(/^[\w-]{11}$/)
                 .optional(),
+            // Fecha de subida del video (VideoObject); por defecto la de la ficha
+            videoDate: z.coerce.date().optional(),
             stack: z.array(z.string()).min(1),
             status: z.enum(["En desarrollo", "Online", "Offline", "Archivado"]),
             version: z.string().optional(),
