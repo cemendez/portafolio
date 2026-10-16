@@ -3,7 +3,9 @@ import "@assets/css/lab.css";
 import { Image, getImage } from "astro:assets";
 import { render } from "astro:content";
 import MainLayout from "@layouts/MainLayout.astro";
+import VideoEmbed from "@components/ui/VideoEmbed.astro";
 import { getLabEntries, formatLabDate, statusModifier } from "@utils/lab";
+import { videoObject } from "@utils/video";
 
 export async function getStaticPaths() {
     const entries = await getLabEntries();
@@ -18,12 +20,15 @@ const { Content } = await render(entry);
 const {
     title,
     description,
+    seoTitle,
+    seoDescription,
     publishDate,
     updatedDate,
     cover,
     coverAlt,
     gallery,
     youtubeId,
+    videoDate,
     stack,
     status,
     version,
@@ -69,6 +74,16 @@ const jsonLd = [
             url: Astro.site?.href,
         },
     },
+    ...(youtubeId
+        ? [
+              videoObject({
+                  id: youtubeId,
+                  name: `Demostración de ${title}`,
+                  description,
+                  uploadDate: videoDate ?? publishDate,
+              }),
+          ]
+        : []),
     {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -92,8 +107,8 @@ const jsonLd = [
 ---
 
 <MainLayout
-    title={`${title} | Laboratorio técnico`}
-    description={description}
+    title={seoTitle ?? `${title} | Laboratorio técnico`}
+    description={seoDescription ?? description}
     type="article"
     publishedTime={publishDate}
     {...(ogImage && {
@@ -110,7 +125,7 @@ const jsonLd = [
     />
     <article class="lab-detail">
         <div class="lab-container">
-            <nav class="lab-detail__breadcrumb" aria-label="Ruta">
+            <nav class="lab-breadcrumb" aria-label="Ruta">
                 <a href="/#lab-preview">Inicio</a>
                 <span aria-hidden="true">/</span>
                 <a href="/lab">Laboratorio técnico</a>
@@ -178,23 +193,7 @@ const jsonLd = [
             </header>
 
             {youtubeId ? (
-                <div class="lab-video" data-youtube-id={youtubeId}>
-                    <button
-                        class="lab-video__play"
-                        type="button"
-                        aria-label={`Reproducir video de ${title}`}
-                    >
-                        <img
-                            class="lab-video__thumb"
-                            src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
-                            alt=""
-                            loading="lazy"
-                            width="480"
-                            height="360"
-                        />
-                        <span class="lab-video__icon" aria-hidden="true"></span>
-                    </button>
-                </div>
+                <VideoEmbed id={youtubeId} title={`Demostración de ${title}`} />
             ) : (
                 cover && (
                     <Image
@@ -281,29 +280,3 @@ const jsonLd = [
         </div>
     </article>
 </MainLayout>
-
-<script>
-    // Fachada de YouTube: el iframe solo se carga al hacer clic (sin cookies ni peso inicial)
-    document.addEventListener("astro:page-load", () => {
-        document
-            .querySelectorAll<HTMLElement>(".lab-video[data-youtube-id]")
-            .forEach((wrapper) => {
-                const button = wrapper.querySelector(".lab-video__play");
-                if (!button || wrapper.dataset.ready) return;
-                wrapper.dataset.ready = "true";
-
-                button.addEventListener("click", () => {
-                    const id = wrapper.dataset.youtubeId;
-                    if (!id || !/^[\w-]{11}$/.test(id)) return;
-                    const iframe = document.createElement("iframe");
-                    iframe.className = "lab-video__frame";
-                    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
-                    iframe.title = "Video del proyecto";
-                    iframe.allow =
-                        "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-                    iframe.allowFullscreen = true;
-                    wrapper.replaceChildren(iframe);
-                });
-            });
-    });
-</script>

@@ -1,7 +1,16 @@
 ---
 title: Radar Tech
 description: Digest diario de noticias tech curado con un LLM. Se dispara solo cada mañana, llega por Telegram y queda archivado en una página pública.
+seoTitle: "Radar Tech: noticias tech diarias con IA y Telegram"
+seoDescription: "Bot que elige cada mañana con un LLM las noticias de IA y programación, las envía por Telegram y las archiva. Node.js, Cloudflare y GitHub Actions."
 publishDate: 2026-10-14
+cover: ./assets/images/radar-tech-portada.webp
+coverAlt: Página /radar con la edición diaria del digest y el selector de fechas
+gallery:
+    - src: ./assets/images/radar-tech-movil.webp
+      alt: Radar Tech en un celular, con la edición del día y su resumen por nota
+      caption: La misma página en móvil
+# youtubeId: ID del video de demostración (YouTube, "no listado" sirve)
 stack: [Node.js, GitHub Actions, Cloudflare Workers, Groq (LLM), Telegram Bot API, Astro]
 status: Online
 version: v1.0

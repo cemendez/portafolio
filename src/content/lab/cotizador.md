@@ -1,7 +1,11 @@
 ---
 title: Cotizador para freelancers
 description: Aplicación full-stack para administrar clientes y emitir cotizaciones con aritmética decimal exacta, folio consecutivo, flujo de estados y PDF de cotización y contrato.
+seoTitle: "Cotizador para freelancers con NestJS y React"
+seoDescription: "Cotizador full-stack para freelancers en México: IVA, folio consecutivo, estados y PDF de cotización y contrato. NestJS, Prisma, React y PostgreSQL."
 publishDate: 2026-10-12
+cover: ./assets/images/cotizador-portada.webp
+coverAlt: Listado de cotizaciones del Cotizador con folio, cliente, estado y total
 stack: [NestJS, Prisma, PostgreSQL, React, TypeScript, TanStack Query, Zod, Tailwind CSS, pdfmake, Vitest, Docker, GitHub Actions, Vercel, Render, Neon]
 status: Online
 # Sin demoUrl a proposito: el registro esta abierto y corre en un plan gratuito.

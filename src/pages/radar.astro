@@ -11,9 +11,13 @@ const description =
     <section class="radar" id="radar">
         <div class="lab-container">
             <header class="radar__header">
-                <p class="lab__eyebrow">
-                    <a href="/lab/radar-tech">Laboratorio técnico</a> · En vivo
-                </p>
+                <nav class="lab-breadcrumb" aria-label="Ruta">
+                    <a href="/#lab-preview">Inicio</a>
+                    <span aria-hidden="true">/</span>
+                    <a href="/lab">Laboratorio técnico</a>
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page">Radar Tech</span>
+                </nav>
                 <h1 class="radar__title">Radar Tech</h1>
                 <p class="radar__intro">
                     Cada mañana un workflow lee feeds de tecnología, un LLM
