@@ -12,11 +12,12 @@ pnpm build     # static site to dist/ (~2s)
 pnpm preview   # preview build locally
 pnpm astro     # astro CLI
 pnpm check     # astro check (types)
+pnpm test      # vitest run (unit tests of src/utils)
 pnpm format    # prettier --write .
 pnpm format:check   # prettier --check . (run by CI)
 ```
 
-No unit tests. CI (`.github/workflows/ci.yml`) runs `check`, `format:check` and `build` on PRs and pushes to `main`; run them locally before pushing.
+Unit tests exist only for pure logic in `src/utils` (`*.test.ts`, Vitest). CI (`.github/workflows/ci.yml`) runs `check`, `test`, `format:check` and `build` on PRs and pushes to `main`; run them locally before pushing.
 
 ## Project structure
 
@@ -30,7 +31,7 @@ No unit tests. CI (`.github/workflows/ci.yml`) runs `check`, `format:check` and 
 | `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `LabCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, `base.css`, slot `head`), `Header.astro`, `Footer.astro` |
 | `src/assets/css/` | One stylesheet per component/section (`base.css`, `header.css`, `hero.css`, …) — custom properties, BEM naming |
-| `src/utils/` | `experience.ts` (years), `lab.ts` (sorting/format helpers for the lab collection) |
+| `src/utils/` | `experience.ts` (years), `lab.ts` (sorting/format helpers for the lab collection), `video.ts` (VideoObject JSON-LD), `roi.ts` (ROI calculator logic: prices, scenarios, one-time vs monthly plan; tested in `roi.test.ts`) |
 | `public/` | Static assets: `favicon.svg`, `portada.jpg` (OG image) |
 
 ## Path aliases (tsconfig)
