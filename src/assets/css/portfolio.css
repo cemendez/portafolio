@@ -4,10 +4,6 @@
 ====================================================================
 ***/
 
-.portfolio {
-    background: var(--bg);
-}
-
 .portfolio__filters {
     display: flex;
     flex-wrap: wrap;
@@ -48,7 +44,7 @@
     text-decoration: none;
     border-radius: 12px;
     overflow: hidden;
-    background: var(--bg-alt);
+    background: var(--bg);
     border: 1px solid var(--border);
     transition:
         transform 0.3s ease,
@@ -67,7 +63,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background: var(--bg-alt);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
 }
 
@@ -76,7 +72,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.6rem 0.8rem;
-    background: var(--bg-alt);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
 }
 

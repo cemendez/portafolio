@@ -11,7 +11,6 @@
     align-items: center;
     gap: 3rem;
     padding: 7rem var(--padding-side);
-    background: var(--bg);
 }
 
 .about__layout {

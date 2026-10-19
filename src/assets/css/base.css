@@ -111,6 +111,12 @@ section {
     padding: 7rem var(--padding-side);
 }
 
+/* Fondos alternos: los decide la posición de la sección, no cada hoja. En las
+   secciones de fondo --bg-alt las tarjetas usan --bg, y al revés. */
+main > section:nth-of-type(even) {
+    background: var(--bg-alt);
+}
+
 strong {
     color: var(--text);
 }

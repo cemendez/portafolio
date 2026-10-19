@@ -9,7 +9,6 @@
     align-items: center;
     flex-direction: column;
     padding: 6rem var(--padding-side) 5rem;
-    background: var(--bg-alt);
 }
 
 .experience__list {

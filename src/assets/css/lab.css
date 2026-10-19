@@ -563,7 +563,6 @@
 /* ---------- Sección en la home ---------- */
 .lab-preview {
     min-height: auto;
-    background: var(--bg);
 }
 
 .lab-preview__intro {
