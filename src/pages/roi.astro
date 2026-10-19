@@ -255,6 +255,7 @@ const servicios = Object.entries(SERVICIOS) as [
         type ResultadoRoi,
         type Servicio,
     } from "@utils/roi";
+    import { registrarEvento } from "@utils/analytics";
 
     const mxn = new Intl.NumberFormat("es-MX", {
         style: "currency",
@@ -544,6 +545,7 @@ const servicios = Object.entries(SERVICIOS) as [
                     perdidas: num("roi-perdidas"),
                     valor: num("roi-valor"),
                 };
+                registrarEvento("roi_calcular", { servicio: datos.servicio });
                 mostrar(
                     compararOpciones({
                         servicio: datos.servicio,
@@ -565,6 +567,13 @@ const servicios = Object.entries(SERVICIOS) as [
                         ? `Revisa los datos: ${error.message}.`
                         : "No pude calcular con esos datos.";
                 errorEl.hidden = false;
+            }
+        });
+
+        // El botón se crea en cada cálculo, por eso se escucha en el contenedor
+        resultadoEl.addEventListener("click", (e) => {
+            if ((e.target as HTMLElement).closest(".roi-button--link")) {
+                registrarEvento("roi_cta_click", { servicio: servicio() });
             }
         });
 

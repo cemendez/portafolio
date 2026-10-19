@@ -127,6 +127,7 @@ const opciones = Object.entries(SERVICIOS).map(([clave, s]) => ({
 </section>
 
 <script>
+    import { registrarEvento } from "@utils/analytics";
     import { SERVICIOS_CONTACTO, validarContacto } from "@utils/contacto";
     import { SERVICIOS } from "@utils/roi";
 
@@ -279,6 +280,9 @@ const opciones = Object.entries(SERVICIOS).map(([clave, s]) => ({
                 };
 
                 if (res.ok && datos.ok) {
+                    registrarEvento("contacto_enviado", {
+                        servicio: cuerpo.servicio,
+                    });
                     form.reset();
                     mostrar(
                         "¡Listo! Recibí tu mensaje y te respondo por correo.",
