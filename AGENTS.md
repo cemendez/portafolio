@@ -10,6 +10,7 @@ Profile focus: **Software Architect** (Arquitecto de Software).
 pnpm dev       # dev server at localhost:4321
 pnpm build     # static site to dist/ (~2s)
 pnpm preview   # preview build locally
+pnpm pages:dev # build + wrangler pages dev: runs the Pages Function (needs .dev.vars)
 pnpm astro     # astro CLI
 pnpm check     # astro check (types)
 pnpm test      # vitest run (unit tests of src/utils)
@@ -23,15 +24,17 @@ Unit tests exist only for pure logic in `src/utils` (`*.test.ts`, Vitest). CI (`
 
 | Directory | Purpose |
 |---|---|
-| `src/pages/` | Routes: `index.astro`, `projects/[id].astro`, `lab/index.astro`, `lab/[id].astro`, `radar.astro`, `roi.astro` (ROI calculator, client-side) |
+| `src/pages/` | Routes: `index.astro`, `projects/[id].astro`, `lab/index.astro`, `lab/[id].astro`, `radar.astro`, `roi.astro` (ROI calculator, client-side), `privacidad.astro` (privacy notice) |
 | `src/content/projects/` | MD project entries with frontmatter (Zod schema in `src/content.config.ts`) |
 | `src/content/lab/` | MD entries of the Laboratorio técnico (learning projects); files starting with `_` are ignored (`_plantilla.md`) |
 | `src/components/base/` | Low-level components: `BaseHead.astro`, `StructuredData.astro`, `Analytics.astro` |
-| `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro`, `Lab.astro` (home teaser), `RoiPreview.astro` (home teaser that links to `/roi`) |
+| `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro`, `Lab.astro` (home teaser), `RoiPreview.astro` (home teaser that links to `/roi`), `Contact.astro` (contact form) |
 | `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `LabCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, `base.css`, slot `head`), `Header.astro`, `Footer.astro` |
 | `src/assets/css/` | One stylesheet per component/section (`base.css`, `header.css`, `hero.css`, …) — custom properties, BEM naming |
 | `src/utils/` | `experience.ts` (years), `lab.ts` (sorting/format helpers for the lab collection), `video.ts` (VideoObject JSON-LD), `roi.ts` (ROI calculator logic: prices, scenarios, one-time vs monthly plan; tested in `roi.test.ts`) |
+| `functions/` | Cloudflare Pages Functions. `api/contacto.ts` handles `POST /api/contacto` (validation, Turnstile, Resend). Every file here becomes a route: **never put tests or helpers in this folder** |
+| `tests/` | Vitest tests for the Pages Function (`contacto-api.test.ts`, with `fetch` mocked) |
 | `public/` | Static assets: `favicon.svg`, `portada.jpg` (OG image) |
 
 ## Path aliases (tsconfig)
@@ -170,6 +173,12 @@ const { title, description, skills } = Astro.props;
 - Structured data (JSON-LD): global `Person` in `StructuredData.astro` with `jobTitle: "Software Architect"` (deliberately matches the social profiles; do not translate). Project pages add `CreativeWork` + `BreadcrumbList` via the layout `head` slot.
 - Sitemap `lastmod` comes from each project's `publishDate` (see `astro.config.mjs`).
 - Site canonical URL uses `Astro.site` config (`https://carlosemendez.com`).
+
+### Contact form
+
+`Contact.astro` (home, `#contact`) posts JSON to `/api/contacto` (`functions/api/contacto.ts`). The function checks same-origin, size, a honeypot field (`empresa`), `validarContacto` (`utils/contacto.ts`, shared with the browser), Cloudflare Turnstile and then sends a plain-text email with Resend. Secrets live in Cloudflare Pages (Settings → Variables and secrets), never in the repo: `TURNSTILE_SECRET`, `RESEND_API_KEY`, `CONTACT_TO` (and optional `CONTACT_FROM`). The public Turnstile site key goes in the build variable `PUBLIC_TURNSTILE_SITEKEY` (without it the dummy test key is used and the real secret will reject every submission). With Resend's sandbox sender (`onboarding@resend.dev`) mail can only be delivered to the Resend account's own address.
+
+Local test of the function: copy `.dev.vars.example` to `.dev.vars` (exact name, with the final "s") and `.env.example` to `.env`; the site key (`PUBLIC_TURNSTILE_SITEKEY`) and `TURNSTILE_SECRET` must belong to the same Turnstile widget (or use neither: dummy key + dummy secret). Then run `pnpm pages:dev` (build + wrangler; `astro dev` / `pnpm dev` does not run Functions, so the form shows an error there). `/roi` links to `/?servicio=<key>#contact` to preselect the service.
 
 ### Demo videos
 

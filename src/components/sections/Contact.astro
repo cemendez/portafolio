@@ -1,0 +1,319 @@
+---
+import "@assets/css/contact.css";
+import { SERVICIOS } from "@utils/roi";
+
+// Clave pública de Turnstile (no es secreta). Sin variable se usa la de pruebas,
+// que solo sirve en local: en producción hay que definir PUBLIC_TURNSTILE_SITEKEY.
+const sitekey =
+    import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "1x00000000000000000000AA";
+
+const opciones = Object.entries(SERVICIOS).map(([clave, s]) => ({
+    clave,
+    nombre: s.nombre,
+}));
+---
+
+<section class="contact" id="contact">
+    <h2 class="heading">
+        <span class="heading__span">Hablemos </span>de tu proyecto
+    </h2>
+    <p class="contact__intro">
+        Cuéntame qué necesitas y te respondo por correo. Si ya usaste la
+        calculadora, dime el servicio y con eso empezamos.
+    </p>
+
+    <form
+        class="contact-form"
+        id="contact-form"
+        data-sitekey={sitekey}
+        novalidate
+    >
+        <div class="contact-form__grid">
+            <label class="contact-field">
+                <span>Nombre</span>
+                <input
+                    id="contact-nombre"
+                    name="nombre"
+                    type="text"
+                    autocomplete="name"
+                    maxlength="100"
+                    required
+                />
+                <small class="contact-error" data-error="nombre"></small>
+            </label>
+            <label class="contact-field">
+                <span>Correo</span>
+                <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    maxlength="254"
+                    required
+                />
+                <small class="contact-error" data-error="email"></small>
+            </label>
+            <label class="contact-field">
+                <span>Teléfono (opcional)</span>
+                <input
+                    id="contact-telefono"
+                    name="telefono"
+                    type="tel"
+                    autocomplete="tel"
+                    maxlength="30"
+                />
+                <small class="contact-error" data-error="telefono"></small>
+            </label>
+            <label class="contact-field">
+                <span>¿Qué te interesa?</span>
+                <select id="contact-servicio" name="servicio">
+                    {opciones.map((o) => (
+                        <option value={o.clave}>{o.nombre}</option>
+                    ))}
+                    <option value="otro" selected>
+                        Otro
+                    </option>
+                </select>
+                <small class="contact-error" data-error="servicio"></small>
+            </label>
+        </div>
+
+        <label class="contact-field">
+            <span>Mensaje</span>
+            <textarea
+                id="contact-mensaje"
+                name="mensaje"
+                rows="5"
+                maxlength="2000"
+                required
+            ></textarea>
+            <small class="contact-error" data-error="mensaje"></small>
+        </label>
+
+        <!-- Trampa para bots: oculto para personas, no se debe llenar -->
+        <div class="contact-form__trampa" aria-hidden="true">
+            <label>
+                Empresa
+                <input
+                    id="contact-empresa"
+                    name="empresa"
+                    type="text"
+                    tabindex="-1"
+                    autocomplete="off"
+                />
+            </label>
+        </div>
+
+        <label class="contact-check">
+            <input id="contact-privacidad" name="privacidad" type="checkbox" />
+            <span>
+                Leí el <a href="/privacidad">aviso de privacidad</a>.
+            </span>
+        </label>
+        <small class="contact-error" data-error="privacidad"></small>
+
+        <div class="contact-form__turnstile" id="contact-turnstile"></div>
+
+        <button class="contact-button" id="contact-enviar" type="submit">
+            Enviar mensaje
+        </button>
+        <p class="contact-estado" id="contact-estado" role="status" hidden></p>
+        <noscript>
+            <p class="contact-estado contact-estado--error">
+                El formulario necesita JavaScript para enviarse.
+            </p>
+        </noscript>
+    </form>
+</section>
+
+<script>
+    import { SERVICIOS_CONTACTO, validarContacto } from "@utils/contacto";
+    import { SERVICIOS } from "@utils/roi";
+
+    declare global {
+        interface Window {
+            turnstile?: {
+                render: (el: HTMLElement, opciones: object) => string;
+                reset: (id?: string) => void;
+            };
+        }
+    }
+
+    const SCRIPT_TURNSTILE =
+        "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+    // Se carga una sola vez; ClientRouter conserva window entre navegaciones
+    function cargarTurnstile(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            if (window.turnstile) return resolve();
+            let script = document.getElementById(
+                "turnstile-script",
+            ) as HTMLScriptElement | null;
+            if (!script) {
+                script = document.createElement("script");
+                script.id = "turnstile-script";
+                script.src = SCRIPT_TURNSTILE;
+                script.async = true;
+                document.head.appendChild(script);
+            }
+            script.addEventListener("load", () => resolve());
+            script.addEventListener("error", () => reject());
+        });
+    }
+
+    function initContacto() {
+        const form = document.querySelector<HTMLFormElement>("#contact-form");
+        if (!form || form.dataset.ready) return;
+        form.dataset.ready = "true";
+
+        const campo = <T extends HTMLElement>(id: string) =>
+            document.getElementById(id) as T;
+        const estado = campo<HTMLElement>("contact-estado");
+        const boton = campo<HTMLButtonElement>("contact-enviar");
+        const servicioEl = campo<HTMLSelectElement>("contact-servicio");
+        const mensajeEl = campo<HTMLTextAreaElement>("contact-mensaje");
+
+        let widgetId: string | undefined;
+        let token = "";
+
+        function mostrar(texto: string, error = false) {
+            estado.textContent = texto;
+            estado.hidden = false;
+            estado.classList.toggle("contact-estado--error", error);
+        }
+
+        function limpiarErrores() {
+            form!
+                .querySelectorAll<HTMLElement>("[data-error]")
+                .forEach((el) => (el.textContent = ""));
+            estado.hidden = true;
+        }
+
+        function ponerErrores(errores: Record<string, string>) {
+            for (const [clave, texto] of Object.entries(errores)) {
+                const el = form!.querySelector<HTMLElement>(
+                    `[data-error="${clave}"]`,
+                );
+                if (el) el.textContent = texto;
+            }
+        }
+
+        // Si vienes de la calculadora (/?servicio=...), deja el servicio elegido
+        const desdeUrl = new URLSearchParams(location.search).get("servicio");
+        if (
+            desdeUrl &&
+            (SERVICIOS_CONTACTO as readonly string[]).includes(desdeUrl)
+        ) {
+            servicioEl.value = desdeUrl;
+            if (!mensajeEl.value && desdeUrl in SERVICIOS) {
+                const nombre =
+                    SERVICIOS[desdeUrl as keyof typeof SERVICIOS].nombre;
+                mensajeEl.value = `Hola, usé la calculadora para "${nombre}" y quiero platicar mi caso.`;
+            }
+        }
+
+        cargarTurnstile()
+            .then(() => {
+                widgetId = window.turnstile!.render(
+                    campo<HTMLElement>("contact-turnstile"),
+                    {
+                        sitekey: form.dataset.sitekey,
+                        theme: "dark",
+                        language: "es",
+                        callback: (t: string) => (token = t),
+                        "expired-callback": () => (token = ""),
+                        "error-callback": () => (token = ""),
+                    },
+                );
+            })
+            .catch(() =>
+                mostrar(
+                    "No pude cargar la verificación anti-spam. Recarga la página.",
+                    true,
+                ),
+            );
+
+        form.addEventListener("submit", async (evento) => {
+            evento.preventDefault();
+            limpiarErrores();
+
+            const cuerpo = {
+                nombre: campo<HTMLInputElement>("contact-nombre").value,
+                email: campo<HTMLInputElement>("contact-email").value,
+                telefono: campo<HTMLInputElement>("contact-telefono").value,
+                servicio: servicioEl.value,
+                mensaje: mensajeEl.value,
+                privacidad:
+                    campo<HTMLInputElement>("contact-privacidad").checked,
+                empresa: campo<HTMLInputElement>("contact-empresa").value,
+                turnstile: token,
+            };
+
+            const validacion = validarContacto(cuerpo);
+            if (!validacion.ok) {
+                ponerErrores(validacion.errores);
+                mostrar("Revisa los campos marcados.", true);
+                return;
+            }
+            if (!token) {
+                mostrar(
+                    "Espera a que termine la verificación anti-spam e inténtalo de nuevo.",
+                    true,
+                );
+                return;
+            }
+
+            boton.disabled = true;
+            mostrar("Enviando…");
+            try {
+                const res = await fetch("/api/contacto", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo),
+                });
+                const datos = (await res.json().catch(() => ({}))) as {
+                    ok?: boolean;
+                    error?: string;
+                    errores?: Record<string, string>;
+                    detalle?: unknown;
+                };
+
+                if (res.ok && datos.ok) {
+                    form.reset();
+                    mostrar(
+                        "¡Listo! Recibí tu mensaje y te respondo por correo.",
+                    );
+                } else if (res.status === 404 && import.meta.env.DEV) {
+                    // `astro dev` no ejecuta las Functions de Cloudflare
+                    mostrar(
+                        "Con `pnpm dev` no existe /api/contacto. Para probar el envío usa `pnpm pages:dev` (ver .dev.vars.example).",
+                        true,
+                    );
+                } else {
+                    if (datos.errores) ponerErrores(datos.errores);
+                    mostrar(
+                        (datos.error ??
+                            "No pude enviar el mensaje. Inténtalo de nuevo.") +
+                            // Solo llega al probar en local
+                            (datos.detalle
+                                ? ` [${[datos.detalle].flat().join(", ")}]`
+                                : ""),
+                        true,
+                    );
+                }
+            } catch {
+                mostrar(
+                    "No pude conectarme. Revisa tu conexión e inténtalo de nuevo.",
+                    true,
+                );
+            } finally {
+                boton.disabled = false;
+                // El token de Turnstile solo sirve una vez
+                token = "";
+                if (widgetId !== undefined) window.turnstile?.reset(widgetId);
+            }
+        });
+    }
+
+    document.addEventListener("astro:page-load", initContacto);
+</script>

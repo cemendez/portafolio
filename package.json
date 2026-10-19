@@ -9,6 +9,7 @@
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
+        "pages:dev": "astro build && pnpm dlx wrangler@4 pages dev dist",
         "astro": "astro",
         "check": "astro check",
         "test": "vitest run",

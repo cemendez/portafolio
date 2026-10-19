@@ -1,0 +1,6 @@
+# Variables para probar la función de contacto en local con wrangler
+# (copia este archivo a .dev.vars; .dev.vars está en .gitignore)
+# Claves de PRUEBA de Turnstile (siempre pasan); la de Resend debe ser real para enviar correos.
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+RESEND_API_KEY=re_pon_aqui_tu_clave
+CONTACT_TO=tu-correo@ejemplo.com

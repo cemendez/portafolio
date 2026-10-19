@@ -29,15 +29,16 @@ src/
 ├─ content.config.ts      colección `projects` (glob de src/content/projects, esquema Zod)
 ├─ content/projects/      proyectos en .md + assets/images/*.webp
 ├─ content/lab/           fichas del Laboratorio técnico (.md) + plantilla
-├─ pages/                 index.astro (/), projects/[id].astro, lab/ (/lab, /lab/<id>), radar.astro (/radar) y roi.astro (/roi)
+├─ pages/                 index.astro (/), projects/[id].astro, lab/ (/lab, /lab/<id>), radar.astro (/radar), roi.astro (/roi) y privacidad.astro (/privacidad)
 ├─ layouts/               MainLayout, Header, Footer
 ├─ components/
 │  ├─ base/               BaseHead (SEO/OG), StructuredData (JSON-LD), Analytics
-│  ├─ sections/           Hero, Portfolio, Lab, Skills, About, Experience, RoiPreview
+│  ├─ sections/           Hero, Portfolio, Lab, Skills, About, Experience, RoiPreview, Contact
 │  └─ ui/                 ProjectCard, LabCard, ExperienceCard, SkillCard, techIcons.ts
 ├─ assets/css/            base.css + una hoja por componente (header, hero, about, …)
 ├─ assets/images/         home.webp, iconos
 └─ utils/                 experience.ts (años de experiencia), lab.ts (orden y fechas del laboratorio)
+functions/                Función de Cloudflare Pages: POST /api/contacto (formulario)
 public/                   CV en PDF, favicon, portada.jpg (OG por defecto), robots.txt
 ```
 

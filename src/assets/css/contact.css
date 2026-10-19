@@ -1,0 +1,134 @@
+/* Sección de contacto de la home (formulario → /api/contacto) */
+.contact {
+    min-height: auto; /* base.css da 100vh a todo <section> */
+}
+
+.contact__intro {
+    max-width: 640px;
+    margin: -1.5rem auto 2.5rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    text-align: center;
+}
+
+.contact-form {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+}
+
+.contact-form__grid {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.contact-field {
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+}
+
+.contact-field > span {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.contact-field input,
+.contact-field select,
+.contact-field textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-alt);
+    color: var(--text);
+    font: inherit;
+}
+
+.contact-field textarea {
+    resize: vertical;
+    min-height: 8rem;
+}
+
+.contact-error {
+    color: #f87171;
+    font-size: 0.8rem;
+}
+
+.contact-error:empty {
+    display: none;
+}
+
+/* Trampa para bots: fuera de pantalla, no display:none (algunos bots lo detectan) */
+.contact-form__trampa {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.contact-check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.contact-check input {
+    accent-color: var(--accent);
+}
+
+.contact-check a {
+    color: var(--accent);
+}
+
+.contact-button {
+    justify-self: start;
+    padding: 0.8rem 1.6rem;
+    border: 0;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.contact-button:hover {
+    opacity: 0.85;
+}
+
+.contact-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.contact-estado {
+    margin: 0;
+    color: #4ade80;
+}
+
+.contact-estado--error {
+    color: #f87171;
+}
+
+@media (min-width: 769px) {
+    .contact-form__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-button {
+        transition: none;
+    }
+}
