@@ -1,0 +1,149 @@
+---
+import "@assets/css/legal.css";
+import MainLayout from "@layouts/MainLayout.astro";
+import { PLAN_INICIAL_PCT, PLAN_MESES, TARIFA_HORA } from "@utils/roi";
+
+const title = "Condiciones del servicio | Carlos E. Méndez";
+const description =
+    "Cómo funcionan el pago único y el plan mensual, qué incluye el mantenimiento, cómo se cancela y cuándo el sitio pasa a ser tuyo.";
+const actualizado = "19 de octubre de 2026";
+
+const inicialPct = Math.round(PLAN_INICIAL_PCT * 100);
+const mxn = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+    maximumFractionDigits: 0,
+});
+---
+
+<MainLayout title={title} description={description}>
+    <section class="legal" id="condiciones">
+        <div class="legal__container">
+            <nav class="legal-breadcrumb" aria-label="Ruta">
+                <a href="/#home">Inicio</a>
+                <span aria-hidden="true">/</span>
+                <a href="/roi">Calculadora</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">Condiciones del servicio</span>
+            </nav>
+
+            <h1 class="legal__title">Condiciones del servicio</h1>
+            <p class="legal__meta">Última actualización: {actualizado}</p>
+
+            <p>
+                Esto es un resumen para que sepas desde el principio qué
+                esperar. Lo que quede en la propuesta que firmemos para tu
+                proyecto es lo que vale; si algo difiere, manda la propuesta.
+                Los precios son en pesos mexicanos y en la propuesta se indica
+                si incluyen IVA.
+            </p>
+
+            <h2>Dos formas de pagar</h2>
+            <ul>
+                <li>
+                    <strong>Pago único:</strong> pagas el precio de lista y el
+                    sitio es tuyo desde la entrega, con su código y sus
+                    archivos.
+                </li>
+                <li>
+                    <strong>Plan mensual:</strong> {inicialPct} % al inicio y
+                    {PLAN_MESES} mensualidades. Al pagar la última, el sitio
+                    pasa a ser tuyo, sin hosting ni soporte, salvo que contrates
+                    el mantenimiento.
+                </li>
+            </ul>
+            <p>
+                A los {PLAN_MESES} meses ambas opciones cuestan casi lo mismo.
+                El plan reparte el pago; no es un descuento ni un costo extra.
+            </p>
+
+            <h2>Qué incluye el proyecto</h2>
+            <ul>
+                <li>
+                    Lo que esté descrito en la propuesta: alcance, secciones o
+                    funciones y tiempo estimado de entrega.
+                </li>
+                <li>
+                    Una ronda de ajustes antes de entregar. Cambios nuevos o
+                    fuera del alcance se cotizan aparte.
+                </li>
+                <li>
+                    El dominio se registra a tu nombre desde el inicio, para que
+                    nunca dependa de mí.
+                </li>
+            </ul>
+
+            <h2>Mantenimiento (hosting, dominio y soporte)</h2>
+            <p>
+                El precio del sitio no incluye que esté funcionando. El
+                mantenimiento es un pago mensual aparte que cubre:
+            </p>
+            <ul>
+                <li>Hosting y renovación del dominio.</li>
+                <li>
+                    Las horas de soporte que indica la calculadora para tu
+                    servicio, para dudas y cambios pequeños. No se acumulan de
+                    un mes a otro.
+                </li>
+                <li>
+                    Horas adicionales o cambios mayores:{" "}
+                    {mxn.format(TARIFA_HORA)}
+                    por hora, previa cotización.
+                </li>
+            </ul>
+            <p>
+                Se paga cada mes mientras el sitio esté en operación, también
+                después de las {PLAN_MESES} mensualidades. Si no lo contratas,
+                tú te encargas del hosting, el dominio y los cambios.
+            </p>
+
+            <h2>Cancelación del plan mensual</h2>
+            <p>
+                Nadie queda atado: puedes cancelar el plan en cualquier momento
+                avisándome por escrito con 30 días de anticipación.
+            </p>
+            <ul>
+                <li>
+                    Lo pagado hasta entonces no se reembolsa, porque corresponde
+                    al trabajo ya realizado.
+                </li>
+                <li>
+                    El sitio sigue en línea hasta el último mes pagado. Después
+                    se da de baja; el dominio es tuyo y te lo dejo apuntando a
+                    donde indiques.
+                </li>
+                <li>
+                    Mientras no se complete el pago, el código sigue siendo mío
+                    y tú tienes licencia de uso.
+                </li>
+            </ul>
+
+            <h2>Quedarte con el sitio antes de los {PLAN_MESES} meses</h2>
+            <p>
+                Si quieres el sitio completo sin esperar, puedes liquidar el
+                saldo: las mensualidades que faltan, sin intereses ni cargos
+                extra. Al recibir ese pago te entrego el código y los archivos,
+                igual que en el pago único.
+            </p>
+            <p>
+                Por ejemplo, si ya pagaste el inicio y 6 mensualidades, el saldo
+                son las 12 mensualidades restantes.
+            </p>
+
+            <h2>Sobre la calculadora</h2>
+            <ul>
+                <li>
+                    La calculadora es una estimación con supuestos, no una
+                    promesa de ahorro ni de ingresos.
+                </li>
+            </ul>
+
+            <h2>¿Dudas?</h2>
+            <p>
+                Escríbeme desde el
+                <a href="/#contact">formulario de contacto</a> y lo platicamos
+                antes de firmar cualquier cosa.
+            </p>
+        </div>
+    </section>
+</MainLayout>
