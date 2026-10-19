@@ -1,11 +1,24 @@
 ---
 import "@assets/css/roi.css";
+import { getImage } from "astro:assets";
 import MainLayout from "@layouts/MainLayout.astro";
+import cover from "@content/lab/assets/images/calculadora-roi-portada.webp";
 import { SERVICIOS, type Servicio } from "@utils/roi";
 
 const title = "Calculadora de ROI: ¿cuánto te cuesta no automatizar?";
 const description =
     "Calcula cuánto tiempo y dinero pierde tu negocio por procesos manuales y en cuántos meses se recupera la inversión, con pago único o plan mensual.";
+
+// og:image: la misma portada de la ficha del laboratorio, en JPG 1200x630
+const ogImage = await getImage({
+    src: cover,
+    width: 1200,
+    height: 630,
+    fit: "cover",
+    position: "top",
+    format: "jpeg",
+    quality: 80,
+});
 
 const pageUrl = new URL("/roi", Astro.site).href;
 const jsonLd = {
@@ -72,7 +85,14 @@ const servicios = Object.entries(SERVICIOS) as [
 ][];
 ---
 
-<MainLayout title={title} description={description}>
+<MainLayout
+    title={title}
+    description={description}
+    image={ogImage.src}
+    imageAlt="Formulario de la calculadora de ROI con los precios de pago único y plan mensual"
+    imageWidth={1200}
+    imageHeight={630}
+>
     <script
         slot="head"
         type="application/ld+json"
