@@ -173,7 +173,12 @@ export interface ResultadoEscenario {
 }
 
 export interface ResultadoRoi {
+    /** Lo que cuesta hoy el problema: tiempo perdido + pérdidas, al mes. */
     costoActualMensual: number;
+    /** Parte del costo actual que es tiempo: horas x semanas x costo por hora. */
+    tiempoMensualActual: number;
+    /** Parte del costo actual que son pérdidas (con margen si aplica). */
+    perdidaMensualActual: number;
     opcion: Opcion;
     /** Total pagado durante los primeros 12 meses (incluye mantenimiento). */
     costoPrimerAnio: number;
@@ -183,6 +188,8 @@ export interface ResultadoRoi {
         eficiencia: number;
         recuperacion: number;
         margen: number;
+        /** Si lo perdido se multiplica por el margen (ventas) o no (costos). */
+        aplicaMargen: boolean;
         nota: string;
     };
 }
@@ -284,6 +291,8 @@ export function calcularRoi(entrada: EntradaRoi, opcion: Opcion): ResultadoRoi {
 
     return {
         costoActualMensual: redondear(tiempoMensualActual + perdidaActual),
+        tiempoMensualActual: redondear(tiempoMensualActual),
+        perdidaMensualActual: redondear(perdidaActual),
         opcion,
         costoPrimerAnio,
         escenarios,
@@ -292,6 +301,7 @@ export function calcularRoi(entrada: EntradaRoi, opcion: Opcion): ResultadoRoi {
             eficiencia,
             recuperacion,
             margen,
+            aplicaMargen,
             nota:
                 "Estimación basada en los datos que capturaste y supuestos " +
                 "conservadores. Los resultados reales dependen de tu operación.",

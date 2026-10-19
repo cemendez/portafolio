@@ -75,6 +75,8 @@ describe("calcularRoi (pago único)", () => {
     it("calcula el costo actual de no resolver el problema", () => {
         // tiempo: 10 * 4.33 * 100 = 4,330 ; pérdida: 4 * 800 * 0.35 = 1,120
         expect(r.costoActualMensual).toBe(5450);
+        expect(r.tiempoMensualActual).toBe(4330);
+        expect(r.perdidaMensualActual).toBe(1120);
     });
 
     it("escenario esperado", () => {
