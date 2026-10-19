@@ -519,13 +519,7 @@ const servicios = Object.entries(SERVICIOS) as [
                 <p class="roi-nota">${ejemplo}</p>
                 ${pasos(datos, r)}
                 <p class="roi-nota">${r.plan.supuestos.nota}</p>
-                <a class="roi-button roi-button--link" id="roi-cta">Platiquemos tu caso</a>`;
-
-            // El correo se arma aquí para no publicarlo tal cual en el HTML
-            const cta = document.getElementById("roi-cta") as HTMLAnchorElement;
-            const correo = ["mcalderon.carlos", "gmail.com"].join("@");
-            const asunto = `Calculadora de ROI: ${SERVICIOS[servicio()].nombre}`;
-            cta.href = `mailto:${correo}?subject=${encodeURIComponent(asunto)}`;
+                <a class="roi-button roi-button--link" href="/?servicio=${datos.servicio}#contact">Platiquemos tu caso</a>`;
 
             resultadoEl.scrollIntoView({
                 behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
