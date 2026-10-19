@@ -193,3 +193,16 @@
         color: rgba(255, 255, 255, 0.6);
     }
 }
+
+/* ── Entre tablet y laptop pequeña (769–1199px): 7 enlaces, menos aire ── */
+@media (min-width: 769px) and (max-width: 1199px) {
+    .header,
+    .header--sticky {
+        padding-inline: 4%;
+    }
+
+    .navbar__link {
+        margin-left: 1.25rem;
+        font-size: 0.9rem;
+    }
+}

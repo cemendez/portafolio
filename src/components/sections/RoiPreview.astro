@@ -1,0 +1,44 @@
+---
+import "@assets/css/roi-preview.css";
+
+const puntos = [
+    {
+        titulo: "Cuánto te cuesta hoy",
+        texto: "Con tus horas, tu costo por hora y lo que pierdes al mes, ves el costo real de seguir igual.",
+    },
+    {
+        titulo: "Pago único o plan mensual",
+        texto: "Compara las dos formas de pagar, con hosting y soporte a la vista para que no haya sorpresas.",
+    },
+    {
+        titulo: "Cuentas que se entienden",
+        texto: "Cada resultado trae su explicación paso a paso, con tus números y los supuestos que usé.",
+    },
+];
+---
+
+<section class="roi-preview" id="roi-preview">
+    <h2 class="heading">
+        <span class="heading__span">Calculadora </span>de ROI
+    </h2>
+    <p class="roi-preview__intro">
+        Si tienes un negocio, calcula cuánto tiempo y dinero pierdes por
+        procesos manuales y en cuántos meses se paga un sistema. Los cálculos se
+        hacen en tu navegador: no envías tus datos a ningún servidor.
+    </p>
+
+    <ul class="roi-preview__items">
+        {puntos.map((punto) => (
+            <li class="roi-preview__item">
+                <h3 class="roi-preview__item-title">{punto.titulo}</h3>
+                <p>{punto.texto}</p>
+            </li>
+        ))}
+    </ul>
+
+    <div class="roi-preview__cta">
+        <a class="roi-preview__button" href="/roi">
+            Calcular mi retorno
+        </a>
+    </div>
+</section>

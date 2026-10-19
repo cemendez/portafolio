@@ -39,6 +39,7 @@ The hero uses a dark overlay over `home.webp` (`--background-image`). Accent blu
 
 ### Layout
 
+- Backgrounds alternate by position (`base.css`: even `main > section` get `--bg-alt`); cards use the opposite tone of their section.
 - Sections: `min-height: 100vh`, 7rem vertical padding (10rem on desktop), horizontal `--padding-side`.
 - Portfolio: CSS grid, `repeat(auto-fill, minmax(310px, 1fr))`.
 - Skills grid: 1 column, 2 from 640px, 4 from 1024px.
@@ -52,6 +53,7 @@ The hero uses a dark overlay over `home.webp` (`--background-image`). Accent blu
 | `/projects/[id]` | `src/pages/projects/[id].astro` — `getStaticPaths()` over the `projects` collection |
 | `/lab`, `/lab/[id]` | Laboratorio técnico: listing and detail of the `lab` collection |
 | `/radar` | Radar Tech daily digest, fetched in the browser from the public `radar-tech` repo |
+| `/roi` | ROI calculator for prospects: runs in the browser (`utils/roi.ts`), compares one-time payment vs monthly plan and explains each step |
 
 ```
 MainLayout (BaseHead, StructuredData, Analytics, slot "head", ClientRouter)
@@ -62,7 +64,8 @@ MainLayout (BaseHead, StructuredData, Analytics, slot "head", ClientRouter)
 │   ├── Lab          teaser: up to 3 LabCard + link to /lab
 │   ├── Skills       grouped columns of skill tags
 │   ├── About        summary card (years of experience), skills box, narrative blocks
-│   └── Experience   timeline of ExperienceCard
+│   ├── Experience   timeline of ExperienceCard
+│   └── RoiPreview   teaser linking to /roi
 └── Footer   scroll-to-top, copyright
 ```
 

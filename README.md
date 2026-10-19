@@ -29,11 +29,11 @@ src/
 ├─ content.config.ts      colección `projects` (glob de src/content/projects, esquema Zod)
 ├─ content/projects/      proyectos en .md + assets/images/*.webp
 ├─ content/lab/           fichas del Laboratorio técnico (.md) + plantilla
-├─ pages/                 index.astro (/), projects/[id].astro, lab/ (/lab, /lab/<id>) y radar.astro (/radar)
+├─ pages/                 index.astro (/), projects/[id].astro, lab/ (/lab, /lab/<id>), radar.astro (/radar) y roi.astro (/roi)
 ├─ layouts/               MainLayout, Header, Footer
 ├─ components/
 │  ├─ base/               BaseHead (SEO/OG), StructuredData (JSON-LD), Analytics
-│  ├─ sections/           Hero, Portfolio, Lab, Skills, About, Experience
+│  ├─ sections/           Hero, Portfolio, Lab, Skills, About, Experience, RoiPreview
 │  └─ ui/                 ProjectCard, LabCard, ExperienceCard, SkillCard, techIcons.ts
 ├─ assets/css/            base.css + una hoja por componente (header, hero, about, …)
 ├─ assets/images/         home.webp, iconos

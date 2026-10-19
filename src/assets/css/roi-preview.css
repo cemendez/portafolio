@@ -1,0 +1,72 @@
+/* Sección de la home que lleva a la calculadora (/roi) */
+.roi-preview {
+    min-height: auto; /* base.css da 100vh a todo <section> */
+}
+
+.roi-preview__intro {
+    max-width: 640px;
+    margin: -1.5rem auto 2.5rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    text-align: center;
+}
+
+.roi-preview__items {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.roi-preview__item {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-alt);
+}
+
+.roi-preview__item-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+}
+
+.roi-preview__item p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.roi-preview__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.roi-preview__button {
+    padding: 0.8rem 1.6rem;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.roi-preview__button:hover {
+    opacity: 0.85;
+}
+
+@media (min-width: 769px) {
+    .roi-preview__items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .roi-preview__button {
+        transition: none;
+    }
+}

@@ -23,11 +23,11 @@ Unit tests exist only for pure logic in `src/utils` (`*.test.ts`, Vitest). CI (`
 
 | Directory | Purpose |
 |---|---|
-| `src/pages/` | Routes: `index.astro`, `projects/[id].astro`, `lab/index.astro`, `lab/[id].astro`, `radar.astro` |
+| `src/pages/` | Routes: `index.astro`, `projects/[id].astro`, `lab/index.astro`, `lab/[id].astro`, `radar.astro`, `roi.astro` (ROI calculator, client-side) |
 | `src/content/projects/` | MD project entries with frontmatter (Zod schema in `src/content.config.ts`) |
 | `src/content/lab/` | MD entries of the Laboratorio técnico (learning projects); files starting with `_` are ignored (`_plantilla.md`) |
 | `src/components/base/` | Low-level components: `BaseHead.astro`, `StructuredData.astro`, `Analytics.astro` |
-| `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro`, `Lab.astro` (home teaser) |
+| `src/components/sections/` | Page sections: `Hero.astro`, `About.astro`, `Experience.astro`, `Skills.astro`, `Portfolio.astro`, `Lab.astro` (home teaser), `RoiPreview.astro` (home teaser that links to `/roi`) |
 | `src/components/ui/` | Reusable cards: `ProjectCard.astro`, `LabCard.astro`, `ExperienceCard.astro`, `SkillCard.astro` |
 | `src/layouts/` | `MainLayout.astro` (Poppins font, ClientRouter, `base.css`, slot `head`), `Header.astro`, `Footer.astro` |
 | `src/assets/css/` | One stylesheet per component/section (`base.css`, `header.css`, `hero.css`, …) — custom properties, BEM naming |
@@ -101,6 +101,7 @@ Siempre cuantificar cuando sea posible.
 ### CSS conventions
 
 - **One file per owner:** `base.css` (tokens, reset, shared utilities like `.heading`, `.animate`, `.tech-badge`) is imported by `MainLayout`; every other stylesheet is imported from the frontmatter of the component that owns it (`import "@assets/css/hero.css"`), so each page only ships the CSS it uses. New sections get their own file and a class prefix (`lab.css` uses `lab-`/`radar`).
+- **Section backgrounds alternate by position:** `base.css` gives every even `main > section` `--bg-alt` (odd ones keep the body `--bg`). Do not set a background on a section class; just put the section in order. Cards inside a `--bg` section use `--bg-alt` and cards inside a `--bg-alt` section use `--bg`, so they stay visible. If a section is added or removed from the home, check that cards still contrast.
 - **Custom properties** in `:root` (`base.css`) for colors, fonts, spacing:
   ```css
   --bg: #0f172a;
@@ -160,7 +161,7 @@ const { title, description, skills } = Astro.props;
 
 - **Vanilla JS only** in `<script>` tags (no framework).
 - **SweetAlert2** for toast notifications (copy-to-clipboard feedback).
-- **Navigation:** scroll-spy and mobile menu live in the `<script>` of `Header.astro`, bound on `astro:page-load` (Header is re-created on every ClientRouter navigation). Menu links are `/#section` so they work from any route. Links to separate pages use `data-routes="/lab /radar"` (active on those paths) and, for a home section without an anchor link, `data-section="<section id>"`.
+- **Navigation:** scroll-spy and mobile menu live in the `<script>` of `Header.astro`, bound on `astro:page-load` (Header is re-created on every ClientRouter navigation). Menu links are `/#section` so they work from any route. Links to separate pages use `data-routes` (`"/lab /radar"` for Laboratorio, `"/roi"` for Calculadora; active on those paths) and, for a home section without an anchor link, `data-section="<section id>"`.
 
 ### Open Graph & SEO
 
