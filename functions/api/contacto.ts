@@ -1,8 +1,7 @@
 // Cloudflare Pages Function: POST /api/contacto
 // Recibe el formulario, valida, comprueba Turnstile y envía el correo con
 // Resend. Los secretos viven en Cloudflare (Settings > Variables), no en el repo.
-import { SERVICIOS } from "../../src/utils/roi";
-import { validarContacto } from "../../src/utils/contacto";
+import { nombreServicio, validarContacto } from "../../src/utils/contacto";
 
 export interface Env {
     /** Clave secreta de Turnstile. */
@@ -124,10 +123,7 @@ export const onRequestPost = async ({
     }
 
     const { nombre, email, telefono, servicio, mensaje } = validacion.datos;
-    const interes =
-        servicio === "otro"
-            ? "Otro"
-            : SERVICIOS[servicio as keyof typeof SERVICIOS].nombre;
+    const interes = nombreServicio(servicio);
 
     const correo = await fetch("https://api.resend.com/emails", {
         method: "POST",

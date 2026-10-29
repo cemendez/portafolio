@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { SOLUCIONES } from "../src/utils/soluciones";
 import { onRequestPost, type Env } from "../functions/api/contacto";
 
 const env: Env = {
@@ -59,7 +60,7 @@ describe("POST /api/contacto", () => {
         const enviado = JSON.parse(resend[1].body);
         expect(enviado.to).toEqual(["yo@ejemplo.com"]);
         expect(enviado.reply_to).toBe("ana@ejemplo.com");
-        expect(enviado.text).toContain("Agenda y gestión de clientes");
+        expect(enviado.text).toContain(SOLUCIONES.gestion_clientes.nombre);
         expect(resend[1].headers.Authorization).toBe("Bearer re_prueba");
     });
 

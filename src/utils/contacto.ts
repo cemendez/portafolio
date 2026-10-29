@@ -1,7 +1,11 @@
 // Validación del formulario de contacto. Se usa en el navegador (para avisar
 // antes de enviar) y en la función de Cloudflare (que es la que manda: nunca
 // se confía en lo que valida el navegador).
-import { SERVICIOS } from "./roi";
+import {
+    CLAVES_SOLUCIONES,
+    SOLUCIONES,
+    type ClaveSolucion,
+} from "./soluciones";
 
 export const LIMITES = {
     nombre: { min: 2, max: 100 },
@@ -10,9 +14,16 @@ export const LIMITES = {
     mensaje: { min: 10, max: 2000 },
 } as const;
 
-/** Servicios de la calculadora más "otro". */
-export const SERVICIOS_CONTACTO = [...Object.keys(SERVICIOS), "otro"] as const;
-export type ServicioContacto = (typeof SERVICIOS_CONTACTO)[number];
+/** Soluciones de /negocios (incluyen las de la calculadora) más "otro". */
+export const SERVICIOS_CONTACTO: readonly string[] = [
+    ...CLAVES_SOLUCIONES,
+    "otro",
+];
+export type ServicioContacto = ClaveSolucion | "otro";
+
+/** Nombre legible de una opción del formulario (para el correo). */
+export const nombreServicio = (clave: ServicioContacto): string =>
+    clave === "otro" ? "Otro" : SOLUCIONES[clave].nombre;
 
 export interface DatosContacto {
     nombre: string;
@@ -80,7 +91,7 @@ export function validarContacto(entrada: unknown): ResultadoValidacion {
     ) {
         errores.mensaje = `Cuéntame un poco más (${LIMITES.mensaje.min} a ${LIMITES.mensaje.max} caracteres).`;
     }
-    if (!(SERVICIOS_CONTACTO as readonly string[]).includes(servicio)) {
+    if (!SERVICIOS_CONTACTO.includes(servicio)) {
         errores.servicio = "Elige una opción de la lista.";
     }
     if (e.privacidad !== true) {

@@ -89,3 +89,27 @@ describe("validarContacto", () => {
         expect(validarContacto("hola").ok).toBe(false);
     });
 });
+
+describe("opciones de /negocios en el contacto", () => {
+    it("acepta las soluciones nuevas y les pone su nombre", async () => {
+        const { nombreServicio } = await import("./contacto");
+        const { SOLUCIONES } = await import("./soluciones");
+        for (const clave of ["facturacion", "cursos", "crm"] as const) {
+            const r = validarContacto({ ...valido, servicio: clave });
+            expect(r.ok).toBe(true);
+            expect(nombreServicio(clave)).toBe(SOLUCIONES[clave].nombre);
+        }
+        expect(nombreServicio("otro")).toBe("Otro");
+    });
+
+    it("cada servicio de la calculadora existe como solución", async () => {
+        const { SERVICIOS } = await import("./roi");
+        const { SOLUCIONES } = await import("./soluciones");
+        for (const clave of Object.keys(SERVICIOS)) {
+            expect(SOLUCIONES).toHaveProperty(clave);
+        }
+        for (const s of Object.values(SOLUCIONES)) {
+            if (s.calculadora) expect(SERVICIOS).toHaveProperty(s.calculadora);
+        }
+    });
+});

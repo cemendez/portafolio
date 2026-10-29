@@ -1,13 +1,13 @@
 ---
 import "@assets/css/contact.css";
-import { SERVICIOS } from "@utils/roi";
+import { SOLUCIONES } from "@utils/soluciones";
 
 // Clave pública de Turnstile (no es secreta). Sin variable se usa la de pruebas,
 // que solo sirve en local: en producción hay que definir PUBLIC_TURNSTILE_SITEKEY.
 const sitekey =
     import.meta.env.PUBLIC_TURNSTILE_SITEKEY ?? "1x00000000000000000000AA";
 
-const opciones = Object.entries(SERVICIOS).map(([clave, s]) => ({
+const opciones = Object.entries(SOLUCIONES).map(([clave, s]) => ({
     clave,
     nombre: s.nombre,
 }));
@@ -128,7 +128,12 @@ const opciones = Object.entries(SERVICIOS).map(([clave, s]) => ({
 
 <script>
     import { registrarEvento } from "@utils/analytics";
-    import { SERVICIOS_CONTACTO, validarContacto } from "@utils/contacto";
+    import {
+        SERVICIOS_CONTACTO,
+        nombreServicio,
+        validarContacto,
+        type ServicioContacto,
+    } from "@utils/contacto";
     import { SERVICIOS } from "@utils/roi";
 
     declare global {
@@ -199,17 +204,19 @@ const opciones = Object.entries(SERVICIOS).map(([clave, s]) => ({
             }
         }
 
-        // Si vienes de la calculadora (/?servicio=...), deja el servicio elegido
-        const desdeUrl = new URLSearchParams(location.search).get("servicio");
-        if (
-            desdeUrl &&
-            (SERVICIOS_CONTACTO as readonly string[]).includes(desdeUrl)
-        ) {
+        // Si vienes de la calculadora o de una solución (?servicio=...),
+        // deja el servicio elegido y un mensaje para empezar
+        const params = new URLSearchParams(location.search);
+        const desdeUrl = params.get("servicio");
+        if (desdeUrl && SERVICIOS_CONTACTO.includes(desdeUrl)) {
             servicioEl.value = desdeUrl;
-            if (!mensajeEl.value && desdeUrl in SERVICIOS) {
-                const nombre =
-                    SERVICIOS[desdeUrl as keyof typeof SERVICIOS].nombre;
-                mensajeEl.value = `Hola, usé la calculadora para "${nombre}" y quiero platicar mi caso.`;
+            if (!mensajeEl.value && desdeUrl !== "otro") {
+                const usoCalculadora =
+                    params.get("origen") === "calculadora" &&
+                    desdeUrl in SERVICIOS;
+                mensajeEl.value = usoCalculadora
+                    ? `Hola, usé la calculadora para "${SERVICIOS[desdeUrl as keyof typeof SERVICIOS].nombre}" y quiero platicar mi caso.`
+                    : `Hola Carlos, me interesa "${nombreServicio(desdeUrl as ServicioContacto)}". Te cuento mi caso: `;
             }
         }
 
