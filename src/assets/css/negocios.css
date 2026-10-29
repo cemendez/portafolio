@@ -1,0 +1,421 @@
+/* Página para negocios (/negocios). Usa los tokens globales de base.css.
+   Los fondos alternos de las secciones los pone base.css por posición; en las
+   secciones con fondo --bg-alt las tarjetas usan --bg, y al revés. */
+
+.neg-hero,
+.neg-section {
+    min-height: auto; /* base.css da 100vh a todo <section> */
+}
+
+.neg-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.neg-container--narrow {
+    max-width: 900px;
+}
+
+.neg-section__intro {
+    max-width: 680px;
+    margin: -1.5rem auto 2.5rem;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.neg-section__nota {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ---------- Botones ---------- */
+.neg-btn {
+    display: inline-block;
+    padding: 0.85rem 1.6rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition:
+        opacity 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.neg-btn:hover {
+    opacity: 0.85;
+}
+
+.neg-btn--ghost {
+    background: transparent;
+    color: var(--accent);
+}
+
+.neg-btn--ghost:hover {
+    opacity: 1;
+    background: rgba(var(--accent-rgb), 0.12);
+}
+
+.neg-btn--small {
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* ---------- Hero ---------- */
+.neg-hero {
+    /* 10rem deja libre el header fijo */
+    padding: 10rem var(--padding-side) 5rem;
+    background:
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(var(--accent-rgb), 0.18),
+            transparent 55%
+        ),
+        var(--bg);
+}
+
+.neg-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+}
+
+.neg-eyebrow {
+    margin-bottom: 1rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.neg-hero__title {
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-size: clamp(2rem, 5.5vw, 3.4rem);
+    line-height: 1.12;
+}
+
+.neg-hero__title span {
+    color: var(--accent);
+}
+
+.neg-hero__intro {
+    max-width: 680px;
+    margin-bottom: 2.25rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.neg-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.neg-hero__confianza {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+}
+
+.neg-hero__confianza li::before {
+    content: "✓";
+    margin-right: 0.5rem;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* ---------- Soluciones ---------- */
+.neg-soluciones {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.neg-sol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.6rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+    scroll-margin-top: 140px; /* el header fijo no tapa el título */
+}
+
+.neg-sol:target {
+    border-color: var(--accent);
+}
+
+.neg-sol__title {
+    color: var(--text);
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+
+.neg-sol__problema {
+    margin: -0.25rem 0 0.35rem;
+    padding: 0.9rem 1rem;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    background: var(--bg-alt);
+    color: var(--text);
+    font-size: 1.02rem;
+    font-weight: 500;
+    line-height: 1.55;
+}
+
+.neg-sol__etiqueta {
+    margin-bottom: -0.6rem;
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.neg-sol__resultado {
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.neg-sol__para {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.neg-sol__incluye {
+    display: grid;
+    gap: 0.4rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.neg-sol__incluye li {
+    position: relative;
+    padding-left: 1.4rem;
+}
+
+.neg-sol__incluye li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.neg-sol__evidencia {
+    margin-top: auto;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    background: rgba(var(--accent-rgb), 0.08);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.neg-sol__evidencia-titulo {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.neg-sol__evidencia ul {
+    display: grid;
+    gap: 0.35rem;
+    padding-left: 1.1rem;
+}
+
+.neg-sol__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* ---------- Casos ---------- */
+.neg-casos {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.neg-caso {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-alt);
+    color: var(--text-muted);
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.neg-caso:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.neg-caso__img {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
+}
+
+.neg-caso__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.neg-caso__giro {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.neg-caso__link {
+    margin-top: auto;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* ---------- Proceso ---------- */
+.neg-pasos {
+    display: grid;
+    gap: 1.5rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: paso;
+}
+
+.neg-pasos li {
+    position: relative;
+    padding: 1.5rem;
+    padding-top: 3.75rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-alt);
+    counter-increment: paso;
+}
+
+.neg-pasos li::before {
+    content: counter(paso);
+    position: absolute;
+    top: 1.25rem;
+    left: 1.5rem;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+}
+
+.neg-pasos h3 {
+    margin-bottom: 0.5rem;
+    color: var(--text);
+    font-size: 1.05rem;
+}
+
+.neg-pasos p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+/* ---------- Preguntas frecuentes ---------- */
+.neg-faq {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.neg-faq details {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+}
+
+.neg-faq summary {
+    padding: 1.1rem 1.25rem;
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.neg-faq details[open] summary {
+    color: var(--accent);
+}
+
+.neg-faq details p {
+    padding: 0 1.25rem 1.25rem;
+    line-height: 1.7;
+}
+
+/* ---------- Pantallas medianas y grandes ---------- */
+@media (min-width: 640px) {
+    .neg-soluciones,
+    .neg-casos,
+    .neg-pasos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .neg-soluciones {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .neg-casos,
+    .neg-pasos {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .neg-btn,
+    .neg-caso {
+        transition: none;
+    }
+    .neg-caso:hover {
+        transform: none;
+    }
+}
+
+/* Con 3 columnas, la séptima solución queda sola: ocupa la fila completa */
+@media (min-width: 900px) {
+    .neg-sol:last-child:nth-child(3n + 1) {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 899px) {
+    .neg-sol:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Aquí el contacto cae en una sección con fondo --bg: el formulario usa
+   --bg-alt para no fundirse (en la home es al revés) */
+main:has(.neg-hero) .contact-form {
+    background: var(--bg-alt);
+}

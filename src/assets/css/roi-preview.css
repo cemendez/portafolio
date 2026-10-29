@@ -41,7 +41,9 @@
 
 .roi-preview__cta {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 1rem;
     margin-top: 2.5rem;
 }
 
@@ -57,6 +59,12 @@
 
 .roi-preview__button:hover {
     opacity: 0.85;
+}
+
+.roi-preview__button--ghost {
+    border: 2px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
 }
 
 @media (min-width: 769px) {

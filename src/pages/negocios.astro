@@ -1,0 +1,365 @@
+---
+// Página para clientes (dueños de negocio), separada del home que le habla a
+// reclutadores. Todo en lenguaje de resultado: qué problema y qué gana.
+import "@assets/css/negocios.css";
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+import MainLayout from "@layouts/MainLayout.astro";
+import RoiCalculator from "@components/roi/RoiCalculator.astro";
+import Contact from "@components/sections/Contact.astro";
+import { PLAN_INICIAL_PCT, PLAN_MESES } from "@utils/roi";
+import { SOLUCIONES, type ClaveSolucion } from "@utils/soluciones";
+
+const title = "Sistemas y sitios web para negocios | Carlos E. Méndez";
+const description =
+    "Agendas, inventarios, facturación electrónica, CRMs y plataformas de cursos hechos a la medida de tu negocio en Puebla. Calcula tu retorno y platiquemos 15 minutos.";
+
+const pageUrl = new URL("/negocios", Astro.site).href;
+const soluciones = Object.entries(SOLUCIONES) as [
+    ClaveSolucion,
+    (typeof SOLUCIONES)[ClaveSolucion],
+][];
+
+const jsonLd = [
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Inicio",
+                item: Astro.site?.href,
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Para negocios",
+                item: pageUrl,
+            },
+        ],
+    },
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        name: "Carlos E. Méndez — Desarrollo de sistemas para negocios",
+        url: pageUrl,
+        areaServed: [
+            { "@type": "City", name: "Puebla" },
+            { "@type": "Country", name: "México" },
+        ],
+        hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Soluciones para negocios",
+            itemListElement: soluciones.map(([, s]) => ({
+                "@type": "Offer",
+                itemOffered: {
+                    "@type": "Service",
+                    name: s.nombre,
+                    description: s.resultado,
+                },
+            })),
+        },
+    },
+];
+
+// Casos reales que un negocio entiende (sin proyectos de gobierno)
+const casos = [
+    {
+        id: "abastos-ia",
+        giro: "Comercio en la Central de Abastos",
+        texto: "El comerciante no tenía tiempo de capturar. Ahora dicta la venta o el préstamo de cajas y el sistema lo registra y calcula cuánto le deben.",
+    },
+    {
+        id: "alpec",
+        giro: "Productora de velas artesanales",
+        texto: "Pasó de vender solo en mercados a una tienda en línea propia, con inventario y cobro con tarjeta, que el equipo administra sin saber de tecnología.",
+    },
+    {
+        id: "gabriel-nosso",
+        giro: "Cursos y coaching",
+        texto: "Llevó sus cursos presenciales a una plataforma: el alumno paga y recibe su acceso a clases y materiales al instante.",
+    },
+    {
+        id: "diecsa",
+        giro: "Ingeniería eléctrica y civil",
+        texto: "Su sitio salió a producción sin perder datos, cargando 30% más rápido y con un formulario que por fin les entrega los contactos.",
+    },
+];
+
+const casosConDatos = (
+    await Promise.all(
+        casos.map(async (caso) => ({
+            ...caso,
+            entrada: await getEntry("projects", caso.id),
+        })),
+    )
+).filter((caso) => caso.entrada);
+
+const pasos = [
+    {
+        titulo: "Platicamos 15 minutos",
+        texto: "Me cuentas cómo trabajas hoy y dónde se te va el tiempo o el dinero. Sin costo y sin compromiso.",
+    },
+    {
+        titulo: "Te propongo un precio cerrado",
+        texto: "Por escrito: qué incluye, qué no, en cuánto tiempo lo entrego y cómo se paga. Sin sorpresas a mitad del proyecto.",
+    },
+    {
+        titulo: "Construyo y te muestro avances",
+        texto: "Ves el sistema funcionando desde las primeras semanas y lo ajustamos con tu forma real de trabajar.",
+    },
+    {
+        titulo: "Entrego y te acompaño",
+        texto: "Te capacito a ti y a tu equipo. Si quieres, me quedo a cargo del hosting, los respaldos y los cambios con un plan mensual.",
+    },
+];
+
+const preguntasFrecuentes = [
+    {
+        pregunta: "¿Cuánto cuesta?",
+        respuesta: `Depende de lo que necesites, por eso te doy un precio cerrado después de la llamada. Puedes pagarlo de una vez o con un plan: ${Math.round(PLAN_INICIAL_PCT * 100)}% al inicio y ${PLAN_MESES} mensualidades. La calculadora de esta página te muestra precios de referencia para cada tipo de proyecto.`,
+    },
+    {
+        pregunta: "¿Por qué no uso una app que ya existe?",
+        respuesta:
+            "Si una app genérica te resuelve el problema, te lo voy a decir. Lo que hago tiene sentido cuando tu negocio tiene una forma de trabajar propia, cuando pagas varias suscripciones que no se hablan entre sí, o cuando quieres que el sistema y tus datos sean tuyos.",
+    },
+    {
+        pregunta: "¿El sistema es mío?",
+        respuesta:
+            "Sí. Con pago único es tuyo desde la entrega; con el plan, al terminar las mensualidades. Hosting, dominio y soporte son aparte y opcionales: puedes contratarlos conmigo o encargarte tú.",
+    },
+    {
+        pregunta: "¿Y si después necesito cambios?",
+        respuesta:
+            "El plan de mantenimiento incluye horas al mes para cambios menores. Los cambios grandes se cotizan aparte, igual que el proyecto: con precio cerrado antes de empezar.",
+    },
+    {
+        pregunta: "¿Solo trabajas en Puebla?",
+        respuesta:
+            "Con negocios de Puebla puedo reunirme en persona. Con el resto de México trabajo igual de bien en línea, por videollamada y WhatsApp.",
+    },
+    {
+        pregunta: "¿Mis datos y los de mis clientes están seguros?",
+        respuesta:
+            "Cada sistema lleva usuarios con permisos, conexión cifrada y respaldos. Cuando el sistema guarda datos sensibles, como un historial clínico, lo diseño desde el inicio para que solo los vea quien debe.",
+    },
+];
+---
+
+<MainLayout title={title} description={description}>
+    <script
+        slot="head"
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd)}
+    />
+    <section class="neg-hero" id="negocios">
+        <div class="neg-container">
+            <nav class="neg-breadcrumb" aria-label="Ruta">
+                <a href="/#home">Inicio</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">Para negocios</span>
+            </nav>
+
+            <p class="neg-eyebrow">Para negocios en Puebla y todo México</p>
+            <h1 class="neg-hero__title">
+                Tu negocio pierde tiempo y clientes en tareas que
+                <span>un sistema puede hacer por ti</span>
+            </h1>
+            <p class="neg-hero__intro">
+                Desarrollo agendas, inventarios, facturación, CRMs y plataformas
+                de cursos hechos a la medida de cómo ya trabajas. Precio cerrado
+                antes de empezar y trato directo conmigo, sin intermediarios.
+            </p>
+
+            <div class="neg-hero__ctas">
+                <a class="neg-btn" href="#contact">
+                    Platiquemos 15 minutos
+                </a>
+                <a class="neg-btn neg-btn--ghost" href="#calculadora">
+                    Calcula cuánto te cuesta hoy
+                </a>
+            </div>
+
+            <ul class="neg-hero__confianza">
+                <li>Más de 12 años construyendo sistemas</li>
+                <li>Casos reales que puedes revisar</li>
+                <li>Pago único o en mensualidades</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="neg-section" id="soluciones">
+        <div class="neg-container">
+            <h2 class="heading">
+                <span class="heading__span">¿Te pasa </span>algo de esto?
+            </h2>
+            <p class="neg-section__intro">
+                Busca el problema que más se parece al tuyo. No vendo
+                plantillas: parto de cómo trabaja tu negocio hoy y construyo
+                solo lo que te hace falta.
+            </p>
+
+            <div class="neg-soluciones">
+                {soluciones.map(([clave, s]) => (
+                    <article class="neg-sol" id={`sol-${clave}`}>
+                        <p class="neg-sol__problema">{s.problema}</p>
+                        <p class="neg-sol__etiqueta">La solución</p>
+                        <h3 class="neg-sol__title">{s.nombre}</h3>
+                        <p class="neg-sol__resultado">{s.resultado}</p>
+                        <p class="neg-sol__para">
+                            <strong>Para:</strong> {s.paraQuien}
+                        </p>
+                        <ul class="neg-sol__incluye">
+                            {s.incluye.map((item) => (
+                                <li>{item}</li>
+                            ))}
+                        </ul>
+                        <div class="neg-sol__evidencia">
+                            <p class="neg-sol__evidencia-titulo">
+                                Lo que ya construí
+                            </p>
+                            <ul>
+                                {s.evidencia.map((e) => (
+                                    <li>
+                                        {e.href ? (
+                                            <a href={e.href}>{e.texto}</a>
+                                        ) : (
+                                            e.texto
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div class="neg-sol__acciones">
+                            <a
+                                class="neg-btn neg-btn--small"
+                                href={`/negocios?servicio=${clave}#contact`}
+                            >
+                                Me interesa
+                            </a>
+                            {s.calculadora && (
+                                <a
+                                    class="neg-btn neg-btn--small neg-btn--ghost"
+                                    href="#calculadora"
+                                    data-calcular={s.calculadora}
+                                >
+                                    Calcular mi retorno
+                                </a>
+                            )}
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="neg-section" id="casos">
+        <div class="neg-container">
+            <h2 class="heading">
+                <span class="heading__span">Negocios </span>con los que ya
+                trabajé
+            </h2>
+            <div class="neg-casos">
+                {casosConDatos.map(({ id, giro, texto, entrada }) => (
+                    <a class="neg-caso" href={`/projects/${id}`}>
+                        <Image
+                            class="neg-caso__img"
+                            src={entrada!.data.image}
+                            alt=""
+                            widths={[400, 800]}
+                            sizes="(min-width: 992px) 25vw, (min-width: 640px) 50vw, 100vw"
+                        />
+                        <div class="neg-caso__body">
+                            <p class="neg-caso__giro">{giro}</p>
+                            <p>{texto}</p>
+                            <span class="neg-caso__link">
+                                Ver el caso
+                                <span aria-hidden="true">→</span>
+                            </span>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="neg-section" id="calculadora">
+        <div class="neg-container neg-container--narrow">
+            <h2 class="heading">
+                <span class="heading__span">¿Cuánto </span>te cuesta no
+                automatizar?
+            </h2>
+            <p class="neg-section__intro">
+                Con tus números, calcula cuánto pierdes hoy y en cuántos meses
+                se paga el sistema. Todo se calcula en tu navegador: tus datos
+                no se envían a ningún lado.
+            </p>
+            <RoiCalculator contactoPath="/negocios" />
+        </div>
+    </section>
+
+    <section class="neg-section" id="proceso">
+        <div class="neg-container">
+            <h2 class="heading">
+                <span class="heading__span">Cómo </span>trabajamos
+            </h2>
+            <ol class="neg-pasos">
+                {pasos.map((paso) => (
+                    <li>
+                        <h3>{paso.titulo}</h3>
+                        <p>{paso.texto}</p>
+                    </li>
+                ))}
+            </ol>
+            <p class="neg-section__nota">
+                Los detalles del plan de pagos, el mantenimiento y la
+                cancelación están en las{" "}
+                <a href="/condiciones">condiciones del servicio</a>.
+            </p>
+        </div>
+    </section>
+
+    <section class="neg-section" id="preguntas">
+        <div class="neg-container neg-container--narrow">
+            <h2 class="heading">
+                <span class="heading__span">Preguntas </span>frecuentes
+            </h2>
+            <div class="neg-faq">
+                {preguntasFrecuentes.map((f) => (
+                    <details>
+                        <summary>{f.pregunta}</summary>
+                        <p>{f.respuesta}</p>
+                    </details>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <Contact />
+</MainLayout>
+
+<script>
+    // "Calcular mi retorno" en una solución: elige ese servicio en la
+    // calculadora antes de bajar a ella
+    function initNegocios() {
+        document
+            .querySelectorAll<HTMLAnchorElement>("[data-calcular]")
+            .forEach((enlace) => {
+                if (enlace.dataset.ready) return;
+                enlace.dataset.ready = "true";
+                enlace.addEventListener("click", () => {
+                    const select =
+                        document.querySelector<HTMLSelectElement>(
+                            "#roi-servicio",
+                        );
+                    if (!select) return;
+                    select.value = enlace.dataset.calcular!;
+                    select.dispatchEvent(new Event("change"));
+                });
+            });
+    }
+
+    document.addEventListener("astro:page-load", initNegocios);
+</script>
