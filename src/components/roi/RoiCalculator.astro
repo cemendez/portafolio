@@ -1,0 +1,520 @@
+---
+// Calculadora de ROI reutilizable (/roi y /negocios). Solo puede haber una
+// por página: el script la encuentra por id. La lógica vive en utils/roi.ts.
+import "@assets/css/roi.css";
+import { SERVICIOS, type Servicio } from "@utils/roi";
+
+interface Props {
+    /** Página con el formulario de contacto a la que lleva el botón final. */
+    contactoPath?: string;
+    /** Servicio seleccionado al cargar. */
+    inicial?: Servicio;
+}
+
+const { contactoPath = "/", inicial = "automatizacion_administrativa" } =
+    Astro.props;
+
+// Textos de las preguntas según el servicio (la lógica vive en utils/roi.ts)
+const TEXTOS: Record<
+    Servicio,
+    { horas: string; perdidas: string; valor: string }
+> = {
+    sitio_web: {
+        horas: "Horas por semana que dedicas a responder dudas, cotizar o mostrar tu trabajo manualmente",
+        perdidas:
+            "Clientes potenciales al mes que no te encuentran o no te contactan (estimado)",
+        valor: "Ingreso promedio por cliente nuevo (MXN)",
+    },
+    automatizacion_administrativa: {
+        horas: "Horas por semana en tareas repetitivas (Excel, reportes, perseguir documentos)",
+        perdidas:
+            "Errores, multas o clientes perdidos al mes por retrasos o fallas en el proceso",
+        valor: "Costo o ingreso promedio de cada caso (MXN)",
+    },
+    gestion_clientes: {
+        horas: "Horas por semana agendando, confirmando y dando seguimiento a clientes",
+        perdidas:
+            "Citas o clientes que pierdes al mes por olvidos o falta de seguimiento",
+        valor: "Ingreso promedio por cita o cliente (MXN)",
+    },
+    inventario: {
+        horas: "Horas por semana contando, actualizando y conciliando inventario",
+        perdidas:
+            "Ventas que pierdes al mes por faltantes o desorden de inventario",
+        valor: "Ingreso promedio por venta perdida (MXN)",
+    },
+};
+
+const servicios = Object.entries(SERVICIOS) as [
+    Servicio,
+    (typeof SERVICIOS)[Servicio],
+][];
+---
+
+<form
+    class="roi-form"
+    id="roi-form"
+    data-textos={JSON.stringify(TEXTOS)}
+    data-contacto={contactoPath}
+>
+    <label class="roi-field">
+        <span>¿Qué quieres mejorar?</span>
+        <select id="roi-servicio" name="servicio">
+            {servicios.map(([clave, servicio]) => (
+                <option value={clave} selected={clave === inicial}>
+                    {servicio.nombre}
+                </option>
+            ))}
+        </select>
+    </label>
+
+    <div class="roi-precios" id="roi-precios" aria-live="polite"></div>
+
+    <div class="roi-form__grid">
+        <label class="roi-field roi-field--wide">
+            <span data-texto="horas"></span>
+            <input
+                id="roi-horas"
+                type="number"
+                min="0"
+                max="168"
+                step="any"
+                required
+                placeholder="Ej. 10"
+            />
+        </label>
+        <label class="roi-field">
+            <span>
+                ¿Cuánto cuesta una hora de quien hace ese trabajo? (MXN)
+            </span>
+            <input
+                id="roi-costo-hora"
+                type="number"
+                min="0"
+                max="5000"
+                step="any"
+                required
+                placeholder="Ej. 100"
+            />
+        </label>
+        <label class="roi-field roi-field--wide">
+            <span data-texto="perdidas"></span>
+            <input
+                id="roi-perdidas"
+                type="number"
+                min="0"
+                max="10000"
+                step="any"
+                required
+                placeholder="Ej. 4"
+            />
+        </label>
+        <label class="roi-field">
+            <span data-texto="valor"></span>
+            <input
+                id="roi-valor"
+                type="number"
+                min="0"
+                max="10000000"
+                step="any"
+                required
+                placeholder="Ej. 800"
+            />
+        </label>
+    </div>
+
+    <fieldset class="roi-mantenimiento">
+        <legend>Hosting, dominio y soporte</legend>
+        <label class="roi-check">
+            <input id="roi-mant-check" type="checkbox" checked />
+            <span>
+                Incluir hosting, dominio y soporte en el cálculo (recomendado)
+            </span>
+        </label>
+        <p class="roi-hint">
+            El precio del sitio no incluye que esté funcionando: alguien tiene
+            que hospedarlo, renovar el dominio y atender cambios y dudas. Si no
+            lo marcas, tú te encargarías de todo eso por tu cuenta.
+        </p>
+        <label class="roi-field" id="roi-mant-campo">
+            <span>Costo mensual de mantenimiento (MXN)</span>
+            <input
+                id="roi-mant"
+                type="number"
+                min="0"
+                max="1000000"
+                step="any"
+            />
+            <small class="roi-hint" id="roi-mant-hint"></small>
+        </label>
+    </fieldset>
+
+    <details class="roi-avanzado">
+        <summary>Ajustes opcionales</summary>
+        <label class="roi-field">
+            <span>Margen de utilidad de tu negocio (%)</span>
+            <input
+                id="roi-margen"
+                type="number"
+                min="1"
+                max="100"
+                step="any"
+                value="35"
+            />
+        </label>
+    </details>
+
+    <button class="roi-button" type="submit">
+        Calcular mi retorno
+    </button>
+    <p class="roi-error" id="roi-error" role="alert" hidden></p>
+    <noscript>
+        <p class="roi-error">
+            La calculadora necesita JavaScript para funcionar.
+        </p>
+    </noscript>
+</form>
+
+<div class="roi-resultado" id="roi-resultado" aria-live="polite"></div>
+
+<script>
+    import {
+        PLAN_MESES,
+        SERVICIOS,
+        compararOpciones,
+        costoAcumulado,
+        precios,
+        type ResultadoRoi,
+        type Servicio,
+    } from "@utils/roi";
+    import { registrarEvento } from "@utils/analytics";
+
+    const mxn = new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        maximumFractionDigits: 0,
+    });
+
+    const ETIQUETA = {
+        conservador: "Conservador",
+        esperado: "Esperado",
+        optimista: "Optimista",
+    } as const;
+
+    // Con decimales cuando hacen falta, para que las cuentas se puedan seguir
+    const m2 = new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    });
+    const pct = (n: number) => `${Math.round(n * 100)}%`;
+
+    const plazo = (meses: number | null) =>
+        meses === null || meses > 60 ? "más de 5 años" : `${meses} meses`;
+
+    const escenario = (r: ResultadoRoi, nombre: string) =>
+        r.escenarios.find((e) => e.escenario === nombre)!;
+
+    interface Datos {
+        servicio: Servicio;
+        horas: number;
+        costoHora: number;
+        perdidas: number;
+        valor: number;
+    }
+
+    // Frase principal: si hasta el escenario conservador se recupera, se dice;
+    // si no, se muestra el esperado y se avisa del conservador sin adornos.
+    function resumen(r: ReturnType<typeof compararOpciones>) {
+        const cu = escenario(r.pagoUnico, "conservador").mesesRecuperacion;
+        const cp = escenario(r.plan, "conservador").mesesRecuperacion;
+        const eu = escenario(r.pagoUnico, "esperado").mesesRecuperacion;
+        const ep = escenario(r.plan, "esperado").mesesRecuperacion;
+        const bueno = (m: number | null) => m !== null && m <= 24;
+        if (bueno(cu) && bueno(cp)) {
+            return `Incluso en el escenario conservador, con pago único recuperarías la inversión en <strong>${plazo(cu)}</strong> y con el plan mensual en <strong>${plazo(cp)}</strong>.`;
+        }
+        return `En el escenario esperado, con pago único recuperarías la inversión en <strong>${plazo(eu)}</strong> y con el plan mensual en <strong>${plazo(ep)}</strong>. En el conservador tardaría <strong>${plazo(cu)}</strong> y <strong>${plazo(cp)}</strong>: con estos números el beneficio es bajo frente a lo que cuesta mantenerlo, y conviene revisar el caso antes de invertir.`;
+    }
+
+    // Explicación paso a paso con los números del visitante (escenario esperado)
+    function pasos(datos: Datos, r: ReturnType<typeof compararOpciones>) {
+        const u = r.pagoUnico;
+        const plan = r.plan;
+        const esp = escenario(u, "esperado");
+        const sup = u.supuestos;
+        const mant = u.opcion.mantenimiento;
+        const neto = esp.beneficioMensual - mant;
+
+        const perdida = sup.aplicaMargen
+            ? `${datos.perdidas} × ${m2.format(datos.valor)} × ${pct(sup.margen)} de margen`
+            : `${datos.perdidas} × ${m2.format(datos.valor)} (es un costo directo, no se aplica margen)`;
+
+        // Detalle del plan, solo si se recupera mientras aún se pagan cuotas
+        const duranteCuotas = neto - plan.opcion.mensualidad;
+        const simple =
+            duranteCuotas > 0 &&
+            plan.opcion.inicial / duranteCuotas <= PLAN_MESES;
+        const mesesPlan = plazo(escenario(plan, "esperado").mesesRecuperacion);
+        const textoPlan = simple
+            ? `En el plan, además pagas la mensualidad: ${m2.format(neto)} − ${m2.format(plan.opcion.mensualidad)} = ${m2.format(duranteCuotas)} al mes, y empiezas con ${m2.format(plan.opcion.inicial)}: ${m2.format(plan.opcion.inicial)} ÷ ${m2.format(duranteCuotas)} = <strong>${mesesPlan}</strong>.`
+            : `En el plan, mientras pagas las ${PLAN_MESES} mensualidades queda menos al mes, por eso se tarda <strong>${mesesPlan}</strong>.`;
+
+        const costo12 = u.costoPrimerAnio;
+        const ganancia12 = esp.beneficioMensual * 12;
+
+        return `
+            <details class="roi-pasos" open>
+                <summary>Cómo se calculó, paso a paso</summary>
+                <ol>
+                    <li>
+                        <strong>Cuánto te cuesta hoy el problema.</strong>
+                        Tiempo: ${datos.horas} h por semana × 4.33 semanas al mes × ${m2.format(datos.costoHora)} por hora = ${m2.format(u.tiempoMensualActual)}.
+                        Pérdidas: ${perdida} = ${m2.format(u.perdidaMensualActual)}.
+                        En total, <strong>${m2.format(u.costoActualMensual)} al mes</strong>.
+                    </li>
+                    <li>
+                        <strong>Cuánto recuperarías con el sistema</strong> (escenario esperado).
+                        Se supone que elimina ${pct(sup.eficiencia)} del tiempo manual
+                        (${m2.format(u.tiempoMensualActual)} × ${pct(sup.eficiencia)} = ${m2.format(esp.ahorroTiempoMensual)})
+                        y recupera ${pct(sup.recuperacion)} de lo que pierdes
+                        (${m2.format(esp.utilidadRecuperadaMensual)}).
+                        Total: <strong>${m2.format(esp.beneficioMensual)} al mes</strong>.
+                        El escenario conservador toma la mitad de esto y el optimista, 1.4 veces.
+                        Estos porcentajes son supuestos conservadores, no promesas.
+                    </li>
+                    <li>
+                        <strong>Cuánto pagas cada mes por tenerlo funcionando.</strong>
+                        ${
+                            mant > 0
+                                ? `Hosting, dominio y soporte: ${m2.format(mant)} al mes. Se resta de lo que ganas: ${m2.format(esp.beneficioMensual)} − ${m2.format(mant)} = <strong>${m2.format(neto)} al mes</strong>.`
+                                : "No incluiste mantenimiento, así que aquí no se resta nada. Recuerda que el sitio tiene que estar hospedado y atendido por alguien."
+                        }
+                    </li>
+                    <li>
+                        <strong>Cuándo se recupera la inversión.</strong>
+                        Con pago único: ${m2.format(u.opcion.inicial)} ÷ ${m2.format(neto)} = <strong>${plazo(esp.mesesRecuperacion)}</strong>.
+                        ${textoPlan}
+                    </li>
+                    <li>
+                        <strong>ROI del primer año.</strong>
+                        Es lo que ganas en 12 meses menos lo que pagas en esos 12 meses, entre lo que pagas.
+                        Con pago único: (${m2.format(ganancia12)} − ${m2.format(costo12)}) ÷ ${m2.format(costo12)} =
+                        <strong>${esp.roiPrimerAnioPct.toLocaleString("es-MX")}%</strong>.
+                        Si es negativo, en el primer año todavía no recuperas lo invertido.
+                    </li>
+                </ol>
+            </details>`;
+    }
+
+    function tarjeta(titulo: string, detalle: string, r: ResultadoRoi) {
+        const filas = r.escenarios
+            .map(
+                (e) => `
+                <tr>
+                    <th scope="row">${ETIQUETA[e.escenario]}</th>
+                    <td>${plazo(e.mesesRecuperacion)}</td>
+                    <td>${e.roiPrimerAnioPct.toLocaleString("es-MX")}%</td>
+                </tr>`,
+            )
+            .join("");
+        return `
+            <article class="roi-card">
+                <h3 class="roi-card__title">${titulo}</h3>
+                <p class="roi-card__detalle">${detalle}</p>
+                <table class="roi-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Escenario</th>
+                            <th scope="col">Se recupera en</th>
+                            <th scope="col">ROI primer año</th>
+                        </tr>
+                    </thead>
+                    <tbody>${filas}</tbody>
+                </table>
+            </article>`;
+    }
+
+    function initRoi() {
+        const form = document.querySelector<HTMLFormElement>("#roi-form");
+        if (!form || form.dataset.ready) return;
+        form.dataset.ready = "true";
+
+        const textos = JSON.parse(form.dataset.textos ?? "{}") as Record<
+            string,
+            { horas: string; perdidas: string; valor: string }
+        >;
+        const campo = <T extends HTMLElement>(id: string) =>
+            document.getElementById(id) as T;
+
+        const servicioEl = campo<HTMLSelectElement>("roi-servicio");
+        const preciosEl = campo<HTMLElement>("roi-precios");
+        const mantCheck = campo<HTMLInputElement>("roi-mant-check");
+        const mantCampo = campo<HTMLElement>("roi-mant-campo");
+        const mantEl = campo<HTMLInputElement>("roi-mant");
+        const mantHint = campo<HTMLElement>("roi-mant-hint");
+        const errorEl = campo<HTMLElement>("roi-error");
+        const resultadoEl = campo<HTMLElement>("roi-resultado");
+
+        const servicio = () => servicioEl.value as Servicio;
+
+        function actualizarServicio() {
+            const t = textos[servicio()];
+            form!
+                .querySelectorAll<HTMLElement>("[data-texto]")
+                .forEach((el) => {
+                    el.textContent = t[el.dataset.texto as keyof typeof t];
+                });
+
+            const p = precios(servicio());
+            preciosEl.innerHTML = `
+                <p><strong>Pago único:</strong> ${mxn.format(p.lista)}</p>
+                <p>
+                    <strong>Plan mensual:</strong>
+                    ${mxn.format(p.plan.inicial)} al inicio y
+                    ${PLAN_MESES} mensualidades de ${mxn.format(p.plan.mensualidad)}.
+                    Al terminar de pagarlo, el sitio es tuyo (sin hosting ni soporte,
+                    salvo que contrates mantenimiento).
+                </p>`;
+
+            const { hostingMensual, horasSoporte } = SERVICIOS[servicio()];
+            mantEl.value = String(p.mantenimiento);
+            mantHint.textContent = `Sugerido: ${mxn.format(p.mantenimiento)} al mes (hosting y dominio ${mxn.format(hostingMensual)} + ${horasSoporte} h de soporte y cambios menores).`;
+
+            resultadoEl.innerHTML = "";
+            errorEl.hidden = true;
+        }
+
+        function alternarMantenimiento() {
+            mantCampo.hidden = !mantCheck.checked;
+        }
+
+        function mostrar(r: ReturnType<typeof compararOpciones>, datos: Datos) {
+            const p = r.precios;
+            const horizontes = [12, 24, 36];
+            const filasCosto = (
+                [
+                    ["Pago único", r.pagoUnico],
+                    ["Plan mensual", r.plan],
+                ] as const
+            )
+                .map(
+                    ([nombre, x]) => `
+                    <tr>
+                        <th scope="row">${nombre}</th>
+                        ${horizontes.map((m) => `<td>${mxn.format(costoAcumulado(x.opcion, m))}</td>`).join("")}
+                    </tr>`,
+                )
+                .join("");
+            const mant = r.plan.opcion.mantenimiento;
+            const conMant = mant > 0;
+            const masMant = conMant ? ` + ${m2.format(mant)} × 24` : "";
+            const ejemplo = `Por ejemplo, a 24 meses: con pago único,
+                ${m2.format(r.pagoUnico.opcion.inicial)}${masMant}
+                = ${m2.format(costoAcumulado(r.pagoUnico.opcion, 24))}; con plan,
+                ${m2.format(r.plan.opcion.inicial)} + ${m2.format(r.plan.opcion.mensualidad)} × ${PLAN_MESES}${masMant}
+                = ${m2.format(costoAcumulado(r.plan.opcion, 24))}.
+                Las mensualidades terminan en el mes ${PLAN_MESES}${conMant ? "; el mantenimiento sigue cada mes mientras el sitio esté en operación" : ""}.`;
+
+            resultadoEl.innerHTML = `
+                <p class="roi-titular">
+                    Hoy este problema te cuesta alrededor de
+                    <strong>${mxn.format(r.plan.costoActualMensual)}</strong> al mes.
+                </p>
+                <p>${resumen(r)}</p>
+
+                <div class="roi-cards">
+                    ${tarjeta("Pago único", `${mxn.format(p.lista)} de una vez.`, r.pagoUnico)}
+                    ${tarjeta("Plan mensual", `${mxn.format(p.plan.inicial)} al inicio + ${PLAN_MESES} × ${mxn.format(p.plan.mensualidad)}.`, r.plan)}
+                </div>
+
+                <h3 class="roi-subtitulo">Lo que pagarás en total</h3>
+                <table class="roi-table roi-table--costos">
+                    <thead>
+                        <tr>
+                            <th scope="col">Opción</th>
+                            ${horizontes.map((m) => `<th scope="col">${m} meses</th>`).join("")}
+                        </tr>
+                    </thead>
+                    <tbody>${filasCosto}</tbody>
+                </table>
+                <p class="roi-nota">
+                    ${
+                        conMant
+                            ? `Incluye ${mxn.format(r.plan.opcion.mantenimiento)} al mes de hosting, dominio y soporte.`
+                            : "No incluye hosting, dominio ni soporte: tendrías que resolverlos por tu cuenta, y los cambios posteriores se cotizan aparte."
+                    }
+                    A los ${PLAN_MESES} meses ambas opciones cuestan casi lo mismo;
+                    el plan reparte el pago y el pago único te deja el sitio desde
+                    el primer día.
+                </p>
+                <p class="roi-nota">${ejemplo}</p>
+                ${pasos(datos, r)}
+                <p class="roi-nota">${r.plan.supuestos.nota}</p>
+                <p class="roi-nota">Cómo funcionan el plan, el mantenimiento y la cancelación: <a href="/condiciones">condiciones del servicio</a>.</p>
+                <a class="roi-button roi-button--link" href="${form!.dataset.contacto ?? "/"}?servicio=${datos.servicio}&origen=calculadora#contact">Platiquemos tu caso</a>`;
+
+            resultadoEl.scrollIntoView({
+                behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+                    .matches
+                    ? "auto"
+                    : "smooth",
+                block: "start",
+            });
+        }
+
+        form.addEventListener("submit", (evento) => {
+            evento.preventDefault();
+            errorEl.hidden = true;
+            const num = (id: string) =>
+                Number(campo<HTMLInputElement>(id).value);
+            try {
+                const margen = num("roi-margen") / 100;
+                const datos: Datos = {
+                    servicio: servicio(),
+                    horas: num("roi-horas"),
+                    costoHora: num("roi-costo-hora"),
+                    perdidas: num("roi-perdidas"),
+                    valor: num("roi-valor"),
+                };
+                registrarEvento("roi_calcular", { servicio: datos.servicio });
+                mostrar(
+                    compararOpciones({
+                        servicio: datos.servicio,
+                        horasSemana: datos.horas,
+                        costoHora: datos.costoHora,
+                        perdidasMes: datos.perdidas,
+                        valorPorCliente: datos.valor,
+                        margen: margen > 0 ? margen : undefined,
+                        mantenimientoMensual: mantCheck.checked
+                            ? num("roi-mant")
+                            : 0,
+                    }),
+                    datos,
+                );
+            } catch (error) {
+                resultadoEl.innerHTML = "";
+                errorEl.textContent =
+                    error instanceof RangeError
+                        ? `Revisa los datos: ${error.message}.`
+                        : "No pude calcular con esos datos.";
+                errorEl.hidden = false;
+            }
+        });
+
+        // El botón se crea en cada cálculo, por eso se escucha en el contenedor
+        resultadoEl.addEventListener("click", (e) => {
+            if ((e.target as HTMLElement).closest(".roi-button--link")) {
+                registrarEvento("roi_cta_click", { servicio: servicio() });
+            }
+        });
+
+        servicioEl.addEventListener("change", actualizarServicio);
+        mantCheck.addEventListener("change", alternarMantenimiento);
+        actualizarServicio();
+        alternarMantenimiento();
+    }
+
+    document.addEventListener("astro:page-load", initRoi);
+</script>
